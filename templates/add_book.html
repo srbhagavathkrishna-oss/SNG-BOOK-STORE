@@ -317,7 +317,11 @@ function calculateFinalPrice(){
 
 navigator.mediaDevices.getUserMedia({
 
-    video:true
+    video:{
+    facingMode:{
+        ideal:"environment"
+    }
+}
 
 })
 .then(function(stream){
