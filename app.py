@@ -5,9 +5,25 @@ from datetime import datetime
 import os
 import base64
 from ai_engine import extract_text
-
+import requests
 app = Flask(__name__)
+def usd_to_inr(amount_usd):
 
+    try:
+
+        response = requests.get(
+            "https://api.exchangerate-api.com/v4/latest/USD"
+        )
+
+        data = response.json()
+
+        rate = data["rates"]["INR"]
+
+        return round(amount_usd * rate, 2)
+
+    except:
+
+        return 0
 # =========================================================
 # DATABASE CONFIG
 # =========================================================
