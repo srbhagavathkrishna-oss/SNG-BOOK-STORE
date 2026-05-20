@@ -3,7 +3,4 @@ Flask-SQLAlchemy
 Werkzeug
 Pillow
 numpy
-opencv-python
-easyocr
-
 gunicorn
