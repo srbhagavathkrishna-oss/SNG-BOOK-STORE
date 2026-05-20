@@ -1122,28 +1122,7 @@ if __name__ == "__main__":
         db.create_all()
 
     app.run(debug=True)
-# =========================================================
-# SINGLE TRANSACTION DETAILS
-# =========================================================
 
-@app.route("/transaction/<int:id>")
-def transaction_detail(id):
-
-    transaction = Transaction.query.get(id)
-
-    items = TransactionItem.query.filter_by(
-        transaction_id=id
-    ).all()
-
-    return render_template(
-
-        "transaction_detail.html",
-
-        transaction=transaction,
-
-        items=items
-
-    )
 
 # =========================================================
 # DELETE TRANSACTION
