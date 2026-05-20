@@ -8,16 +8,7 @@ import numpy as np
 
 from PIL import Image
 
-from tensorflow.keras.applications.mobilenet_v2 import (
 
-    MobileNetV2,
-    preprocess_input
-
-)
-
-from tensorflow.keras.preprocessing.image import img_to_array
-
-from tensorflow.keras.models import Model
 
 # =========================================================
 # LOAD OCR
