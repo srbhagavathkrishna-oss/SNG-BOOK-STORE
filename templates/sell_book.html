@@ -985,7 +985,11 @@ async function startCameras(){
         .mediaDevices
         .getUserMedia({
 
-            video:true
+            video:{
+            facingMode:{
+            ideal:"environment"
+            }
+            }
 
         });
 
@@ -1405,7 +1409,11 @@ async function startUPICamera(cart){
         .mediaDevices
         .getUserMedia({
 
-            video:true
+            video:{
+        facingMode:{
+        ideal:"environment"
+        }
+        }
 
         });
 
