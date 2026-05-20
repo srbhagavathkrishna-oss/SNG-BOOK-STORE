@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+
+        Smart Book Store ERP
+
+    </title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+    <!-- LOGO -->
+
+    <div class="sidebar-logo">
+
+        <img src="{{ url_for(
+        'static',
+        filename='logo.jpeg'
+        ) }}">
+
+        <h2>
+
+            Smart BMS
+
+        </h2>
+
+        <p>
+
+            SNGSAS
+
+        </p>
+
+    </div>
+
+    <!-- MENU -->
+
+    <div class="menu">
+
+        <a href="/">
+
+            <i class="fa-solid fa-house"></i>
+
+            HOME
+
+        </a>
+
+        <a href="/add-book">
+
+            <i class="fa-solid fa-square-plus"></i>
+
+            Add Book
+
+        </a>
+
+        <a href="/book-list">
+
+            <i class="fa-solid fa-book"></i>
+
+            Inventory
+
+        </a>
+
+        <a href="/sell-book">
+
+            <i class="fa-solid fa-cart-shopping"></i>
+
+            SELL
+
+        </a>
+
+        <a href="/transactions">
+
+            <i class="fa-solid fa-receipt"></i>
+
+            Transactions
+
+        </a>
+
+        <a href="/dashboard">
+
+            <i class="fa-solid fa-chart-line"></i>
+
+            Analytics
+
+        </a>
+
+    </div>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="main-content">
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <div class="header-left">
+
+            <h1>
+
+                BOOKSTORE MANAGEMENT SYSTEM(BMS)
+
+            </h1>
+
+            <p>
+
+               MADHAVASWAMI ASHRAMAM
+            </p>
+
+        </div>
+
+        <div class="header-right">
+
+            <img src="{{ url_for(
+            'static',
+            filename='logo.jpeg'
+            ) }}">
+
+        </div>
+
+    </div>
+
+    <!-- PAGE CONTENT -->
+
+    {% block content %}
+
+    {% endblock %}
+
+    <!-- FOOTER -->
+
+    <div class="footer">
+
+        <img src="{{ url_for(
+        'static',
+        filename='BK LOGO.jpeg'
+        ) }}">
+
+        <h2>
+
+            Developed by
+            BHAGAVATHKRISHNA.S.R
+
+        </h2>
+
+        <p>
+
+            Powered by Innovation
+
+        </p>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

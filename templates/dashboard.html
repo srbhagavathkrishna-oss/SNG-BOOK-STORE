@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Advanced Business Dashboard</title>
+
+<style>
+
+body{
+
+    font-family:Arial;
+    background:#f4f4f4;
+    margin:0;
+    padding:20px;
+
+}
+
+/* LOGO */
+
+.top-logo{
+
+    position:fixed;
+    top:10px;
+    right:15px;
+    z-index:9999;
+
+}
+
+.top-logo img{
+
+    width:90px;
+    height:90px;
+    object-fit:cover;
+    border-radius:12px;
+    background:white;
+    padding:4px;
+    box-shadow:0px 0px 10px rgba(0,0,0,0.3);
+
+}
+
+/* BACK BUTTON */
+
+.back-btn{
+
+    margin-bottom:20px;
+
+}
+
+/* BUTTON */
+
+button{
+
+    background:darkred;
+    color:white;
+    border:none;
+    padding:10px 18px;
+    border-radius:8px;
+    cursor:pointer;
+    transition:0.3s;
+
+}
+
+button:hover{
+
+    background:red;
+    transform:scale(1.05);
+
+}
+
+/* CONTAINER */
+
+.container{
+
+    max-width:1400px;
+    margin:auto;
+
+}
+
+/* HEADING */
+
+.heading{
+
+    text-align:center;
+    color:darkred;
+    font-size:45px;
+    margin-bottom:30px;
+
+}
+
+/* ANALYTICS GRID */
+
+.cards{
+
+    display:grid;
+    grid-template-columns:
+    1fr 1fr 1fr 1fr;
+    gap:25px;
+
+}
+
+/* CARD */
+
+.card{
+
+    background:white;
+    padding:25px;
+    border-radius:20px;
+    text-align:center;
+    box-shadow:
+    0px 0px 10px rgba(0,0,0,0.1);
+
+    transition:0.3s;
+
+}
+
+.card:hover{
+
+    transform:translateY(-8px);
+
+}
+
+.card h2{
+
+    color:darkred;
+
+}
+
+.card h1{
+
+    color:green;
+    font-size:38px;
+
+}
+
+/* SECTION */
+
+.section{
+
+    background:white;
+    padding:25px;
+    border-radius:20px;
+    margin-top:40px;
+    box-shadow:
+    0px 0px 10px rgba(0,0,0,0.1);
+
+}
+
+/* BOOK CARD */
+
+.book{
+
+    border:1px solid #ddd;
+    padding:15px;
+    border-radius:12px;
+    margin-top:15px;
+    background:#fafafa;
+
+}
+
+.book h3{
+
+    color:darkred;
+
+}
+
+/* FOOTER */
+
+.footer{
+
+    margin-top:50px;
+    padding:20px;
+    background:#222;
+    color:white;
+    border-radius:15px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:15px;
+
+}
+
+.footer-logo{
+
+    width:50px;
+    height:50px;
+    object-fit:cover;
+    border-radius:50%;
+    border:2px solid white;
+
+}
+
+.footer h3{
+
+    margin:0;
+    color:gold;
+
+}
+
+.footer p{
+
+    margin:0;
+    color:#ccc;
+
+}
+
+/* MOBILE */
+
+@media(max-width:1000px){
+
+    .cards{
+
+        grid-template-columns:
+        1fr 1fr;
+
+    }
+
+}
+
+@media(max-width:700px){
+
+    .cards{
+
+        grid-template-columns:
+        1fr;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- LOGO -->
+
+<div class="top-logo">
+
+    <img src="{{ url_for('static', filename='logo.jpeg') }}">
+
+</div>
+
+<!-- BACK -->
+
+<a href="/">
+
+<button class="back-btn">
+
+← Back To Home
+
+</button>
+
+</a>
+
+<div class="container">
+
+<!-- HEADING -->
+
+<h1 class="heading">
+
+Business Analytics Dashboard
+
+</h1>
+
+<!-- ANALYTICS -->
+
+<div class="cards">
+
+    <div class="card">
+
+        <h2>
+
+            Daily Sales
+
+        </h2>
+
+        <h1>
+
+            ₹{{ daily_sales }}
+
+        </h1>
+
+    </div>
+
+    <div class="card">
+
+        <h2>
+
+            Weekly Sales
+
+        </h2>
+
+        <h1>
+
+            ₹{{ weekly_sales }}
+
+        </h1>
+
+    </div>
+
+    <div class="card">
+
+        <h2>
+
+            Monthly Sales
+
+        </h2>
+
+        <h1>
+
+            ₹{{ monthly_sales }}
+
+        </h1>
+
+    </div>
+
+    <div class="card">
+
+        <h2>
+
+            Total Sales
+
+        </h2>
+
+        <h1>
+
+            ₹{{ total_sales }}
+
+        </h1>
+
+    </div>
+
+    <div class="card">
+
+        <h2>
+
+            Total Profit
+
+        </h2>
+
+        <h1>
+
+            ₹{{ total_profit }}
+
+        </h1>
+
+    </div>
+
+    <div class="card">
+
+        <h2>
+
+            Books Sold
+
+        </h2>
+
+        <h1>
+
+            {{ total_books_sold }}
+
+        </h1>
+
+    </div>
+
+    <div class="card">
+
+        <h2>
+
+            Transactions
+
+        </h2>
+
+        <h1>
+
+            {{ total_transactions }}
+
+        </h1>
+
+    </div>
+
+    <div class="card">
+
+        <h2>
+
+            Inventory Value
+
+        </h2>
+
+        <h1>
+
+            ₹{{ inventory_value }}
+
+        </h1>
+
+    </div>
+
+</div>
+
+<!-- BEST SELLING -->
+
+<div class="section">
+
+    <h2>
+
+        Best Selling Books
+
+    </h2>
+
+    {% if best_selling_books %}
+
+        {% for book, qty in best_selling_books %}
+
+        <div class="book">
+
+            <h3>
+
+                {{ book }}
+
+            </h3>
+
+            <p>
+
+                Total Sold:
+                {{ qty }}
+
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>
+
+            No Sales Data Available
+
+        </p>
+
+    {% endif %}
+
+</div>
+
+<!-- LOW STOCK -->
+
+<div class="section">
+
+    <h2>
+
+        Low Stock Alert
+
+    </h2>
+
+    {% if low_stock_books %}
+
+        {% for book in low_stock_books %}
+
+        <div class="book">
+
+            <h3>
+
+                {{ book.title }}
+
+            </h3>
+
+            <p>
+
+                Author:
+                {{ book.author }}
+
+            </p>
+
+            <p>
+
+                Remaining Stock:
+
+                {{ (book.show_quantity or 0)
+                +
+                (book.storage_quantity or 0) }}
+
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>
+
+            No Low Stock Books
+
+        </p>
+
+    {% endif %}
+
+</div>
+
+</div>
+
+<!-- FOOTER -->
+
+<div class="footer">
+
+    <img src="{{ url_for('static', filename='logo.jpeg') }}"
+         class="footer-logo">
+
+    <div>
+
+        <h3>
+
+            Developed by Bhagavathkrishna.S.R
+
+        </h3>
+
+        <p>
+
+            Smart Book Store ERP & POS
+
+        </p>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
+```

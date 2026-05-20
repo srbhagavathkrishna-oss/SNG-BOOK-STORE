@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>
+
+Transaction Details
+
+</title>
+
+<style>
+
+body{
+
+    font-family:Arial;
+    background:#f4f4f4;
+    padding:20px;
+
+}
+
+.container{
+
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:20px;
+    border-radius:15px;
+
+}
+
+.item{
+
+    border:1px solid #ddd;
+    padding:15px;
+    margin-top:15px;
+    border-radius:10px;
+
+}
+
+button{
+
+    background:darkred;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:8px;
+    cursor:pointer;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<a href="/transactions">
+
+<button>
+
+← Back To Transactions
+
+</button>
+
+</a>
+
+<div class="container">
+
+<h1>
+
+Transaction Details
+
+</h1>
+
+<h2>
+
+Transaction ID:
+{{ transaction.id }}
+
+</h2>
+
+<p>
+
+Total Amount:
+₹{{ transaction.total_amount }}
+
+</p>
+
+<p>
+
+Payment Method:
+{{ transaction.payment_method }}
+
+</p>
+
+<p>
+
+Customer Name:
+{{ transaction.customer_name }}
+
+</p>
+
+<p>
+
+Mobile Number:
+{{ transaction.mobile_number }}
+
+</p>
+
+<p>
+
+Date:
+{{ transaction.date_time }}
+
+</p>
+
+<hr>
+
+<h2>
+
+Books
+
+</h2>
+
+{% for item in items %}
+
+<div class="item">
+
+<h3>
+
+{{ item.book_title }}
+
+</h3>
+
+<p>
+
+Quantity:
+{{ item.quantity }}
+
+</p>
+
+<p>
+
+Price:
+₹{{ item.price }}
+
+</p>
+
+<p>
+
+Subtotal:
+₹{{ item.price * item.quantity }}
+
+</p>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</body>
+
+</html>

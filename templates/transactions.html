@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Transactions</title>
+
+<style>
+
+body{
+
+    font-family:Arial;
+    background:#f4f4f4;
+    padding:20px;
+    margin:0;
+
+}
+
+.top-logo{
+
+    position:fixed;
+    top:10px;
+    right:15px;
+    z-index:9999;
+
+}
+
+.top-logo img{
+
+    width:70px;
+    height:70px;
+    object-fit:cover;
+    border-radius:12px;
+    background:white;
+    padding:3px;
+    box-shadow:0px 0px 8px rgba(0,0,0,0.3);
+
+}
+
+.container{
+
+    max-width:1200px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:20px;
+    box-shadow:0px 0px 10px rgba(0,0,0,0.1);
+
+}
+
+.heading{
+
+    text-align:center;
+    color:darkred;
+    margin-bottom:30px;
+
+}
+
+.transaction{
+
+    border:1px solid #ddd;
+    padding:20px;
+    border-radius:15px;
+    margin-bottom:25px;
+    background:#fafafa;
+
+}
+
+.transaction h2{
+
+    color:darkred;
+
+}
+
+.book-item{
+
+    background:white;
+    padding:10px;
+    border-radius:10px;
+    margin-top:10px;
+    border:1px solid #eee;
+
+}
+
+button{
+
+    background:darkred;
+    color:white;
+    border:none;
+    padding:10px 18px;
+    border-radius:8px;
+    cursor:pointer;
+    margin-top:10px;
+    margin-right:10px;
+
+}
+
+button:hover{
+
+    background:red;
+
+}
+
+.delete-btn{
+
+    background:red;
+
+}
+
+.delete-btn:hover{
+
+    background:darkred;
+
+}
+
+.back-btn{
+
+    margin-bottom:20px;
+
+}
+
+.total-box{
+
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:20px;
+    margin-bottom:30px;
+
+}
+
+.total-card{
+
+    background:#fafafa;
+    padding:20px;
+    border-radius:15px;
+    text-align:center;
+    box-shadow:0px 0px 8px rgba(0,0,0,0.1);
+
+}
+
+.total-card h1{
+
+    color:green;
+
+}
+
+.footer{
+
+    margin-top:40px;
+    text-align:center;
+    color:#777;
+
+}
+
+.footer-logo{
+
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    vertical-align:middle;
+    margin-right:10px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- TOP RIGHT LOGO -->
+
+<div class="top-logo">
+
+    <img src="{{ url_for('static', filename='logo.jpeg') }}">
+
+</div>
+
+<!-- BACK BUTTON -->
+
+<a href="/">
+
+    <button class="back-btn">
+
+        ← Back To Home
+
+    </button>
+
+</a>
+
+<div class="container">
+
+    <h1 class="heading">
+
+        Transactions Management
+
+    </h1>
+
+    <!-- SUMMARY CARDS -->
+
+    <div class="total-box">
+
+        <div class="total-card">
+
+            <h3>
+
+                Total Transactions
+
+            </h3>
+
+            <h1>
+
+                {{ transactions|length }}
+
+            </h1>
+
+        </div>
+
+        <div class="total-card">
+
+            <h3>
+
+                Total Sales
+
+            </h3>
+
+            <h1>
+
+                ₹
+                {{ total_sales if total_sales else 0 }}
+
+            </h1>
+
+        </div>
+
+        <div class="total-card">
+
+            <h3>
+
+                Total Books Sold
+
+            </h3>
+
+            <h1>
+
+                {{ total_books if total_books else 0 }}
+
+            </h1>
+
+        </div>
+
+    </div>
+
+    <!-- TRANSACTIONS -->
+
+    {% if transactions %}
+
+        {% for transaction in transactions %}
+
+        <div class="transaction">
+
+            <h2>
+
+                Transaction ID:
+                {{ transaction.id }}
+
+            </h2>
+
+            <p>
+
+                <strong>
+                    Total Amount:
+                </strong>
+
+                ₹{{ transaction.total_amount }}
+
+            </p>
+
+            <p>
+
+                <strong>
+                    Payment Method:
+                </strong>
+
+                {{ transaction.payment_method }}
+
+            </p>
+
+            <p>
+
+                <strong>
+                    Customer Name:
+                </strong>
+
+                {{ transaction.customer_name }}
+
+            </p>
+
+            <p>
+
+                <strong>
+                    Mobile Number:
+                </strong>
+
+                {{ transaction.mobile_number }}
+
+            </p>
+
+            <p>
+
+                <strong>
+                    Date & Time:
+                </strong>
+
+                {{ transaction.date_time }}
+
+            </p>
+
+            <hr>
+
+            <h3>
+
+                Books Sold
+
+            </h3>
+
+            {% for item in items %}
+
+                {% if item.transaction_id == transaction.id %}
+
+                <div class="book-item">
+
+                    <p>
+
+                        <strong>
+                            Book:
+                        </strong>
+
+                        {{ item.book_title }}
+
+                    </p>
+
+                    <p>
+
+                        <strong>
+                            Quantity:
+                        </strong>
+
+                        {{ item.quantity }}
+
+                    </p>
+
+                    <p>
+
+                        <strong>
+                            Price:
+                        </strong>
+
+                        ₹{{ item.price }}
+
+                    </p>
+
+                    <p>
+
+                        <strong>
+                            Subtotal:
+                        </strong>
+
+                        ₹{{ item.price * item.quantity }}
+
+                    </p>
+
+                </div>
+
+                {% endif %}
+
+            {% endfor %}
+
+            <br>
+
+            <!-- VIEW DETAILS -->
+
+            <a href="/transaction/{{ transaction.id }}">
+
+                <button>
+
+                    View Details
+
+                </button>
+
+            </a>
+            <a href="/bill/{{ transaction.id }}">
+
+                <button>
+
+                    View Bill
+
+                </button>
+
+            </a>
+            <!-- DELETE -->
+
+            <a href="/delete-transaction/{{ transaction.id }}">
+
+                <button class="delete-btn">
+
+                    Delete Transaction
+
+                </button>
+
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <h2 style="text-align:center;">
+
+            No Transactions Available
+
+        </h2>
+
+    {% endif %}
+
+</div>
+
+<!-- FOOTER -->
+
+<div class="footer">
+
+    <img src="{{ url_for('static', filename='logo.jpeg') }}"
+         class="footer-logo">
+
+    <h3>
+
+        Developed by Bhagavathkrishna.S.R
+
+    </h3>
+
+</div>
+
+</body>
+
+</html>

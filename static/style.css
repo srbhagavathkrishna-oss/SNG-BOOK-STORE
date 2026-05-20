@@ -1,0 +1,643 @@
+*{
+
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+
+}
+
+body{
+
+    font-family:Arial, sans-serif;
+
+    background:#f1f5f9;
+
+    display:flex;
+
+    color:#111827;
+
+}
+
+/* SIDEBAR */
+
+.sidebar{
+
+    width:280px;
+
+    background:linear-gradient(
+    180deg,
+    #ff9500,
+    #ffd000
+    );
+
+    min-height:100vh;
+
+    position:fixed;
+
+    left:0;
+    top:0;
+
+    padding:25px;
+
+    overflow:auto;
+
+}
+
+/* LOGO */
+
+.sidebar-logo{
+
+    text-align:center;
+
+    margin-bottom:40px;
+
+}
+
+.sidebar-logo img{
+
+    width:110px;
+    height:110px;
+
+    border-radius:25px;
+
+    object-fit:cover;
+
+    box-shadow:
+    0px 0px 25px rgba(0, 0, 0, 0.2);
+
+}
+
+.sidebar-logo h2{
+
+    color:rgb(255, 255, 255);
+
+    margin-top:15px;
+
+    font-size:36px;
+
+}
+
+.sidebar-logo p{
+
+    color:#ff0000;
+
+    margin-top:8px;
+
+}
+
+/* MENU */
+
+.menu a{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    padding:18px 22px;
+
+    margin-bottom:12px;
+
+    border-radius:15px;
+
+    text-decoration:none;
+
+    color:#000000;
+
+    font-size:19px;
+
+    transition:0.3s;
+
+}
+
+.menu a:hover{
+
+    background:#1e293b;
+
+    transform:translateX(5px);
+
+    color:rgb(255, 255, 255);
+
+}
+
+/* MAIN */
+
+.main-content{
+
+    margin-left:280px;
+
+    width:calc(100% - 280px);
+
+    padding:30px;
+
+}
+
+/* HEADER */
+
+.header{
+
+    background:rgb(189, 253, 255);
+
+    border-radius:30px;
+
+    padding:35px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    box-shadow:
+    0px 0px 25px rgba(0,0,0,0.08);
+
+}
+
+.header-left h1{
+
+    font-size:48px;
+
+    color:#020617;
+
+    margin-bottom:10px;
+
+    text-shadow:
+    2px 2px 10px rgba(0,0,0,0.1);
+
+}
+
+.header-left p{
+
+    font-size:20px;
+
+    color:#64748b;
+
+}
+
+.header-right img{
+
+    width:100px;
+    height:100px;
+
+    border-radius:25px;
+
+    object-fit:cover;
+
+}
+
+/* HERO */
+
+.hero-section{
+
+    margin-top:35px;
+
+    background:linear-gradient(
+    135deg,
+    #ff9100,
+    #b8f1ff
+    );
+
+    border-radius:35px;
+
+    padding:50px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    color:white;
+
+    overflow:hidden;
+
+}
+
+.hero-left{
+
+    width:60%;
+
+}
+
+.hero-left h1{
+
+    font-size:58px;
+
+    margin-bottom:20px;
+
+    line-height:1.2;
+
+}
+
+.hero-left p{
+
+    font-size:22px;
+
+    color:#e2e8f0;
+
+    line-height:1.7;
+
+}
+
+.hero-buttons{
+
+    margin-top:30px;
+
+    display:flex;
+
+    gap:20px;
+
+}
+
+.hero-right img{
+
+    width:250px;
+    height:250px;
+
+    border-radius:35px;
+
+    object-fit:cover;
+
+    box-shadow:
+    0px 0px 40px rgba(255,255,255,0.3);
+
+}
+
+/* BUTTON */
+
+button{
+
+    background:white;
+
+    color:#111827;
+
+    border:none;
+
+    padding:16px 28px;
+
+    border-radius:15px;
+
+    font-size:18px;
+
+    cursor:pointer;
+
+    transition:0.3s;
+
+    font-weight:bold;
+
+}
+
+button:hover{
+
+    transform:scale(1.05);
+
+}
+
+.secondary-btn{
+
+    background:#111827;
+
+    color:white;
+
+}
+
+/* STATS */
+
+.stats-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(4, 1fr);
+
+    gap:25px;
+
+    margin-top:35px;
+
+}
+
+.stats-card{
+
+    background:white;
+
+    padding:20px;
+
+    border-radius:30px;
+
+    box-shadow:
+    0px 0px 20px rgba(0,0,0,0.08);
+
+    transition:0.3s;
+
+}
+
+.stats-card:hover{
+
+    transform:translateY(-8px);
+
+}
+
+.stats-icon{
+
+    font-size:45px;
+
+    margin-bottom:20px;
+
+}
+
+.stats-card h2{
+
+    color:#475569;
+
+    margin-bottom:15px;
+
+}
+
+.stats-card h1{
+
+    color:#10b981;
+
+    font-size:50px;
+
+}
+
+/* BIG SECTION */
+
+.big-section{
+
+    margin-top:35px;
+
+    background:white;
+
+    border-radius:30px;
+
+    padding:35px;
+
+    box-shadow:
+    0px 0px 20px rgba(0,0,0,0.08);
+
+}
+
+.section-title{
+
+    font-size:36px;
+
+    margin-bottom:30px;
+
+    color:#020617;
+
+}
+
+/* ACTION GRID */
+
+.action-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(4, 1fr);
+
+    gap:25px;
+
+}
+
+.action-card{
+
+    text-decoration:none;
+
+    background:#f8fafc;
+
+    padding:35px;
+
+    border-radius:25px;
+
+    transition:0.3s;
+
+    color:#111827;
+
+    border:2px solid transparent;
+
+}
+
+.action-card:hover{
+
+    transform:translateY(-8px);
+
+    border-color:#2563eb;
+
+}
+
+.action-icon{
+
+    font-size:50px;
+
+    margin-bottom:20px;
+
+}
+
+.action-card h2{
+
+    margin-bottom:15px;
+
+}
+
+.action-card p{
+
+    color:#64748b;
+
+    line-height:1.6;
+
+}
+
+/* AI GRID */
+
+.ai-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(4, 1fr);
+
+    gap:20px;
+
+}
+
+.ai-card{
+
+    background:#f8fafc;
+
+    padding:30px;
+
+    border-radius:20px;
+
+    text-align:center;
+
+}
+
+.ai-card h2{
+
+    margin-bottom:15px;
+
+}
+
+.ai-card p{
+
+    color:#10b981;
+
+    font-size:22px;
+
+    font-weight:bold;
+
+}
+
+/* FOOTER */
+
+.footer{
+
+    margin-top:40px;
+
+    background:#ffd000;
+
+    padding:35px;
+
+    border-radius:30px;
+
+    text-align:center;
+
+    box-shadow:
+    0px 0px 20px rgba(0,0,0,0.08);
+
+}
+
+.footer img{
+
+    width:100px;
+    height:100px;
+
+    border-radius:25px;
+
+    object-fit:cover;
+
+    margin-bottom:20px;
+
+}
+
+.footer h2{
+
+    font-size:34px;
+
+    margin-bottom:10px;
+
+}
+
+.footer p{
+
+    color:#64748b;
+
+    font-size:20px;
+
+}
+
+/* MOBILE */
+
+@media(max-width:1200px){
+
+    .stats-grid,
+    .action-grid,
+    .ai-grid{
+
+        grid-template-columns:
+        1fr 1fr;
+
+    }
+
+}
+
+@media(max-width:900px){
+
+    .hero-section{
+
+        flex-direction:column;
+
+        text-align:center;
+
+    }
+
+    .hero-left{
+
+        width:100%;
+
+    }
+
+    .hero-right{
+
+        margin-top:30px;
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    .sidebar{
+
+        width:100px;
+
+    }
+
+    .menu a{
+
+        font-size:12px;
+
+        padding:12px;
+
+    }
+
+    .sidebar-logo h2,
+    .sidebar-logo p{
+
+        display:none;
+
+    }
+
+    .main-content{
+
+        margin-left:100px;
+
+        width:calc(100% - 100px);
+
+        padding:15px;
+
+    }
+
+    .header{
+
+        flex-direction:column;
+
+        text-align:center;
+
+    }
+
+    .header-left h1{
+
+        font-size:30px;
+
+    }
+
+    .hero-left h1{
+
+        font-size:38px;
+
+    }
+
+    .stats-grid,
+    .action-grid,
+    .ai-grid{
+
+        grid-template-columns:
+        1fr;
+
+    }
+
+}

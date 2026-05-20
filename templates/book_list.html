@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>
+
+Inventory Management
+
+</title>
+
+<style>
+
+body{
+
+    font-family:Arial;
+    background:#f4f4f4;
+    padding:20px;
+    margin:0;
+
+}
+
+/* TOP LOGO */
+
+.top-logo{
+
+    position:fixed;
+    top:10px;
+    right:15px;
+    z-index:9999;
+
+}
+
+.top-logo img{
+
+    width:90px;
+    height:90px;
+    object-fit:cover;
+    border-radius:12px;
+    background:white;
+    padding:4px;
+    box-shadow:
+    0px 0px 10px rgba(0,0,0,0.3);
+
+}
+
+/* BACK BUTTON */
+
+.back-btn{
+
+    margin-bottom:20px;
+
+}
+
+/* BUTTON */
+
+button{
+
+    background:darkred;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:8px;
+    cursor:pointer;
+    transition:0.3s;
+    margin-top:8px;
+    margin-right:5px;
+
+}
+
+button:hover{
+
+    background:red;
+    transform:scale(1.03);
+
+}
+
+/* DELETE BUTTON */
+
+.delete-btn{
+
+    background:red;
+
+}
+
+.delete-btn:hover{
+
+    background:darkred;
+
+}
+
+/* CONTAINER */
+
+.container{
+
+    max-width:1400px;
+    margin:auto;
+
+}
+
+/* HEADING */
+
+.heading{
+
+    text-align:center;
+    color:darkred;
+    font-size:45px;
+    margin-bottom:30px;
+
+}
+
+/* SEARCH */
+
+.search-box{
+
+    text-align:center;
+    margin-bottom:30px;
+
+}
+
+.search-box input{
+
+    width:60%;
+    padding:14px;
+    border-radius:10px;
+    border:1px solid #ccc;
+    font-size:16px;
+
+}
+
+/* BOOK LIST */
+
+.books{
+
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+
+}
+
+/* BOOK CARD */
+
+.book{
+
+    background:white;
+    padding:20px;
+    border-radius:18px;
+    box-shadow:
+    0px 0px 10px rgba(0,0,0,0.1);
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+
+    transition:0.3s;
+
+}
+
+.book:hover{
+
+    transform:translateY(-5px);
+
+}
+
+/* LEFT SIDE */
+
+.book-left{
+
+    display:flex;
+    align-items:center;
+    gap:20px;
+
+}
+
+/* IMAGE */
+
+.book img{
+
+    width:120px;
+    height:160px;
+    object-fit:cover;
+    border-radius:12px;
+
+}
+
+/* DETAILS */
+
+.book-details h2{
+
+    color:darkred;
+    margin-bottom:10px;
+
+}
+
+.book-details p{
+
+    margin:5px 0;
+    color:#555;
+
+}
+
+/* RIGHT SIDE */
+
+.book-actions{
+
+    text-align:right;
+
+}
+
+/* STOCK COLORS */
+
+.stock-good{
+
+    color:green;
+    font-weight:bold;
+
+}
+
+.stock-low{
+
+    color:red;
+    font-weight:bold;
+
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+    .book{
+
+        flex-direction:column;
+        align-items:flex-start;
+
+    }
+
+    .book-left{
+
+        flex-direction:column;
+        align-items:flex-start;
+
+    }
+
+    .book-actions{
+
+        width:100%;
+        text-align:left;
+
+    }
+
+    .search-box input{
+
+        width:90%;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- LOGO -->
+
+<div class="top-logo">
+
+<img src="{{ url_for(
+'static',
+filename='logo.jpeg'
+) }}">
+
+</div>
+
+<!-- BACK -->
+
+<a href="/">
+
+<button class="back-btn">
+
+← Back To Home
+
+</button>
+
+</a>
+
+<div class="container">
+
+<!-- HEADING -->
+
+<h1 class="heading">
+
+Inventory Management
+
+</h1>
+
+<!-- SEARCH -->
+
+<div class="search-box">
+
+<input type="text"
+       id="searchInput"
+       placeholder="Search Books..."
+       onkeyup="searchBooks()">
+
+</div>
+
+<!-- BOOKS -->
+
+<div class="books"
+     id="booksContainer">
+
+{% for book in books %}
+
+<div class="book">
+
+    <!-- LEFT -->
+
+    <div class="book-left">
+
+        {% if book.image %}
+
+        <img src="{{ url_for(
+        'static',
+        filename='uploads/' + book.image
+        ) }}">
+
+        {% else %}
+
+        <img src="{{ url_for(
+        'static',
+        filename='logo.jpeg'
+        ) }}">
+
+        {% endif %}
+
+        <div class="book-details">
+
+            <h2>
+
+                {{ book.title }}
+
+            </h2>
+
+            <p>
+
+                <strong>
+
+                Author:
+
+                </strong>
+
+                {{ book.author }}
+
+            </p>
+
+            <p>
+
+                <strong>
+
+                Price:
+
+                </strong>
+
+                ₹{{ book.final_price }}
+
+            </p>
+
+            <p>
+
+                <strong>
+
+                Publication:
+
+                </strong>
+
+                {{ book.publication }}
+
+            </p>
+
+            {% set total_stock =
+            (book.show_quantity or 0)
+            +
+            (book.storage_quantity or 0) %}
+
+            <p>
+
+                <strong>
+
+                Stock:
+
+                </strong>
+
+                <span class="{% if total_stock <= 5 %}stock-low{% else %}stock-good{% endif %}">
+
+                    {{ total_stock }}
+
+                </span>
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- RIGHT -->
+
+    <div class="book-actions">
+
+        <!-- VIEW DETAILS -->
+
+        <a href="/book/{{ book.id }}">
+
+        <button>
+
+            View Details
+
+        </button>
+
+        </a>
+
+        <br>
+
+        <!-- EDIT -->
+
+        <a href="/edit-book/{{ book.id }}">
+
+        <button>
+
+            Edit Book
+
+        </button>
+
+        </a>
+
+        <br>
+
+        <!-- DELETE -->
+
+        <a href="/delete-book/{{ book.id }}">
+
+        <button class="delete-btn">
+
+            Delete
+
+        </button>
+
+        </a>
+
+    </div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+<script>
+
+function searchBooks(){
+
+    const input = document
+    .getElementById(
+        "searchInput"
+    )
+    .value
+    .toLowerCase();
+
+    const books = document
+    .querySelectorAll(".book");
+
+    books.forEach(function(book){
+
+        const text =
+        book.innerText.toLowerCase();
+
+        if(text.includes(input)){
+
+            book.style.display =
+            "flex";
+
+        }
+
+        else{
+
+            book.style.display =
+            "none";
+
+        }
+
+    });
+
+}
+
+</script>
+
+</body>
+
+</html>

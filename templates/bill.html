@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>
+
+Invoice Bill
+
+</title>
+
+<style>
+
+body{
+
+    font-family:Arial;
+    background:#f4f4f4;
+    padding:20px;
+    margin:0;
+
+}
+
+.container{
+
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:
+    0px 0px 10px rgba(0,0,0,0.1);
+
+}
+
+.logo{
+
+    text-align:center;
+
+}
+
+.logo img{
+
+    width:120px;
+    border-radius:15px;
+
+}
+
+h1{
+
+    text-align:center;
+    color:darkred;
+
+}
+
+.details{
+
+    margin-top:20px;
+
+}
+
+.details p{
+
+    margin:8px 0;
+
+}
+
+table{
+
+    width:100%;
+    border-collapse:collapse;
+    margin-top:30px;
+
+}
+
+table th,
+table td{
+
+    border:1px solid #ddd;
+    padding:12px;
+    text-align:center;
+
+}
+
+table th{
+
+    background:darkred;
+    color:white;
+
+}
+
+.total{
+
+    text-align:right;
+    margin-top:20px;
+    font-size:24px;
+    color:green;
+
+}
+
+.buttons{
+
+    margin-top:30px;
+    text-align:center;
+
+}
+
+button{
+
+    background:darkred;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:10px;
+    cursor:pointer;
+    margin:10px;
+
+}
+
+button:hover{
+
+    background:red;
+
+}
+
+@media print{
+
+    .buttons{
+
+        display:none;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- LOGO -->
+
+<div class="logo">
+
+<img src="{{ url_for(
+'static',
+filename='logo.jpeg'
+) }}">
+
+</div>
+
+<h1>
+
+Smart Book Store Invoice
+
+</h1>
+
+<!-- DETAILS -->
+
+<div class="details">
+
+<p>
+
+<strong>
+
+Transaction ID:
+
+</strong>
+
+{{ transaction.id }}
+
+</p>
+
+<p>
+
+<strong>
+
+Customer Name:
+
+</strong>
+
+{{ transaction.customer_name }}
+
+</p>
+
+<p>
+
+<strong>
+
+Mobile Number:
+
+</strong>
+
+{{ transaction.mobile_number }}
+
+</p>
+
+<p>
+
+<strong>
+
+Payment Method:
+
+</strong>
+
+{{ transaction.payment_method }}
+
+</p>
+
+<p>
+
+<strong>
+
+Date & Time:
+
+</strong>
+
+{{ transaction.date_time }}
+
+</p>
+
+</div>
+
+<!-- ITEMS -->
+
+<table>
+
+<tr>
+
+<th>
+
+Book
+
+</th>
+
+<th>
+
+Quantity
+
+</th>
+
+<th>
+
+Price
+
+</th>
+
+<th>
+
+Subtotal
+
+</th>
+
+</tr>
+
+{% for item in items %}
+
+<tr>
+
+<td>
+
+{{ item.book_title }}
+
+</td>
+
+<td>
+
+{{ item.quantity }}
+
+</td>
+
+<td>
+
+₹{{ item.price }}
+
+</td>
+
+<td>
+
+₹{{ item.price * item.quantity }}
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+<!-- TOTAL -->
+
+<h2 class="total">
+
+Total:
+₹{{ transaction.total_amount }}
+
+</h2>
+
+<!-- BUTTONS -->
+
+<div class="buttons">
+
+<button onclick="window.print()">
+
+Print Bill
+
+</button>
+
+<button onclick="shareBill()">
+
+Share Bill
+
+</button>
+
+<a href="/transactions">
+
+<button>
+
+Back To Transactions
+
+</button>
+
+</a>
+
+</div>
+
+</div>
+
+<script>
+
+function shareBill(){
+
+    if(navigator.share){
+
+        navigator.share({
+
+            title:
+            "Invoice Bill",
+
+            text:
+            "Smart Book Store Invoice",
+
+            url:
+            window.location.href
+
+        });
+
+    }
+
+    else{
+
+        alert(
+            "Sharing not supported"
+        );
+
+    }
+
+}
+
+</script>
+
+</body>
+
+</html>

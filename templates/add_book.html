@@ -1,0 +1,382 @@
+<a href="/">
+
+    <button>
+
+        ← Back To Home
+
+    </button>
+
+</a>
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Add Book</title>
+  
+    <style>
+    .top-logo{
+
+    position:fixed;
+
+    top:10px;
+
+    right:15px;
+
+    z-index:9999;
+
+}
+
+.top-logo img{
+
+    width:65px;
+
+    height:65px;
+
+    object-fit:cover;
+
+    border-radius:12px;
+
+    background:white;
+
+    padding:3px;
+
+    box-shadow:0px 0px 8px rgba(0,0,0,0.3);
+
+    }
+    body{
+
+        font-family:Arial;
+        background:#f4f4f4;
+        padding:20px;
+
+    }
+
+    .container{
+
+        max-width:700px;
+        margin:auto;
+        background:white;
+        padding:25px;
+        border-radius:15px;
+
+    }
+
+    input,
+    select{
+
+        width:100%;
+        padding:12px;
+        margin-top:10px;
+        margin-bottom:15px;
+
+    }
+
+    button{
+
+        background:darkred;
+        color:white;
+        border:none;
+        padding:12px 20px;
+        cursor:pointer;
+
+    }
+
+    video,
+    img{
+
+        border-radius:10px;
+
+    }
+
+    .price-box{
+
+        background:#fafafa;
+        padding:15px;
+        border-radius:10px;
+        margin-bottom:15px;
+
+    }
+
+    </style>
+
+</head>
+
+<body>
+<div class="top-logo">
+
+    <img src="{{ url_for('static', filename='logo.jpeg') }}">
+
+</div>
+<div class="container">
+
+    <h1>Add New Book</h1>
+
+    <form method="POST"
+          enctype="multipart/form-data">
+
+        <label>Book Name</label>
+
+        <input type="text"
+               name="title">
+
+        <label>Author</label>
+
+        <input type="text"
+               name="author">
+
+        <label>Publication</label>
+
+        <input type="text"
+               name="publication">
+
+        <label>Book Price</label>
+
+        <input type="number"
+               step="0.01"
+               name="mrp"
+               id="mrp"
+               required
+               onkeyup="calculateFinalPrice()">
+
+        <label>Select Currency</label>
+
+        <select name="currency"
+                id="currency"
+                onchange="calculateFinalPrice()">
+
+            <option value="INR">₹ INR</option>
+            <option value="USD">$ USD</option>
+            <option value="EUR">€ EURO</option>
+            <option value="GBP">£ POUND</option>
+            <option value="JPY">¥ YEN</option>
+
+        </select>
+
+        <div class="price-box">
+
+            <h3 id="convertedPrice">
+
+                Converted INR:
+                ₹0
+
+            </h3>
+
+        </div>
+
+        <label>Discount %</label>
+
+        <input type="number"
+               step="0.01"
+               name="discount"
+               id="discount"
+               value="0"
+               onkeyup="calculateFinalPrice()">
+
+        <div class="price-box">
+
+            <h3 id="finalPricePreview">
+
+                Final Price:
+                ₹0
+
+            </h3>
+
+        </div>
+
+        <label>Show Quantity</label>
+
+        <input type="number"
+               name="show_quantity"
+               value="0">
+
+        <label>Storage Quantity</label>
+
+        <input type="number"
+               name="storage_quantity"
+               value="0">
+
+        <label>Upload Book Cover</label>
+
+        <input type="file"
+               name="image">
+
+        <label>Capture Book Cover</label>
+
+        <br><br>
+
+        <video id="camera"
+               width="300"
+               autoplay>
+        </video>
+
+        <br><br>
+
+        <button type="button"
+                onclick="captureImage()">
+
+            Capture Image
+
+        </button>
+
+        <br><br>
+
+        <canvas id="canvas"
+                width="300"
+                height="400"
+                style="display:none;">
+        </canvas>
+
+        <input type="hidden"
+               name="captured_image"
+               id="captured_image">
+
+        <img id="preview"
+             width="200"
+             style="display:none;">
+
+        <br><br>
+
+        <button type="submit">
+
+            Save Book
+
+        </button>
+
+    </form>
+
+</div>
+
+<script>
+
+const conversionRates = {
+
+    INR: 1,
+    USD: 83,
+    EUR: 90,
+    GBP: 105,
+    JPY: 0.55
+
+};
+
+function calculateFinalPrice(){
+
+    const mrp = parseFloat(
+
+        document.getElementById(
+            "mrp"
+        ).value
+
+    ) || 0;
+
+    const discount = parseFloat(
+
+        document.getElementById(
+            "discount"
+        ).value
+
+    ) || 0;
+
+    const currency =
+
+        document.getElementById(
+            "currency"
+        ).value;
+
+    const converted =
+
+        mrp *
+        conversionRates[currency];
+
+    document.getElementById(
+        "convertedPrice"
+    ).innerHTML =
+
+    "Converted INR: ₹" +
+
+    converted.toFixed(2);
+
+    const finalPrice =
+
+        converted -
+
+        (
+            converted *
+            discount / 100
+        );
+
+    document.getElementById(
+        "finalPricePreview"
+    ).innerHTML =
+
+    "Final Price: ₹" +
+
+    finalPrice.toFixed(2);
+
+}
+
+navigator.mediaDevices.getUserMedia({
+
+    video:true
+
+})
+.then(function(stream){
+
+    document.getElementById(
+        "camera"
+    ).srcObject = stream;
+
+});
+
+function captureImage(){
+
+    const video =
+    document.getElementById(
+        "camera"
+    );
+
+    const canvas =
+    document.getElementById(
+        "canvas"
+    );
+
+    const context =
+    canvas.getContext("2d");
+
+    context.drawImage(
+
+        video,
+        0,
+        0,
+        300,
+        400
+
+    );
+
+    const imageData =
+    canvas.toDataURL("image/png");
+
+    document.getElementById(
+        "captured_image"
+    ).value = imageData;
+
+    const preview =
+    document.getElementById(
+        "preview"
+    );
+
+    preview.src = imageData;
+
+    preview.style.display =
+    "block";
+
+    video.style.display =
+    "none";
+
+}
+
+</script>
+
+</body>
+
+</html>

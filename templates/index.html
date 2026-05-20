@@ -1,0 +1,348 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- HERO SECTION -->
+
+<div class="hero-section">
+
+    <div class="hero-left">
+
+        <h1>
+
+            Welcome to
+            MADHAVASWAMI ASHRAMAM BMS
+
+        </h1>
+
+        <p>
+
+            Your one-stop solution for
+            smart book store management.
+
+        </p>
+
+        <div class="hero-buttons">
+
+            <a href="/sell-book">
+
+                <button>
+
+                    Start Sale
+
+                </button>
+
+            </a>
+
+            <a href="/book-list">
+
+                <button class="secondary-btn">
+
+                    Open Inventory
+
+                </button>
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="hero-right">
+
+        <img src="{{ url_for(
+        'static',
+        filename='logo.jpeg'
+        ) }}">
+
+    </div>
+
+</div>
+
+<!-- STATS -->
+
+<div class="stats-grid">
+
+    <div class="stats-card">
+
+        <div class="stats-icon">
+
+            💰
+
+        </div>
+
+        <h2>
+
+            Daily Sales
+
+        </h2>
+
+        <h1>
+
+            ₹{{ daily_sales }}
+
+        </h1>
+
+    </div>
+
+    <div class="stats-card">
+
+        <div class="stats-icon">
+
+            📅
+
+        </div>
+
+        <h2>
+
+            Weekly Sales
+
+        </h2>
+
+        <h1>
+
+            ₹{{ weekly_sales }}
+
+        </h1>
+
+    </div>
+
+    <div class="stats-card">
+
+        <div class="stats-icon">
+
+            📚
+
+        </div>
+
+        <h2>
+
+            Total Books
+
+        </h2>
+
+        <h1>
+
+            {{ total_books }}
+
+        </h1>
+
+    </div>
+
+    <div class="stats-card">
+
+        <div class="stats-icon">
+
+            🧾
+
+        </div>
+
+        <h2>
+
+            Transactions
+
+        </h2>
+
+        <h1>
+
+            {{ total_transactions }}
+
+        </h1>
+
+    </div>
+
+</div>
+
+<!-- QUICK ACTIONS -->
+
+<div class="big-section">
+
+    <div class="section-title">
+
+        Quick Actions
+
+    </div>
+
+    <div class="action-grid">
+
+        <a href="/add-book"
+           class="action-card">
+
+            <div class="action-icon">
+
+                ➕
+
+            </div>
+
+            <h2>
+
+                Add New Book
+
+            </h2>
+
+            <p>
+
+                Add books with images,
+                pricing, stock and AI support.
+
+            </p>
+
+        </a>
+
+        <a href="/sell-book"
+           class="action-card">
+
+            <div class="action-icon">
+
+                🛒
+
+            </div>
+
+            <h2>
+
+                Start Sale
+
+            </h2>
+
+            <p>
+
+                Smart AI billing system
+                with multi cart support.
+
+            </p>
+
+        </a>
+
+        <a href="/transactions"
+           class="action-card">
+
+            <div class="action-icon">
+
+                📄
+
+            </div>
+
+            <h2>
+
+                Transactions
+
+            </h2>
+
+            <p>
+
+                View bills, analytics
+                and complete sales reports.
+
+            </p>
+
+        </a>
+
+        <a href="/dashboard"
+           class="action-card">
+
+            <div class="action-icon">
+
+                📊
+
+            </div>
+
+            <h2>
+
+                Analytics
+
+            </h2>
+
+            <p>
+
+                Live sales analytics,
+                trends and performance.
+
+            </p>
+
+        </a>
+
+    </div>
+
+</div>
+
+<!-- AI STATUS -->
+
+<div class="big-section">
+
+    <div class="section-title">
+
+        AI System Status
+
+    </div>
+
+    <div class="ai-grid">
+
+        <div class="ai-card">
+
+            <h2>
+
+                OCR Recognition
+
+            </h2>
+
+            <p>
+
+                ACTIVE ✅
+
+            </p>
+
+        </div>
+
+        <div class="ai-card">
+
+            <h2>
+
+                AI Search Engine
+
+            </h2>
+
+            <p>
+
+                CONNECTED ✅
+
+            </p>
+
+        </div>
+
+        <div class="ai-card">
+
+            <h2>
+
+                POS System
+
+            </h2>
+
+            <p>
+
+                ONLINE ✅
+
+            </p>
+
+        </div>
+
+        <div class="ai-card">
+
+            <h2>
+
+                Database Status
+
+            </h2>
+
+            <p>
+
+                STABLE ✅
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>
+
+        Smart Multi Cart POS
+
+    </title>
+
+<style>
+/* STOCK COLORS */
+
+.stock-green{
+
+    color:#10b981;
+
+    font-weight:bold;
+
+}
+
+.stock-orange{
+
+    color:#f59e0b;
+
+    font-weight:bold;
+
+}
+
+.stock-red{
+
+    color:#ef4444;
+
+    font-weight:bold;
+
+}
+/* BODY */
+
+body{
+
+    font-family:Arial;
+
+    background:#f4f4f4;
+
+    margin:0;
+
+    padding:20px;
+
+}
+
+/* TOP LOGO */
+
+.top-logo{
+
+    position:fixed;
+
+    top:10px;
+
+    right:15px;
+
+    z-index:9999;
+
+}
+
+.top-logo img{
+
+    width:90px;
+
+    height:90px;
+
+    object-fit:cover;
+
+    border-radius:12px;
+
+    background:white;
+
+    padding:3px;
+
+    box-shadow:
+    0px 0px 8px rgba(0,0,0,0.3);
+
+}
+
+/* BACK BUTTON */
+
+.back-btn{
+
+    margin-bottom:20px;
+
+}
+
+/* POS HEADER */
+
+.pos-header{
+
+    background:white;
+
+    padding:25px;
+
+    border-radius:20px;
+
+    margin-bottom:25px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    box-shadow:
+    0px 0px 15px rgba(0,0,0,0.08);
+
+}
+
+.pos-header h1{
+
+    color:#111827;
+
+    margin:0;
+
+    font-size:42px;
+
+}
+
+.pos-header p{
+
+    color:#6b7280;
+
+    margin-top:8px;
+
+}
+
+.pos-badge{
+
+    background:#10b981;
+
+    color:white;
+
+    padding:14px 22px;
+
+    border-radius:15px;
+
+    font-weight:bold;
+
+}
+
+/* CART TABS */
+
+.cart-tabs{
+
+    display:flex;
+
+    gap:15px;
+
+    margin-bottom:25px;
+
+    flex-wrap:wrap;
+
+}
+
+.cart-tab{
+
+    background:#e2e8f0;
+
+    color:#111827;
+
+    border:none;
+
+    padding:14px 22px;
+
+    border-radius:15px;
+
+    font-size:18px;
+
+    cursor:pointer;
+
+    transition:0.3s;
+
+}
+
+.cart-tab:hover{
+
+    background:#cbd5e1;
+
+}
+
+.active-tab{
+
+    background:#2563eb !important;
+
+    color:white !important;
+
+}
+
+/* MAIN CONTAINER */
+
+.main-container{
+
+    width:100%;
+
+}
+
+/* CART PANEL */
+
+.cart-panel{
+
+    background:white;
+
+    padding:25px;
+
+    border-radius:25px;
+
+    box-shadow:
+    0px 0px 20px rgba(0,0,0,0.08);
+
+}
+
+/* POS LAYOUT */
+
+.pos-layout{
+
+    display:grid;
+
+    grid-template-columns:
+    0.9fr 1fr 1fr;
+
+    gap:20px;
+
+    margin-top:20px;
+
+}
+
+.left-column,
+.center-column,
+.right-column{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+/* SEARCH BOX */
+
+.search-box{
+
+    background:#fafafa;
+
+    border:1px solid #ddd;
+
+    padding:15px;
+
+    border-radius:15px;
+
+}
+
+/* CART BOX */
+
+.cart-box{
+
+    background:#fafafa;
+
+    border:1px solid #ddd;
+
+    padding:15px;
+
+    border-radius:15px;
+
+}
+
+/* RESULT BOX */
+
+.result-box{
+
+    background:#fafafa;
+
+    border:1px solid #ddd;
+
+    padding:15px;
+
+    border-radius:15px;
+
+}
+
+/* PROFESSIONAL BOOK CARD */
+
+.book-result{
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:18px;
+
+    margin-top:18px;
+
+    box-shadow:
+    0px 4px 15px rgba(0,0,0,0.08);
+
+    transition:0.3s;
+
+    overflow:hidden;
+
+}
+
+.book-result:hover{
+
+    transform:
+    translateY(-5px);
+
+    box-shadow:
+    0px 8px 25px rgba(0,0,0,0.12);
+
+}
+
+.book-result img{
+
+    width:100%;
+
+    height:220px;
+
+    object-fit:cover;
+
+    border-radius:15px;
+
+    margin-bottom:15px;
+
+}
+
+.book-result h3{
+
+    margin:5px 0;
+
+    color:#111827;
+
+}
+
+.book-result p{
+
+    margin:5px 0;
+
+    color:#4b5563;
+
+}
+
+/* CART ITEMS */
+
+.cart-items{
+
+    margin-top:20px;
+
+    border-top:1px solid #ddd;
+
+    padding-top:15px;
+
+}
+
+/* BUTTON */
+
+button{
+
+    background:#2563eb;
+
+    color:white;
+
+    border:none;
+
+    padding:12px 18px;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    margin:5px;
+
+    transition:0.3s;
+
+    font-weight:bold;
+
+}
+
+button:hover{
+
+    background:#1d4ed8;
+
+    transform:translateY(-2px);
+
+}
+
+/* INPUTS */
+
+input,
+select{
+
+    width:90%;
+
+    padding:10px;
+
+    border-radius:8px;
+
+    border:1px solid #ccc;
+
+    margin-bottom:10px;
+
+}
+
+/* TOTAL */
+
+.total{
+
+    color:green;
+
+    font-size:22px;
+
+    font-weight:bold;
+
+}
+
+/* IMAGE */
+
+.book-image{
+
+    border-radius:10px;
+
+}
+
+/* UPI BOX */
+
+.upi-box{
+
+    background:#fafafa;
+
+    padding:15px;
+
+    border-radius:10px;
+
+    margin-top:10px;
+
+    border:1px solid #ddd;
+
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+    .pos-layout{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- LOGO -->
+
+<div class="top-logo">
+
+    <img src="{{ url_for(
+    'static',
+    filename='logo.jpeg'
+    ) }}">
+
+</div>
+
+<!-- BACK -->
+
+<a href="/">
+
+    <button class="back-btn">
+
+        ← Back To Home
+
+    </button>
+
+</a>
+
+<!-- HEADER -->
+
+<div class="pos-header">
+
+    <div>
+
+        <h1>
+
+            Smart AI POS System
+
+        </h1>
+
+        <p>
+
+            AI Powered Billing & Inventory Management
+
+        </p>
+
+    </div>
+
+    <div class="pos-badge">
+
+        LIVE ERP
+
+    </div>
+
+</div>
+
+<!-- BOOK DATA -->
+
+<script id="books-data"
+        type="application/json">
+
+[
+{% for book in books %}
+
+{
+    "id": {{ book.id }},
+    "title": "{{ book.title or '' }}",
+    "author": "{{ book.author or '' }}",
+    "publication": "{{ book.publication or '' }}",
+    "price": {{ book.final_price or 0 }},
+    "image": "{{ book.image or '' }}",
+    "stock":
+    {{ (book.show_quantity or 0)
+    +
+    (book.storage_quantity or 0) }}
+}
+
+{% if not loop.last %}
+,
+{% endif %}
+
+{% endfor %}
+]
+
+</script>
+
+<!-- CART TABS -->
+
+<div class="cart-tabs">
+
+    <button class="cart-tab active-tab"
+            onclick="switchCart(1)"
+            id="tab1">
+
+        Cart 1
+
+    </button>
+
+    <button class="cart-tab"
+            onclick="switchCart(2)"
+            id="tab2">
+
+        Cart 2
+
+    </button>
+
+    <button class="cart-tab"
+            onclick="switchCart(3)"
+            id="tab3">
+
+        Cart 3
+
+    </button>
+
+    <button class="cart-tab"
+            onclick="switchCart(4)"
+            id="tab4">
+
+        Cart 4
+
+    </button>
+
+    <button class="cart-tab"
+            onclick="switchCart(5)"
+            id="tab5">
+
+        Cart 5
+
+    </button>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="main-container">
+
+{% for cart in [1,2,3,4,5] %}
+
+<div class="cart-panel cart-page"
+     id="cartPage{{ cart }}"
+     {% if cart != 1 %}
+     style="display:none;"
+     {% endif %}>
+
+<h2>
+
+    Cart {{ cart }}
+
+</h2>
+
+<div class="pos-layout">
+
+<!-- LEFT COLUMN -->
+
+<div class="left-column">
+
+    <div class="search-box">
+
+        <h3>
+
+            AI Search
+
+        </h3>
+
+        <input type="text"
+       id="search{{ cart }}"
+       placeholder="Search Book Name"
+       data-cart="{{ cart }}"
+       onkeyup="searchBook(this.dataset.cart)">
+        <input type="file"
+               id="upload{{ cart }}">
+
+        <video id="camera{{ cart }}"
+               width="100%"
+               autoplay>
+        </video>
+
+        <button
+            onclick="captureImage(this.dataset.cart)"
+            data-cart="{{ cart }}">
+
+            Capture Image
+
+        </button>
+
+        
+
+        <button
+            onclick="aiSearch(this.dataset.cart)"
+            data-cart="{{ cart }}">
+
+            AI Search
+
+        </button>
+
+        <canvas id="canvas{{ cart }}"
+                width="300"
+                height="400"
+                style="display:none;">
+        </canvas>
+
+        <img id="preview{{ cart }}"
+             width="100%"
+             style="
+             display:none;
+             border-radius:10px;
+             margin-top:10px;">
+
+    </div>
+
+</div>
+
+<!-- CENTER COLUMN -->
+
+<div class="center-column">
+
+    <div class="cart-box">
+
+        <h3>
+
+            Cart Checkout
+
+        </h3>
+
+        <div class="cart-items">
+
+            <div id="cart{{ cart }}">
+
+            </div>
+
+        </div>
+
+        <h3 class="total"
+            id="total{{ cart }}">
+
+            Total: ₹0
+
+        </h3>
+
+        <input type="text"
+               placeholder="Customer Name (Optional)">
+
+        <input type="text"
+               placeholder="Mobile Number (Optional)">
+
+        <select
+            onchange="paymentChanged(this.dataset.cart)"
+            data-cart="{{ cart }}"
+            id="payment{{ cart }}">
+
+            <option value="Cash">
+
+                Cash
+
+            </option>
+
+            <option value="UPI">
+
+                UPI
+
+            </option>
+
+            <option value="Card">
+
+                Card
+
+            </option>
+
+        </select>
+
+        <!-- UPI -->
+
+        <div id="upiSection{{ cart }}"
+             class="upi-box"
+             style="display:none;">
+
+            <input type="text"
+                   placeholder="Enter UPI Transaction ID">
+
+            <input type="file">
+
+            <video id="upiCamera{{ cart }}"
+                   width="100%"
+                   autoplay
+                   style="border-radius:10px;">
+            </video>
+
+            <button type="button"
+                    onclick="captureUPI(this.dataset.cart)"
+                    data-cart="{{ cart }}">
+
+                Capture Screenshot
+
+            </button>
+
+            <canvas id="upiCanvas{{ cart }}"
+                    width="300"
+                    height="200"
+                    style="display:none;">
+            </canvas>
+
+            <img id="upiPreview{{ cart }}"
+                 width="100%"
+                 style="
+                 display:none;
+                 border-radius:10px;
+                 margin-top:10px;">
+
+        </div>
+
+        <!-- COMPLETE SALE -->
+
+        <button
+            onclick="completeSale(this.dataset.cart)"
+            data-cart="{{ cart }}">
+
+            Complete Sale
+
+        </button>
+
+        <!-- CLEAR -->
+
+        <button
+            onclick="clearCart(this.dataset.cart)"
+            data-cart="{{ cart }}">
+
+            Clear Cart
+
+        </button>
+
+    </div>
+
+</div>
+
+<!-- RIGHT COLUMN -->
+
+<div class="right-column">
+
+    <div class="result-box">
+
+        <h3>
+
+            Search Results
+
+        </h3>
+
+        <div id="result{{ cart }}">
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+<script>
+
+/* ACTIVE CART */
+
+let activeCart = 1;
+
+/* SWITCH CART */
+
+function switchCart(cart){
+
+    activeCart = cart;
+
+    for(let i=1;i<=5;i++){
+
+        document.getElementById(
+            "cartPage" + i
+        ).style.display = "none";
+
+        document.getElementById(
+            "tab" + i
+        ).classList.remove(
+            "active-tab"
+        );
+
+    }
+
+    document.getElementById(
+        "cartPage" + cart
+    ).style.display = "block";
+
+    document.getElementById(
+        "tab" + cart
+    ).classList.add(
+        "active-tab"
+    );
+
+}
+
+/* BOOKS */
+
+const books = JSON.parse(
+
+    document.getElementById(
+        "books-data"
+    ).textContent
+
+);
+
+/* CARTS */
+
+let carts = {
+
+    1: [],
+    2: [],
+    3: [],
+    4: [],
+    5: []
+
+};
+
+/* START CAMERA */
+
+async function startCameras(){
+
+    try{
+
+        const stream =
+
+        await navigator
+        .mediaDevices
+        .getUserMedia({
+
+            video:true
+
+        });
+
+        for(let i=1;i<=5;i++){
+
+            const video =
+
+            document.getElementById(
+
+                "camera" + i
+
+            );
+
+            if(video){
+
+                video.srcObject = stream;
+
+            }
+
+        }
+
+    }
+
+    catch(error){
+
+        console.log(error);
+
+    }
+
+}
+
+/* START */
+
+startCameras();
+
+/* CAPTURE IMAGE */
+
+function captureImage(cart){
+
+    const video =
+
+    document.getElementById(
+        "camera" + cart
+    );
+
+    const canvas =
+
+    document.getElementById(
+        "canvas" + cart
+    );
+
+    const context =
+
+    canvas.getContext("2d");
+
+    context.drawImage(
+
+        video,
+        0,
+        0,
+        300,
+        400
+
+    );
+
+    const imageData =
+
+    canvas.toDataURL("image/png");
+
+    const preview =
+
+    document.getElementById(
+        "preview" + cart
+    );
+
+    preview.src = imageData;
+
+    preview.style.display = "block";
+
+}
+
+/* SEARCH BOOK */
+
+function searchBook(cart){
+
+    const query =
+
+    document.getElementById(
+        "search" + cart
+    ).value.toLowerCase();
+
+    const resultDiv =
+
+    document.getElementById(
+        "result" + cart
+    );
+
+    resultDiv.innerHTML = "";
+
+    books.forEach(function(book){
+
+        if(
+
+            book.title
+            .toLowerCase()
+            .includes(query)
+
+        ){
+
+            resultDiv.innerHTML += `
+
+            <div class="book-result">
+
+                <img src="/static/uploads/${book.image}"
+                     width="120"
+                     class="book-image">
+
+                <h3>
+
+                    ${book.title}
+
+                </h3>
+
+                <p>
+
+                    Author:
+                    ${book.author}
+
+                </p>
+
+                <p>
+
+                    Publication:
+                    ${book.publication}
+
+                </p>
+
+                <p>
+
+                    Price:
+                    ₹${book.price}
+
+                </p>
+
+                <p class="${
+                book.stock > 5
+                ? 'stock-green'
+                : book.stock > 0
+                ? 'stock-orange'
+                : 'stock-red'
+                }">
+
+    Stock:
+    ${book.stock}
+
+</p>
+
+                <input type="number"
+                       id="qty${cart}${book.id}"
+                       value="1"
+                       min="1">
+
+                <br>
+
+                <button onclick="addToCart(${cart}, ${book.id})">
+
+                    Add To Cart
+
+                </button>
+
+            </div>
+
+            `;
+
+        }
+
+    });
+
+}
+
+/* ADD TO CART */
+
+function addToCart(cart, bookId){
+
+    const book = books.find(
+
+        function(b){
+
+            return b.id == bookId;
+
+        }
+
+    );
+
+    const qty = parseInt(
+
+        document.getElementById(
+            "qty" + cart + bookId
+        ).value
+
+    );
+
+    carts[cart].push({
+
+        id: book.id,
+        title: book.title,
+        price: book.price,
+        quantity: qty
+
+    });
+
+    updateCart(cart);
+
+}
+
+/* UPDATE CART */
+
+function updateCart(cart){
+
+    const cartDiv =
+
+    document.getElementById(
+        "cart" + cart
+    );
+
+    const totalDiv =
+
+    document.getElementById(
+        "total" + cart
+    );
+
+    cartDiv.innerHTML = "";
+
+    let total = 0;
+
+    carts[cart].forEach(function(item, index){
+
+        const subtotal =
+
+        item.price *
+        item.quantity;
+
+        total += subtotal;
+
+        cartDiv.innerHTML += `
+
+        <div class="book-result">
+
+            <h3>
+
+                ${item.title}
+
+            </h3>
+
+            <p>
+
+                Quantity:
+                ${item.quantity}
+
+            </p>
+
+            <p>
+
+                ₹${subtotal}
+
+            </p>
+
+            <button onclick="removeItem(${cart}, ${index})">
+
+                Remove
+
+            </button>
+
+        </div>
+
+        `;
+
+    });
+
+    totalDiv.innerHTML =
+
+    "Total: ₹" + total;
+
+}
+
+/* REMOVE ITEM */
+
+function removeItem(cart, index){
+
+    carts[cart].splice(index, 1);
+
+    updateCart(cart);
+
+}
+
+/* CLEAR CART */
+
+function clearCart(cart){
+
+    carts[cart] = [];
+
+    updateCart(cart);
+
+    document.getElementById(
+        "result" + cart
+    ).innerHTML = "";
+
+}
+
+/* COMPLETE SALE */
+
+async function completeSale(cart){
+
+    const response = await fetch(
+
+        "/complete-sale",
+
+        {
+
+            method:"POST",
+
+            headers:{
+
+                "Content-Type":
+                "application/json"
+
+            },
+
+            body:JSON.stringify({
+
+                cart:carts[cart]
+
+            })
+
+        }
+
+    );
+
+    const data =
+
+    await response.json();
+
+    alert(data.message);
+
+    /* CLEAR */
+
+    carts[cart] = [];
+
+    updateCart(cart);
+
+    document.getElementById(
+        "result" + cart
+    ).innerHTML = "";
+
+    /* OPEN BILL */
+
+    window.open(
+
+        "/bill/" +
+        data.transaction_id,
+
+        "_blank"
+
+    );
+
+}
+
+/* PAYMENT CHANGE */
+
+function paymentChanged(cart){
+
+    const payment =
+
+    document.getElementById(
+        "payment" + cart
+    ).value;
+
+    const upiSection =
+
+    document.getElementById(
+        "upiSection" + cart
+    );
+
+    if(payment == "UPI"){
+
+        upiSection.style.display =
+        "block";
+
+        startUPICamera(cart);
+
+    }
+
+    else{
+
+        upiSection.style.display =
+        "none";
+
+    }
+
+}
+
+/* START UPI CAMERA */
+
+async function startUPICamera(cart){
+
+    const video =
+
+    document.getElementById(
+        "upiCamera" + cart
+    );
+
+    try{
+
+        const stream =
+
+        await navigator
+        .mediaDevices
+        .getUserMedia({
+
+            video:true
+
+        });
+
+        video.srcObject = stream;
+
+    }
+
+    catch(error){
+
+        console.log(error);
+
+    }
+
+}
+
+/* CAPTURE UPI */
+
+function captureUPI(cart){
+
+    const video =
+
+    document.getElementById(
+        "upiCamera" + cart
+    );
+
+    const canvas =
+
+    document.getElementById(
+        "upiCanvas" + cart
+    );
+
+    const context =
+
+    canvas.getContext("2d");
+
+    context.drawImage(
+
+        video,
+        0,
+        0,
+        300,
+        200
+
+    );
+
+    const imageData =
+
+    canvas.toDataURL(
+        "image/png"
+    );
+
+    const preview =
+
+    document.getElementById(
+        "upiPreview" + cart
+    );
+
+    preview.src = imageData;
+
+    preview.style.display =
+    "block";
+
+}
+
+/* AI SEARCH */
+
+async function aiSearch(cart){
+
+    const uploadInput =
+
+    document.getElementById(
+
+        "upload" + cart
+
+    );
+
+    const canvas =
+
+    document.getElementById(
+
+        "canvas" + cart
+
+    );
+
+    const resultDiv =
+
+    document.getElementById(
+
+        "result" + cart
+
+    );
+
+    const formData = new FormData();
+
+    /* USE UPLOADED IMAGE */
+
+    if(uploadInput.files.length > 0){
+
+        formData.append(
+
+            "image",
+
+            uploadInput.files[0]
+
+        );
+
+    }
+
+    /* USE CAPTURED IMAGE */
+
+    else{
+
+        const imageData = canvas.toDataURL(
+
+            "image/png"
+
+        );
+
+        const blob = await (
+
+            await fetch(imageData)
+
+        ).blob();
+
+        formData.append(
+
+            "image",
+
+            blob,
+
+            "capture.png"
+
+        );
+
+    }
+
+    /* LOADING */
+
+    resultDiv.innerHTML = `
+
+    <p>
+
+        AI Searching Books...
+
+    </p>
+
+    `;
+
+    /* SEND TO BACKEND */
+
+    const response = await fetch(
+
+        "/ai-search",
+
+        {
+
+            method:"POST",
+
+            body:formData
+
+        }
+
+    );
+
+    const books = await response.json();
+
+    resultDiv.innerHTML = "";
+
+    /* NO RESULTS */
+
+    if(books.length == 0){
+
+        resultDiv.innerHTML = `
+
+        <p>
+
+            No Matching Books Found
+
+        </p>
+
+        `;
+
+        return;
+
+    }
+
+    /* SHOW RESULTS */
+
+    books.forEach(function(book){
+
+        resultDiv.innerHTML += `
+
+        <div class="book-result">
+
+            <img src="/static/uploads/${book.image}"
+                 width="120"
+                 class="book-image">
+
+            <h3>
+
+                ${book.title}
+
+            </h3>
+
+            <p>
+
+                Author:
+                ${book.author}
+
+            </p>
+
+            <p>
+
+                Price:
+                ₹${book.price}
+
+            </p>
+
+            <p>
+
+                Stock:
+                ${book.stock}
+
+            </p>
+
+            <input type="number"
+                   id="qty${cart}${book.id}"
+                   value="1"
+                   min="1">
+
+            <br>
+
+            <button onclick="addToCart(${cart}, ${book.id})">
+
+                Add To Cart
+
+            </button>
+
+        </div>
+
+        `;
+
+    });
+
+}
+
+</script>
+
+</body>
+
+</html>
