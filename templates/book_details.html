@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+    <h1>{{ book.title }}</h1>
+
+    <img src="{{ url_for(
+        'static',
+        filename='uploads/' + book.image
+    ) }}"
+    width="200">
+
+    <p><b>Author:</b> {{ book.author }}</p>
+
+    <p><b>Publication:</b> {{ book.publication }}</p>
+
+    <p><b>Price:</b> ₹{{ book.final_price }}</p>
+
+    <p><b>Show Quantity:</b> {{ book.show_quantity }}</p>
+
+    <p><b>Storage Quantity:</b> {{ book.storage_quantity }}</p>
+
+    <a href="/edit-book/{{ book.id }}">
+
+        <button>
+
+            Edit Book
+
+        </button>
+
+    </a>
+
+</div>
+
+{% endblock %}

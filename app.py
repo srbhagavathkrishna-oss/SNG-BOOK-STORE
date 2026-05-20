@@ -889,23 +889,18 @@ def edit_book(id):
 # =========================================================
 # BOOK DETAILS
 # =========================================================
-
 @app.route("/book/<int:id>")
-def book_detail(id):
+def book_details(id):
 
-    book = Book.query.get(id)
-
-    if not book:
-
-        return redirect("/book-list")
+    book = Book.query.get_or_404(id)
 
     return render_template(
-
-        "book_detail.html",
-
+        "book_details.html",
         book=book
-
     )
+
+
+    
 # =========================================================
 # BILL PAGE
 # =========================================================
