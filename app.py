@@ -621,67 +621,7 @@ def transaction_detail(id):
 
     )
 
-# =========================================================
-# DELETE TRANSACTION
-# =========================================================
 
-@app.route(
-    "/delete-transaction/<int:id>"
-)
-
-def delete_transaction(id):
-
-    transaction = Transaction.query.get(id)
-
-    if not transaction:
-
-        return redirect("/transactions")
-
-    # GET ITEMS
-
-    items = TransactionItem.query.filter_by(
-
-        transaction_id=id
-
-    ).all()
-
-    # RESTORE STOCK
-
-    for item in items:
-
-        book = Book.query.filter_by(
-
-            title=item.book_title
-
-        ).first()
-
-        if book:
-
-            qty = item.quantity or 0
-
-            # RESTORE TO SHOW QUANTITY
-
-            book.show_quantity = (
-
-                (book.show_quantity or 0)
-
-                + qty
-
-            )
-
-    # DELETE ITEMS
-
-    for item in items:
-
-        db.session.delete(item)
-
-    # DELETE TRANSACTION
-
-    db.session.delete(transaction)
-
-    db.session.commit()
-
-    return redirect("/transactions")
 # =========================================================
 # ADVANCED DASHBOARD
 # =========================================================
