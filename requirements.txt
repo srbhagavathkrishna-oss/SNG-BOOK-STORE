@@ -5,5 +5,5 @@ Pillow
 numpy
 opencv-python
 easyocr
-tensorflow
+
 gunicorn
