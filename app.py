@@ -1,4 +1,5 @@
 
+from PIL.ImageChops import difference
 from flask import Flask, render_template, request, redirect, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -601,7 +602,21 @@ def complete_sale():
             storage_qty = (
                 book.storage_quantity or 0
             )
+            book = Book.query.get(item["id"])
 
+            if book:
+
+                sold_qty = int(item["quantity"])
+
+                book.show_quantity = max(
+
+                0,
+
+                (book.show_quantity or 0)
+
+                - sold_qty
+
+                )
             # REMOVE FROM SHOW
 
             if show_qty >= qty:
@@ -1034,7 +1049,32 @@ def edit_book(id):
 
         book=book
 
+        )
+    old_show = book.show_quantity or 0
+
+    new_show = int(
+
+    request.form.get(
+        "show_quantity"
+    ) or 0
+
     )
+
+    difference = new_show - old_show
+
+    if difference > 0:
+
+        book.storage_quantity = max(
+
+        0,
+
+        (book.storage_quantity or 0)
+
+        - difference
+
+    )
+
+book.show_quantity = new_show
 # =========================================================
 # BOOK DETAILS
 # =========================================================
