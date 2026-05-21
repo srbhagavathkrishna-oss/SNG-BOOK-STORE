@@ -1426,34 +1426,6 @@ def ai_search():
         return jsonify([])
 
 
-# =========================================================
-# DELETE TRANSACTION
-# =========================================================
-
-@app.route("/delete-transaction/<int:id>")
-def delete_transaction(id):
-
-    transaction = Transaction.query.get(id)
-
-    items = TransactionItem.query.filter_by(
-        transaction_id=id
-    ).all()
-
-    # DELETE ITEMS
-
-    for item in items:
-
-        db.session.delete(item)
-
-    # DELETE TRANSACTION
-
-    if transaction:
-
-        db.session.delete(transaction)
-
-    db.session.commit()
-
-    return redirect("/transactions")
 
 
 # =========================================================
