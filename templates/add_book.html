@@ -8,21 +8,17 @@
 
     <div class="add-book-header">
 
-        <div>
+        <h1>
 
-            <h1>
+            Smart Add Book
 
-                Add New Book
+        </h1>
 
-            </h1>
+        <p>
 
-            <p>
+            Professional AI Powered Inventory Entry
 
-                Smart Inventory & Pricing Management
-
-            </p>
-
-        </div>
+        </p>
 
     </div>
 
@@ -31,39 +27,96 @@
     <div class="add-book-card">
 
         <form method="POST"
-              enctype="multipart/form-data"
-              class="modern-form">
+              enctype="multipart/form-data">
 
-            <!-- IMAGE SECTION -->
+            <!-- ========================= -->
+            <!-- CAMERA SECTION -->
+            <!-- ========================= -->
 
             <div class="form-section">
 
                 <h2>
 
-                    Book Image
+                    Book Cover Capture
 
                 </h2>
 
                 <p class="section-subtitle">
 
-                    Capture or upload book image
+                    Use laptop webcam, USB webcam, or mobile back camera
 
                 </p>
 
+                <!-- CAMERA SELECT -->
+
+                <select id="cameraSelect">
+
+                </select>
+
+                <!-- VIDEO -->
+
+                <video id="camera"
+                       autoplay
+                       playsinline>
+
+                </video>
+
+                <!-- CAMERA BUTTONS -->
+
+                <div class="camera-buttons">
+
+                    <button type="button"
+                            onclick="startSelectedCamera()">
+
+                        Start Camera
+
+                    </button>
+
+                    <button type="button"
+                            onclick="captureImage()">
+
+                        Capture Image
+
+                    </button>
+
+                </div>
+
+                <!-- CANVAS -->
+
+                <canvas id="canvas"
+                        width="300"
+                        height="400"
+                        style="display:none;">
+
+                </canvas>
+
+                <!-- PREVIEW -->
+
+                <img id="preview">
+
+                <!-- HIDDEN IMAGE -->
+
+                <input type="hidden"
+                       name="captured_image"
+                       id="captured_image">
+
+                <!-- FILE UPLOAD -->
+
                 <input type="file"
                        name="image"
-                       accept="image/*"
-                       capture="environment">
+                       accept="image/*">
 
             </div>
 
+            <!-- ========================= -->
             <!-- BASIC DETAILS -->
+            <!-- ========================= -->
 
             <div class="form-section">
 
                 <h2>
 
-                    Basic Details
+                    Basic Book Details
 
                 </h2>
 
@@ -93,7 +146,9 @@
 
             </div>
 
+            <!-- ========================= -->
             <!-- LOCATION -->
+            <!-- ========================= -->
 
             <div class="form-section">
 
@@ -150,109 +205,9 @@
 
             </div>
 
-            <!-- PRICING -->
-
-            <div class="form-section">
-
-                <h2>
-
-                    Smart Pricing
-
-                </h2>
-
-                <div class="grid-2">
-
-                    <input type="number"
-                           step="0.01"
-                           name="purchase_price"
-                           id="purchase_price"
-                           placeholder="Purchase Price"
-                           required>
-
-                    <input type="number"
-                           id="discount"
-                           placeholder="Discount %"
-                           oninput="calculatePrice()">
-
-                    <input type="number"
-                           step="0.01"
-                           name="final_price"
-                           id="final_price"
-                           placeholder="Final Selling Price"
-                           required>
-
-                </div>
-
-            </div>
-
-            <!-- MULTI CURRENCY -->
-
-            <div class="form-section">
-
-                <h2>
-
-                    Currency Converter
-
-                </h2>
-
-                <div class="grid-2">
-
-                    <select id="currency"
-                            onchange="convertCurrency()">
-
-                        <option value="USD">
-
-                            USD
-
-                        </option>
-
-                        <option value="EUR">
-
-                            EUR
-
-                        </option>
-
-                        <option value="AED">
-
-                            AED
-
-                        </option>
-
-                        <option value="GBP">
-
-                            GBP
-
-                        </option>
-
-                        <option value="SAR">
-
-                            SAR
-
-                        </option>
-
-                        <option value="QAR">
-
-                            QAR
-
-                        </option>
-
-                    </select>
-
-                    <input type="number"
-                           id="foreign_amount"
-                           placeholder="Enter Amount"
-                           oninput="convertCurrency()">
-
-                    <input type="text"
-                           id="converted_inr"
-                           placeholder="Converted INR"
-                           readonly>
-
-                </div>
-
-            </div>
-
+            <!-- ========================= -->
             <!-- STOCK -->
+            <!-- ========================= -->
 
             <div class="form-section">
 
@@ -276,7 +231,92 @@
 
             </div>
 
+            <!-- ========================= -->
+            <!-- MONEY -->
+            <!-- ========================= -->
+
+            <div class="form-section">
+
+                <h2>
+
+                    Smart Pricing
+
+                </h2>
+
+                <div class="grid-2">
+
+                    <input type="number"
+                           step="0.01"
+                           id="purchase_price"
+                           name="purchase_price"
+                           placeholder="Purchase Price"
+                           required>
+
+                    <input type="number"
+                           id="discount"
+                           name="discount"
+                           placeholder="Discount %"
+                           oninput="calculatePrice()">
+
+                    <input type="number"
+                           step="0.01"
+                           id="final_price"
+                           name="final_price"
+                           placeholder="Final Selling Price"
+                           required>
+
+                </div>
+
+            </div>
+
+            <!-- ========================= -->
+            <!-- MULTI CURRENCY -->
+            <!-- ========================= -->
+
+            <div class="form-section">
+
+                <h2>
+
+                    Multi Currency Converter
+
+                </h2>
+
+                <div class="grid-2">
+
+                    <select id="currency"
+                            name="currency"
+                            onchange="convertCurrency()">
+
+                        <option value="INR">INR</option>
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="GBP">GBP</option>
+                        <option value="AED">AED</option>
+                        <option value="SAR">SAR</option>
+                        <option value="QAR">QAR</option>
+                        <option value="JPY">JPY</option>
+
+                    </select>
+
+                    <input type="number"
+                           id="foreign_amount"
+                           name="foreign_amount"
+                           placeholder="Foreign Currency Amount"
+                           oninput="convertCurrency()">
+
+                    <input type="text"
+                           id="converted_inr"
+                           name="converted_inr"
+                           placeholder="Converted INR"
+                           readonly>
+
+                </div>
+
+            </div>
+
+            <!-- ========================= -->
             <!-- DESCRIPTION -->
+            <!-- ========================= -->
 
             <div class="form-section">
 
@@ -288,11 +328,15 @@
 
                 <textarea name="description"
                           rows="5"
-                          placeholder="Book Description"></textarea>
+                          placeholder="Book Description">
+
+                </textarea>
 
             </div>
 
+            <!-- ========================= -->
             <!-- SUBMIT -->
+            <!-- ========================= -->
 
             <button type="submit"
                     class="submit-btn">
@@ -307,11 +351,15 @@
 
 </div>
 
+<!-- ========================= -->
 <!-- JAVASCRIPT -->
+<!-- ========================= -->
 
 <script>
 
+/* ========================================= */
 /* AUTO PRICE */
+/* ========================================= */
 
 function calculatePrice(){
 
@@ -331,10 +379,12 @@ function calculatePrice(){
 
     ) || 0;
 
-    let finalPrice =
+    let finalPrice = purchase - (
 
-        purchase -
-        ((purchase * discount) / 100);
+        purchase *
+        discount / 100
+
+    );
 
     document.getElementById(
         "final_price"
@@ -342,15 +392,16 @@ function calculatePrice(){
 
 }
 
-/* MULTI CURRENCY */
+/* ========================================= */
+/* CURRENCY */
+/* ========================================= */
 
-async function convertCurrency(){
+function convertCurrency(){
 
-    let currency =
-
-        document.getElementById(
-            "currency"
-        ).value;
+    let currency = document
+    .getElementById(
+        "currency"
+    ).value;
 
     let amount = parseFloat(
 
@@ -360,51 +411,202 @@ async function convertCurrency(){
 
     ) || 0;
 
+    let rates = {
+
+        INR:1,
+        USD:83,
+        EUR:90,
+        GBP:105,
+        AED:22.6,
+        SAR:22.1,
+        QAR:22.8,
+        JPY:0.55
+
+    };
+
+    let inr = amount * rates[currency];
+
+    document.getElementById(
+        "converted_inr"
+    ).value = "₹ " + inr.toFixed(2);
+
+}
+
+/* ========================================= */
+/* CAMERA */
+/* ========================================= */
+
+let currentStream;
+
+async function loadCameras(){
+
+    const devices = await navigator
+    .mediaDevices
+    .enumerateDevices();
+
+    const cameraSelect = document
+    .getElementById(
+        "cameraSelect"
+    );
+
+    cameraSelect.innerHTML = "";
+
+    const cameras = devices.filter(
+
+        device => device.kind === "videoinput"
+
+    );
+
+    cameras.forEach((camera, index) => {
+
+        const option = document
+        .createElement("option");
+
+        option.value = camera.deviceId;
+
+        option.text = camera.label ||
+
+        `Camera ${index + 1}`;
+
+        cameraSelect.appendChild(option);
+
+    });
+
+}
+
+async function startSelectedCamera(){
+
+    if(currentStream){
+
+        currentStream.getTracks()
+        .forEach(track => track.stop());
+
+    }
+
+    const deviceId = document
+    .getElementById(
+        "cameraSelect"
+    ).value;
+
+    let constraints = {
+
+        video:{}
+
+    };
+
+    /* MOBILE BACK CAMERA */
+
+    if(window.innerWidth < 768){
+
+        constraints.video = {
+
+            facingMode:{
+                exact:"environment"
+            }
+
+        };
+
+    }
+
+    else{
+
+        constraints.video = {
+
+            deviceId:{
+                exact:deviceId
+            }
+
+        };
+
+    }
+
     try{
 
-        let response = await fetch(
-
-            `https://api.exchangerate-api.com/v4/latest/${currency}`
-
-        );
-
-        let data = await response.json();
-
-        let rate = data.rates.INR;
-
-        let inr = amount * rate;
-
-        document.getElementById(
-            "converted_inr"
-        ).value =
-
-        "₹ " + inr.toFixed(2);
+        currentStream = await navigator
+        .mediaDevices
+        .getUserMedia(constraints);
 
     }
 
     catch(error){
 
-        console.log(error);
+        currentStream = await navigator
+        .mediaDevices
+        .getUserMedia({
+
+            video:true
+
+        });
 
     }
 
+    document.getElementById(
+        "camera"
+    ).srcObject = currentStream;
+
 }
+
+function captureImage(){
+
+    const video = document
+    .getElementById(
+        "camera"
+    );
+
+    const canvas = document
+    .getElementById(
+        "canvas"
+    );
+
+    const ctx = canvas.getContext(
+        "2d"
+    );
+
+    ctx.drawImage(
+
+        video,
+        0,
+        0,
+        300,
+        400
+
+    );
+
+    const imageData = canvas.toDataURL(
+        "image/png"
+    );
+
+    document.getElementById(
+        "preview"
+    ).src = imageData;
+
+    document.getElementById(
+        "preview"
+    ).style.display = "block";
+
+    document.getElementById(
+        "captured_image"
+    ).value = imageData;
+
+}
+
+loadCameras();
+
+startSelectedCamera();
 
 </script>
 
+<!-- ========================= -->
 <!-- STYLES -->
+<!-- ========================= -->
 
 <style>
-
-/* PAGE */
 
 .add-book-page{
 
     padding:30px;
 
 }
-
-/* HEADER */
 
 .add-book-header{
 
@@ -415,8 +617,6 @@ async function convertCurrency(){
 .add-book-header h1{
 
     font-size:48px;
-
-    color:#111827;
 
     margin-bottom:10px;
 
@@ -429,8 +629,6 @@ async function convertCurrency(){
     color:#6b7280;
 
 }
-
-/* CARD */
 
 .add-book-card{
 
@@ -445,13 +643,11 @@ async function convertCurrency(){
 
 }
 
-/* SECTION */
-
 .form-section{
 
-    margin-bottom:35px;
+    margin-bottom:40px;
 
-    padding-bottom:25px;
+    padding-bottom:30px;
 
     border-bottom:1px solid #e5e7eb;
 
@@ -459,11 +655,9 @@ async function convertCurrency(){
 
 .form-section h2{
 
-    font-size:28px;
-
     margin-bottom:10px;
 
-    color:#111827;
+    font-size:28px;
 
 }
 
@@ -475,8 +669,6 @@ async function convertCurrency(){
 
 }
 
-/* GRID */
-
 .grid-2{
 
     display:grid;
@@ -487,8 +679,6 @@ async function convertCurrency(){
     gap:20px;
 
 }
-
-/* INPUTS */
 
 input,
 select,
@@ -506,8 +696,6 @@ textarea{
 
     box-sizing:border-box;
 
-    transition:0.3s;
-
 }
 
 input:focus,
@@ -518,20 +706,13 @@ textarea:focus{
 
     outline:none;
 
-    box-shadow:
-    0px 0px 10px rgba(37,99,235,0.2);
-
 }
-
-/* TEXTAREA */
 
 textarea{
 
     resize:none;
 
 }
-
-/* BUTTON */
 
 .submit-btn{
 
@@ -551,19 +732,61 @@ textarea{
 
     cursor:pointer;
 
-    transition:0.3s;
+}
+
+#camera{
+
+    width:100%;
+
+    border-radius:20px;
+
+    margin-top:20px;
+
+    background:black;
 
 }
 
-.submit-btn:hover{
+#preview{
 
-    background:#1d4ed8;
+    width:100%;
 
-    transform:translateY(-2px);
+    border-radius:20px;
+
+    margin-top:20px;
+
+    display:none;
 
 }
 
-/* MOBILE */
+.camera-buttons{
+
+    display:flex;
+
+    gap:15px;
+
+    margin-top:15px;
+
+}
+
+.camera-buttons button{
+
+    flex:1;
+
+    background:#2563eb;
+
+    color:white;
+
+    border:none;
+
+    padding:16px;
+
+    border-radius:14px;
+
+    font-size:16px;
+
+    cursor:pointer;
+
+}
 
 @media(max-width:768px){
 
@@ -588,22 +811,6 @@ textarea{
     .form-section h2{
 
         font-size:24px;
-
-    }
-
-    input,
-    select,
-    textarea{
-
-        font-size:18px;
-
-        padding:18px;
-
-    }
-
-    .submit-btn{
-
-        font-size:20px;
 
     }
 
