@@ -303,39 +303,63 @@ def add_book():
 
         new_book = Book(
 
-            title=title,
+    title=request.form.get("title"),
 
-            author=author,
+    author=request.form.get("author"),
 
-            publication=publication,
+    publication=request.form.get("publication"),
 
-            mrp=converted_price,
+    category=request.form.get("category"),
 
-            currency=currency,
+    language=request.form.get("language"),
 
-            discount=discount,
+    purchase_price=float(
 
-            final_price=final_price,
+        request.form.get(
+            "purchase_price"
+        ) or 0
 
-            show_quantity=show_quantity,
+    ),
 
-            storage_quantity=storage_quantity,
-            shelf_number=request.form["shelf_number"],
+    final_price=float(
 
-            rack_number=request.form["rack_number"],
-            image=filename
+        request.form.get(
+            "final_price"
+        ) or 0
 
-        )
+    ),
 
-        db.session.add(new_book)
+    show_quantity=int(
 
-        db.session.commit()
+        request.form.get(
+            "show_quantity"
+        ) or 0
 
-        return redirect("/book-list")
+    ),
 
-    return render_template(
-        "add_book.html"
-    )
+    storage_quantity=int(
+
+        request.form.get(
+            "storage_quantity"
+        ) or 0
+
+    ),
+
+    shelf_number=request.form.get(
+        "shelf_number"
+    ),
+
+    rack_number=request.form.get(
+        "rack_number"
+    ),
+
+    description=request.form.get(
+        "description"
+    ),
+
+    image=image_filename
+
+)
 
 # =========================================================
 # BOOK LIST

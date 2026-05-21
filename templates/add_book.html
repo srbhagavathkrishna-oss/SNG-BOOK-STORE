@@ -2,271 +2,302 @@
 
 {% block content %}
 
-<div class="container">
+<div class="add-book-page">
 
-    <div class="page-header">
+    <!-- HEADER -->
 
-        <h1>
+    <div class="add-book-header">
 
-            Add New Book
+        <div>
 
-        </h1>
+            <h1>
 
-        <p>
+                Add New Book
 
-            Add books with complete inventory details
+            </h1>
 
-        </p>
+            <p>
+
+                Smart Inventory & Pricing Management
+
+            </p>
+
+        </div>
 
     </div>
 
-    <div class="form-card">
+    <!-- FORM CARD -->
+
+    <div class="add-book-card">
 
         <form method="POST"
-              enctype="multipart/form-data">
+              enctype="multipart/form-data"
+              class="modern-form">
 
-            <!-- BOOK TITLE -->
+            <!-- IMAGE SECTION -->
 
-            <label>
+            <div class="form-section">
 
-                Book Title
+                <h2>
 
-            </label>
+                    Book Image
 
-            <input type="text"
-                   name="title"
-                   placeholder="Enter Book Title"
-                   required>
+                </h2>
 
-            <!-- AUTHOR -->
+                <p class="section-subtitle">
 
-            <label>
+                    Capture or upload book image
 
-                Author Name
+                </p>
 
-            </label>
+                <input type="file"
+                       name="image"
+                       accept="image/*"
+                       capture="environment">
 
-            <input type="text"
-                   name="author"
-                   placeholder="Enter Author Name"
-                   required>
+            </div>
 
-            <!-- PUBLICATION -->
+            <!-- BASIC DETAILS -->
 
-            <label>
+            <div class="form-section">
 
-                Publication
+                <h2>
 
-            </label>
+                    Basic Details
 
-            <input type="text"
-                   name="publication"
-                   placeholder="Enter Publication"
-                   required>
+                </h2>
 
-            <!-- CATEGORY -->
+                <div class="grid-2">
 
-            <label>
+                    <input type="text"
+                           name="title"
+                           placeholder="Book Title">
 
-                Category
+                    <input type="text"
+                           name="author"
+                           placeholder="Author Name">
 
-            </label>
+                    <input type="text"
+                           name="publication"
+                           placeholder="Publication">
 
-            <input type="text"
-                   name="category"
-                   placeholder="Enter Category">
+                    <input type="text"
+                           name="category"
+                           placeholder="Category">
 
-            <!-- LANGUAGE -->
+                    <input type="text"
+                           name="language"
+                           placeholder="Language">
 
-            <label>
+                </div>
 
-                Language
+            </div>
 
-            </label>
+            <!-- LOCATION -->
 
-            <input type="text"
-                   name="language"
-                   placeholder="Enter Language">
+            <div class="form-section">
 
-            <!-- PURCHASE PRICE -->
+                <h2>
 
-            <label>
+                    Shelf & Rack Location
 
-                Purchase Price
+                </h2>
 
-            </label>
+                <div class="grid-2">
 
-            <input type="number"
-                   step="0.01"
-                   name="purchase_price"
-                   placeholder="Enter Purchase Price"
-                   required>
+                    <select name="shelf_number">
 
-            <!-- SELLING PRICE -->
+                        <option value="">
 
-            <label>
+                            Select Shelf
 
-                Final Selling Price
+                        </option>
 
-            </label>
-            <!-- DISCOUNT -->
+                        <option>A</option>
+                        <option>B</option>
+                        <option>C</option>
+                        <option>D</option>
+                        <option>E</option>
+                        <option>F</option>
+                        <option>G</option>
+                        <option>H</option>
+                        <option>I</option>
+                        <option>J</option>
 
-        <label>
+                    </select>
 
-    Discount Percentage
+                    <select name="rack_number">
 
-</label>
+                        <option value="">
 
-<input type="number"
-       id="discount"
-       placeholder="Enter Discount %"
-       oninput="calculatePrice()">
+                            Select Rack
 
-<!-- USD PRICE -->
+                        </option>
 
-<label>
+                        {% for i in range(1,21) %}
 
-    USD Price
+                        <option>
 
-</label>
+                            {{ i }}
 
-<input type="number"
-       id="usd_price"
-       placeholder="Enter USD Amount"
-       oninput="convertCurrency()">
+                        </option>
 
-<!-- INR CONVERSION -->
+                        {% endfor %}
 
-<label>
+                    </select>
 
-    Converted INR Value
+                </div>
 
-</label>
+            </div>
 
-<input type="text"
-       id="converted_inr"
-       readonly>
-            <input type="number"
-                   step="0.01"
-                   name="final_price"
-                   placeholder="Enter Selling Price"
-                   required>
+            <!-- PRICING -->
 
-            <!-- SHOW QUANTITY -->
+            <div class="form-section">
 
-            <label>
+                <h2>
 
-                Show Room Quantity
+                    Smart Pricing
 
-            </label>
+                </h2>
 
-            <input type="number"
-                   name="show_quantity"
-                   placeholder="Enter Show Quantity"
-                   required>
+                <div class="grid-2">
 
-            <!-- STORAGE QUANTITY -->
+                    <input type="number"
+                           step="0.01"
+                           name="purchase_price"
+                           id="purchase_price"
+                           placeholder="Purchase Price"
+                           required>
 
-            <label>
+                    <input type="number"
+                           id="discount"
+                           placeholder="Discount %"
+                           oninput="calculatePrice()">
 
-                Storage Quantity
+                    <input type="number"
+                           step="0.01"
+                           name="final_price"
+                           id="final_price"
+                           placeholder="Final Selling Price"
+                           required>
 
-            </label>
+                </div>
 
-            <input type="number"
-                   name="storage_quantity"
-                   placeholder="Enter Storage Quantity"
-                   required>
+            </div>
 
-            <!-- SHELF -->
+            <!-- MULTI CURRENCY -->
 
-            <label>
+            <div class="form-section">
 
-                Shelf Number
+                <h2>
 
-            </label>
+                    Currency Converter
 
-            <select name="shelf_number"
-                    required>
+                </h2>
 
-                <option value="">
+                <div class="grid-2">
 
-                    Select Shelf
+                    <select id="currency"
+                            onchange="convertCurrency()">
 
-                </option>
+                        <option value="USD">
 
-                <option>A</option>
-                <option>B</option>
-                <option>C</option>
-                <option>D</option>
-                <option>E</option>
-                <option>F</option>
-                <option>G</option>
-                <option>H</option>
-                <option>I</option>
-                <option>J</option>
+                            USD
 
-            </select>
+                        </option>
 
-            <!-- RACK -->
+                        <option value="EUR">
 
-            <label>
+                            EUR
 
-                Rack Number
+                        </option>
 
-            </label>
+                        <option value="AED">
 
-            <select name="rack_number"
-                    required>
+                            AED
 
-                <option value="">
+                        </option>
 
-                    Select Rack
+                        <option value="GBP">
 
-                </option>
+                            GBP
 
-                {% for i in range(1,21) %}
+                        </option>
 
-                <option>
+                        <option value="SAR">
 
-                    {{ i }}
+                            SAR
 
-                </option>
+                        </option>
 
-                {% endfor %}
+                        <option value="QAR">
 
-            </select>
+                            QAR
+
+                        </option>
+
+                    </select>
+
+                    <input type="number"
+                           id="foreign_amount"
+                           placeholder="Enter Amount"
+                           oninput="convertCurrency()">
+
+                    <input type="text"
+                           id="converted_inr"
+                           placeholder="Converted INR"
+                           readonly>
+
+                </div>
+
+            </div>
+
+            <!-- STOCK -->
+
+            <div class="form-section">
+
+                <h2>
+
+                    Inventory Stock
+
+                </h2>
+
+                <div class="grid-2">
+
+                    <input type="number"
+                           name="show_quantity"
+                           placeholder="Show Room Quantity">
+
+                    <input type="number"
+                           name="storage_quantity"
+                           placeholder="Storage Quantity">
+
+                </div>
+
+            </div>
 
             <!-- DESCRIPTION -->
 
-            <label>
+            <div class="form-section">
 
-                Book Description
+                <h2>
 
-            </label>
+                    Description
 
-            <textarea name="description"
-                      rows="5"
-                      placeholder="Enter Description"></textarea>
+                </h2>
 
-            <!-- IMAGE -->
+                <textarea name="description"
+                          rows="5"
+                          placeholder="Book Description"></textarea>
 
-            <label>
-
-                Upload Book Image
-
-            </label>
-
-            <input type="file"
-                   name="image"
-                   accept="image/*">
+            </div>
 
             <!-- SUBMIT -->
 
             <button type="submit"
                     class="submit-btn">
 
-                Add Book
+                Add Book To Inventory
 
             </button>
 
@@ -276,33 +307,114 @@
 
 </div>
 
+<!-- JAVASCRIPT -->
+
+<script>
+
+/* AUTO PRICE */
+
+function calculatePrice(){
+
+    let purchase = parseFloat(
+
+        document.getElementById(
+            "purchase_price"
+        ).value
+
+    ) || 0;
+
+    let discount = parseFloat(
+
+        document.getElementById(
+            "discount"
+        ).value
+
+    ) || 0;
+
+    let finalPrice =
+
+        purchase -
+        ((purchase * discount) / 100);
+
+    document.getElementById(
+        "final_price"
+    ).value = finalPrice.toFixed(2);
+
+}
+
+/* MULTI CURRENCY */
+
+async function convertCurrency(){
+
+    let currency =
+
+        document.getElementById(
+            "currency"
+        ).value;
+
+    let amount = parseFloat(
+
+        document.getElementById(
+            "foreign_amount"
+        ).value
+
+    ) || 0;
+
+    try{
+
+        let response = await fetch(
+
+            `https://api.exchangerate-api.com/v4/latest/${currency}`
+
+        );
+
+        let data = await response.json();
+
+        let rate = data.rates.INR;
+
+        let inr = amount * rate;
+
+        document.getElementById(
+            "converted_inr"
+        ).value =
+
+        "₹ " + inr.toFixed(2);
+
+    }
+
+    catch(error){
+
+        console.log(error);
+
+    }
+
+}
+
+</script>
+
+<!-- STYLES -->
+
 <style>
 
 /* PAGE */
 
-.container{
+.add-book-page{
 
-    max-width:900px;
-
-    margin:auto;
-
-    padding:20px;
+    padding:30px;
 
 }
 
 /* HEADER */
 
-.page-header{
-
-    text-align:center;
+.add-book-header{
 
     margin-bottom:30px;
 
 }
 
-.page-header h1{
+.add-book-header h1{
 
-    font-size:42px;
+    font-size:48px;
 
     color:#111827;
 
@@ -310,44 +422,69 @@
 
 }
 
-.page-header p{
+.add-book-header p{
+
+    font-size:20px;
 
     color:#6b7280;
-
-    font-size:18px;
 
 }
 
 /* CARD */
 
-.form-card{
+.add-book-card{
 
     background:white;
 
-    padding:35px;
+    border-radius:30px;
 
-    border-radius:25px;
+    padding:40px;
 
     box-shadow:
     0px 0px 25px rgba(0,0,0,0.08);
 
 }
 
-/* LABEL */
+/* SECTION */
 
-label{
+.form-section{
 
-    display:block;
+    margin-bottom:35px;
 
-    margin-top:20px;
+    padding-bottom:25px;
 
-    margin-bottom:8px;
+    border-bottom:1px solid #e5e7eb;
 
-    font-weight:bold;
+}
+
+.form-section h2{
+
+    font-size:28px;
+
+    margin-bottom:10px;
 
     color:#111827;
 
-    font-size:16px;
+}
+
+.section-subtitle{
+
+    color:#6b7280;
+
+    margin-bottom:20px;
+
+}
+
+/* GRID */
+
+.grid-2{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit, minmax(250px,1fr));
+
+    gap:20px;
 
 }
 
@@ -359,15 +496,30 @@ textarea{
 
     width:100%;
 
-    padding:15px;
+    padding:18px;
 
-    border-radius:14px;
+    border-radius:16px;
 
     border:1px solid #d1d5db;
 
-    font-size:16px;
+    font-size:17px;
 
     box-sizing:border-box;
+
+    transition:0.3s;
+
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+
+    border-color:#2563eb;
+
+    outline:none;
+
+    box-shadow:
+    0px 0px 10px rgba(37,99,235,0.2);
 
 }
 
@@ -385,19 +537,17 @@ textarea{
 
     width:100%;
 
-    margin-top:30px;
-
     background:#2563eb;
 
     color:white;
 
     border:none;
 
-    padding:18px;
+    padding:20px;
 
-    border-radius:16px;
+    border-radius:18px;
 
-    font-size:18px;
+    font-size:22px;
 
     cursor:pointer;
 
@@ -417,15 +567,27 @@ textarea{
 
 @media(max-width:768px){
 
-    .page-header h1{
+    .add-book-page{
 
-        font-size:30px;
+        padding:15px;
 
     }
 
-    .form-card{
+    .add-book-card{
 
         padding:20px;
+
+    }
+
+    .add-book-header h1{
+
+        font-size:34px;
+
+    }
+
+    .form-section h2{
+
+        font-size:24px;
 
     }
 
@@ -435,7 +597,7 @@ textarea{
 
         font-size:18px;
 
-        padding:16px;
+        padding:18px;
 
     }
 
@@ -448,84 +610,5 @@ textarea{
 }
 
 </style>
-<script>
 
-/* DISCOUNT */
-
-function calculatePrice(){
-
-    let purchase = parseFloat(
-
-        document.querySelector(
-            'input[name="purchase_price"]'
-        ).value
-
-    ) || 0;
-
-    let discount = parseFloat(
-
-        document.getElementById(
-            "discount"
-        ).value
-
-    ) || 0;
-
-    let finalPrice =
-
-        purchase -
-        ((purchase * discount) / 100);
-
-    document.querySelector(
-
-        'input[name="final_price"]'
-
-    ).value = finalPrice.toFixed(2);
-
-}
-
-/* USD TO INR */
-
-async function convertCurrency(){
-
-    let usd = parseFloat(
-
-        document.getElementById(
-            "usd_price"
-        ).value
-
-    ) || 0;
-
-    try{
-
-        let response = await fetch(
-
-            "https://api.exchangerate-api.com/v4/latest/USD"
-
-        );
-
-        let data = await response.json();
-
-        let rate = data.rates.INR;
-
-        let inr = usd * rate;
-
-        document.getElementById(
-
-            "converted_inr"
-
-        ).value =
-
-        "₹" + inr.toFixed(2);
-
-    }
-
-    catch(error){
-
-        console.log(error);
-
-    }
-
-}
-
-</script>
 {% endblock %}
