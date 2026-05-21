@@ -8,6 +8,9 @@ import base64
 from ai_engine import extract_text
 import requests
 app = Flask(__name__)
+UPLOAD_FOLDER = "static/uploads"
+
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 def usd_to_inr(amount_usd):
 
     try:
