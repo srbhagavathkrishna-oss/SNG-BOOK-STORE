@@ -109,7 +109,43 @@
                 Final Selling Price
 
             </label>
+            <!-- DISCOUNT -->
 
+        <label>
+
+    Discount Percentage
+
+</label>
+
+<input type="number"
+       id="discount"
+       placeholder="Enter Discount %"
+       oninput="calculatePrice()">
+
+<!-- USD PRICE -->
+
+<label>
+
+    USD Price
+
+</label>
+
+<input type="number"
+       id="usd_price"
+       placeholder="Enter USD Amount"
+       oninput="convertCurrency()">
+
+<!-- INR CONVERSION -->
+
+<label>
+
+    Converted INR Value
+
+</label>
+
+<input type="text"
+       id="converted_inr"
+       readonly>
             <input type="number"
                    step="0.01"
                    name="final_price"
@@ -412,5 +448,84 @@ textarea{
 }
 
 </style>
+<script>
 
+/* DISCOUNT */
+
+function calculatePrice(){
+
+    let purchase = parseFloat(
+
+        document.querySelector(
+            'input[name="purchase_price"]'
+        ).value
+
+    ) || 0;
+
+    let discount = parseFloat(
+
+        document.getElementById(
+            "discount"
+        ).value
+
+    ) || 0;
+
+    let finalPrice =
+
+        purchase -
+        ((purchase * discount) / 100);
+
+    document.querySelector(
+
+        'input[name="final_price"]'
+
+    ).value = finalPrice.toFixed(2);
+
+}
+
+/* USD TO INR */
+
+async function convertCurrency(){
+
+    let usd = parseFloat(
+
+        document.getElementById(
+            "usd_price"
+        ).value
+
+    ) || 0;
+
+    try{
+
+        let response = await fetch(
+
+            "https://api.exchangerate-api.com/v4/latest/USD"
+
+        );
+
+        let data = await response.json();
+
+        let rate = data.rates.INR;
+
+        let inr = usd * rate;
+
+        document.getElementById(
+
+            "converted_inr"
+
+        ).value =
+
+        "₹" + inr.toFixed(2);
+
+    }
+
+    catch(error){
+
+        console.log(error);
+
+    }
+
+}
+
+</script>
 {% endblock %}
