@@ -1401,17 +1401,6 @@ def ai_search():
         print("AI SEARCH ERROR:", e)
 
         return jsonify([])
-# =========================================================
-# MAIN
-# =========================================================
-
-with app.app_context():
-
-    db.create_all()
-
-if __name__ == "__main__":
-
-    app.run(debug=True)
 
 
 # =========================================================
@@ -1443,3 +1432,15 @@ def delete_transaction(id):
 
     return redirect("/transactions")
 
+
+# =========================================================
+# MAIN
+# =========================================================
+
+with app.app_context():
+
+    db.create_all()
+
+if __name__ == "__main__":
+
+    app.run(debug=True)
