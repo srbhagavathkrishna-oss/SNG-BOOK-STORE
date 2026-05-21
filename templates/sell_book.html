@@ -728,10 +728,27 @@ select{
         <input type="file"
                id="upload{{ cart }}">
 
-        <video id="camera{{ cart }}"
-               width="100%"
-               autoplay>
+        <video id="camera"
+            autoplay
+            playsinline
+            muted
+            style="
+            width:100%;
+            height:320px;
+            background:black;
+            border-radius:20px;
+            object-fit:cover;
+            display:block;
+            ">
+
         </video>
+        <button type="button"
+        onclick="startCamera()"
+        class="camera-btn">
+
+            Start Camera
+
+        </button>
 
         <button
             onclick="captureImage(this.dataset.cart)"
@@ -980,51 +997,81 @@ let carts = {
 
 /* START CAMERA */
 
-async function startCameras(){
+<script>
+
+let currentStream;
+
+async function startCamera(){
 
     try{
 
-        const stream =
+        if(currentStream){
 
-        await navigator
-        .mediaDevices
-        .getUserMedia({
-
-            video:{
-            facingMode:{
-            ideal:"environment"
-            }
-            }
-
-        });
-
-        for(let i=1;i<=5;i++){
-
-            const video =
-
-            document.getElementById(
-
-                "camera" + i
-
-            );
-
-            if(video){
-
-                video.srcObject = stream;
-
-            }
+            currentStream
+            .getTracks()
+            .forEach(track => track.stop());
 
         }
+
+        let constraints = {
+
+            video:true
+
+        };
+
+        // MOBILE BACK CAMERA
+
+        if(window.innerWidth < 768){
+
+            constraints = {
+
+                video:{
+
+                    facingMode:"environment"
+
+                }
+
+            };
+
+        }
+
+        const stream = await navigator
+        .mediaDevices
+        .getUserMedia(constraints);
+
+        currentStream = stream;
+
+        const video = document
+        .getElementById("camera");
+
+        video.srcObject = stream;
+
+        video.play();
 
     }
 
     catch(error){
+
+        alert(
+            "Camera access denied or unavailable"
+        );
 
         console.log(error);
 
     }
 
 }
+
+</script>
+<script>
+
+window.onload = function(){
+
+    startCamera();
+
+}
+
+</script>
 
 /* START */
 
