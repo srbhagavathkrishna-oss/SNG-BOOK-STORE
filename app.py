@@ -282,256 +282,290 @@ def add_book():
 
     if request.method == "POST":
 
-        # =========================================
-        # BASIC DETAILS
-        # =========================================
+        try:
 
-        title = request.form.get(
-            "title", ""
-        )
+            # =========================================
+            # BASIC DETAILS
+            # =========================================
 
-        author = request.form.get(
-            "author", ""
-        )
-
-        publication = request.form.get(
-            "publication", ""
-        )
-
-        category = request.form.get(
-            "category", ""
-        )
-
-        language = request.form.get(
-            "language", ""
-        )
-
-        description = request.form.get(
-            "description", ""
-        )
-
-        # =========================================
-        # PRICING
-        # =========================================
-
-        purchase_price = float(
-
-            request.form.get(
-                "purchase_price", 0
-            ) or 0
-
-        )
-
-        discount = float(
-
-            request.form.get(
-                "discount", 0
-            ) or 0
-
-        )
-
-        currency = request.form.get(
-            "currency",
-            "INR"
-        )
-
-        foreign_amount = float(
-
-            request.form.get(
-                "foreign_amount", 0
-            ) or 0
-
-        )
-
-        # =========================================
-        # LIVE CURRENCY RATES
-        # =========================================
-
-        conversion_rates = {
-
-            "INR": 1,
-            "USD": 83,
-            "EUR": 90,
-            "GBP": 105,
-            "AED": 22.6,
-            "SAR": 22.1,
-            "QAR": 22.8,
-            "JPY": 0.55
-
-        }
-
-        converted_inr = (
-
-            foreign_amount *
-
-            conversion_rates.get(
-                currency,
-                1
+            title = request.form.get(
+                "title", ""
             )
 
-        )
+            author = request.form.get(
+                "author", ""
+            )
 
-        final_price = purchase_price - (
+            publication = request.form.get(
+                "publication", ""
+            )
 
-            purchase_price *
-            discount / 100
+            category = request.form.get(
+                "category", ""
+            )
 
-        )
+            language = request.form.get(
+                "language", ""
+            )
 
-        # =========================================
-        # STOCK
-        # =========================================
+            description = request.form.get(
+                "description", ""
+            )
 
-        show_quantity = int(
+            # =========================================
+            # PRICING
+            # =========================================
 
-            request.form.get(
-                "show_quantity", 0
-            ) or 0
+            purchase_price = float(
 
-        )
-
-        storage_quantity = int(
-
-            request.form.get(
-                "storage_quantity", 0
-            ) or 0
-
-        )
-
-        # =========================================
-        # LOCATION
-        # =========================================
-
-        shelf_number = request.form.get(
-            "shelf_number", ""
-        )
-
-        rack_number = request.form.get(
-            "rack_number", ""
-        )
-
-        # =========================================
-        # IMAGE
-        # =========================================
-
-        filename = ""
-
-        image = request.files.get("image")
-
-        if image and image.filename != "":
-
-            filename = image.filename
-
-            filepath = os.path.join(
-
-                app.config[
-                    "UPLOAD_FOLDER"
-                ],
-
-                filename
+                request.form.get(
+                    "purchase_price", 0
+                ) or 0
 
             )
 
-            image.save(filepath)
+            discount = float(
 
-        # =========================================
-        # CAMERA CAPTURE
-        # =========================================
-
-        captured_image = request.form.get(
-            "captured_image"
-        )
-
-        if captured_image:
-
-            image_data = captured_image.split(
-                ","
-            )[1]
-
-            image_bytes = base64.b64decode(
-                image_data
-            )
-
-            filename = (
-
-                "capture_" +
-
-                datetime.now().strftime(
-                    "%Y%m%d%H%M%S"
-                ) +
-
-                ".png"
+                request.form.get(
+                    "discount", 0
+                ) or 0
 
             )
 
-            filepath = os.path.join(
+            currency = request.form.get(
+                "currency",
+                "INR"
+            )
 
-                app.config[
-                    "UPLOAD_FOLDER"
-                ],
+            foreign_amount = float(
 
-                filename
+                request.form.get(
+                    "foreign_amount", 0
+                ) or 0
 
             )
 
-            with open(filepath, "wb") as f:
+            # =========================================
+            # LIVE CURRENCY CONVERSION
+            # =========================================
 
-                f.write(image_bytes)
+            conversion_rates = {
+
+                "INR": 1,
+                "USD": 83,
+                "EUR": 90,
+                "GBP": 105,
+                "AED": 22.6,
+                "SAR": 22.1,
+                "QAR": 22.8,
+                "JPY": 0.55
+
+            }
+
+            converted_inr = (
+
+                foreign_amount *
+
+                conversion_rates.get(
+                    currency,
+                    1
+                )
+
+            )
+
+            # =========================================
+            # FINAL PRICE
+            # =========================================
+
+            final_price = purchase_price - (
+
+                purchase_price *
+
+                discount / 100
+
+            )
+
+            # =========================================
+            # STOCK
+            # =========================================
+
+            show_quantity = int(
+
+                request.form.get(
+                    "show_quantity", 0
+                ) or 0
+
+            )
+
+            storage_quantity = int(
+
+                request.form.get(
+                    "storage_quantity", 0
+                ) or 0
+
+            )
+
+            # =========================================
+            # SHELF & RACK
+            # =========================================
+
+            shelf_number = request.form.get(
+                "shelf_number", ""
+            )
+
+            rack_number = request.form.get(
+                "rack_number", ""
+            )
+
+            # =========================================
+            # IMAGE VARIABLES
+            # =========================================
+
+            filename = ""
+
+            # =========================================
+            # FILE UPLOAD IMAGE
+            # =========================================
+
+            image = request.files.get("image")
+
+            if image and image.filename != "":
+
+                filename = image.filename
+
+                filepath = os.path.join(
+
+                    app.config[
+                        "UPLOAD_FOLDER"
+                    ],
+
+                    filename
+
+                )
+
+                image.save(filepath)
+
+            # =========================================
+            # CAMERA CAPTURE IMAGE
+            # =========================================
+
+            captured_image = request.form.get(
+                "captured_image"
+            )
+
+            if captured_image:
+
+                image_data = captured_image.split(
+                    ","
+                )[1]
+
+                image_bytes = base64.b64decode(
+                    image_data
+                )
+
+                filename = (
+
+                    "capture_" +
+
+                    datetime.now().strftime(
+                        "%Y%m%d%H%M%S"
+                    ) +
+
+                    ".png"
+
+                )
+
+                filepath = os.path.join(
+
+                    app.config[
+                        "UPLOAD_FOLDER"
+                    ],
+
+                    filename
+
+                )
+
+                with open(filepath, "wb") as f:
+
+                    f.write(image_bytes)
+
+            # =========================================
+            # CREATE BOOK OBJECT
+            # =========================================
+
+            new_book = Book(
+
+                title=title,
+
+                author=author,
+
+                publication=publication,
+
+                category=category,
+
+                language=language,
+
+                description=description,
+
+                purchase_price=purchase_price,
+
+                final_price=final_price,
+
+                discount=discount,
+
+                currency_type=currency,
+
+                foreign_price=foreign_amount,
+
+                converted_inr=converted_inr,
+
+                show_quantity=show_quantity,
+
+                storage_quantity=storage_quantity,
+
+                shelf_number=shelf_number,
+
+                rack_number=rack_number,
+
+                image=filename
+
+            )
+
+            # =========================================
+            # SAVE TO DATABASE
+            # =========================================
+
+            db.session.add(new_book)
+
+            db.session.commit()
+
+            # =========================================
+            # SUCCESS REDIRECT
+            # =========================================
+
+            return redirect("/inventory")
 
         # =========================================
-        # SAVE BOOK
+        # ERROR HANDLING
         # =========================================
 
-        new_book = Book(
+        except Exception as e:
 
-            title=title,
+            return f"""
 
-            author=author,
+            <h1>Add Book Error</h1>
 
-            publication=publication,
+            <p>{str(e)}</p>
 
-            category=category,
+            """
 
-            language=language,
-
-            description=description,
-
-            purchase_price=purchase_price,
-
-            final_price=final_price,
-
-            discount=discount,
-
-            currency_type=currency,
-
-            foreign_price=foreign_amount,
-
-            converted_inr=converted_inr,
-
-            show_quantity=show_quantity,
-
-            storage_quantity=storage_quantity,
-
-            shelf_number=shelf_number,
-
-            rack_number=rack_number,
-
-            image=filename
-
-        )
-
-        db.session.add(new_book)
-
-        db.session.commit()
-
-        return redirect("/inventory")
+    # =========================================
+    # LOAD PAGE
+    # =========================================
 
     return render_template(
         "add_book.html"
     )
-
-
-
 # =========================================================
 # BOOK LIST
 # =========================================================
@@ -1245,16 +1279,18 @@ def edit_book(id):
 # BOOK DETAILS
 # =========================================================
 @app.route("/book/<int:id>")
+
 def book_details(id):
 
     book = Book.query.get_or_404(id)
 
     return render_template(
+
         "book_details.html",
+
         book=book
+
     )
-
-
     
 # =========================================================
 # BILL PAGE
