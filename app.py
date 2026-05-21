@@ -546,7 +546,7 @@ def add_book():
             # SUCCESS REDIRECT
             # =========================================
 
-            return redirect("/inventory")
+            return redirect(url_for("book_list"))
 
         # =========================================
         # ERROR HANDLING
