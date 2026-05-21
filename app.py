@@ -47,7 +47,7 @@ if not os.path.exists(UPLOAD_FOLDER):
 # =========================================================
 
 class Book(db.Model):
-
+    
     id = db.Column(
         db.Integer,
         primary_key=True
@@ -60,7 +60,9 @@ class Book(db.Model):
     author = db.Column(
         db.String(300)
     )
+    shelf_number = db.Column(db.String(10))
 
+    rack_number = db.Column(db.String(10))
     publication = db.Column(
         db.String(300)
     )
@@ -318,7 +320,9 @@ def add_book():
             show_quantity=show_quantity,
 
             storage_quantity=storage_quantity,
+            shelf_number=request.form["shelf_number"],
 
+            rack_number=request.form["rack_number"],
             image=filename
 
         )

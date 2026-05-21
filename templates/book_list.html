@@ -1,494 +1,314 @@
-<!DOCTYPE html>
-<html>
+{% extends "base.html" %}
 
-<head>
+{% block content %}
 
-<title>
+<div class="inventory-page">
 
-Inventory Management
+    <!-- HEADER -->
 
-</title>
+    <div class="inventory-header">
 
-<style>
+        <div>
 
-body{
+            <h1>
 
-    font-family:Arial;
-    background:#f4f4f4;
-    padding:20px;
-    margin:0;
+                Inventory Management
 
-}
-
-/* TOP LOGO */
-
-.top-logo{
-
-    position:fixed;
-    top:10px;
-    right:15px;
-    z-index:9999;
-
-}
-
-.top-logo img{
-
-    width:90px;
-    height:90px;
-    object-fit:cover;
-    border-radius:12px;
-    background:white;
-    padding:4px;
-    box-shadow:
-    0px 0px 10px rgba(0,0,0,0.3);
-
-}
-
-/* BACK BUTTON */
-
-.back-btn{
-
-    margin-bottom:20px;
-
-}
-
-/* BUTTON */
-
-button{
-
-    background:darkred;
-    color:white;
-    border:none;
-    padding:10px 15px;
-    border-radius:8px;
-    cursor:pointer;
-    transition:0.3s;
-    margin-top:8px;
-    margin-right:5px;
-
-}
-
-button:hover{
-
-    background:red;
-    transform:scale(1.03);
-
-}
-
-/* DELETE BUTTON */
-
-.delete-btn{
-
-    background:red;
-
-}
-
-.delete-btn:hover{
-
-    background:darkred;
-
-}
-
-/* CONTAINER */
-
-.container{
-
-    max-width:1400px;
-    margin:auto;
-
-}
-
-/* HEADING */
-
-.heading{
-
-    text-align:center;
-    color:darkred;
-    font-size:45px;
-    margin-bottom:30px;
-
-}
-
-/* SEARCH */
-
-.search-box{
-
-    text-align:center;
-    margin-bottom:30px;
-
-}
-
-.search-box input{
-
-    width:60%;
-    padding:14px;
-    border-radius:10px;
-    border:1px solid #ccc;
-    font-size:16px;
-
-}
-
-/* BOOK LIST */
-
-.books{
-
-    display:flex;
-    flex-direction:column;
-    gap:20px;
-
-}
-
-/* BOOK CARD */
-
-.book{
-
-    background:white;
-    padding:20px;
-    border-radius:18px;
-    box-shadow:
-    0px 0px 10px rgba(0,0,0,0.1);
-
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:20px;
-
-    transition:0.3s;
-
-}
-
-.book:hover{
-
-    transform:translateY(-5px);
-
-}
-
-/* LEFT SIDE */
-
-.book-left{
-
-    display:flex;
-    align-items:center;
-    gap:20px;
-
-}
-
-/* IMAGE */
-
-.book img{
-
-    width:120px;
-    height:160px;
-    object-fit:cover;
-    border-radius:12px;
-
-}
-
-/* DETAILS */
-
-.book-details h2{
-
-    color:darkred;
-    margin-bottom:10px;
-
-}
-
-.book-details p{
-
-    margin:5px 0;
-    color:#555;
-
-}
-
-/* RIGHT SIDE */
-
-.book-actions{
-
-    text-align:right;
-
-}
-
-/* STOCK COLORS */
-
-.stock-good{
-
-    color:green;
-    font-weight:bold;
-
-}
-
-.stock-low{
-
-    color:red;
-    font-weight:bold;
-
-}
-
-/* MOBILE */
-
-@media(max-width:900px){
-
-    .book{
-
-        flex-direction:column;
-        align-items:flex-start;
-
-    }
-
-    .book-left{
-
-        flex-direction:column;
-        align-items:flex-start;
-
-    }
-
-    .book-actions{
-
-        width:100%;
-        text-align:left;
-
-    }
-
-    .search-box input{
-
-        width:90%;
-
-    }
-
-}
-
-</style>
-
-</head>
-
-<body>
-
-<!-- LOGO -->
-
-<div class="top-logo">
-
-<img src="{{ url_for(
-'static',
-filename='logo.jpeg'
-) }}">
-
-</div>
-
-<!-- BACK -->
-
-<a href="/">
-
-<button class="back-btn">
-
-← Back To Home
-
-</button>
-
-</a>
-
-<div class="container">
-
-<!-- HEADING -->
-
-<h1 class="heading">
-
-Inventory Management
-
-</h1>
-
-<!-- SEARCH -->
-
-<div class="search-box">
-
-<input type="text"
-       id="searchInput"
-       placeholder="Search Books..."
-       onkeyup="searchBooks()">
-
-</div>
-
-<!-- BOOKS -->
-
-<div class="books"
-     id="booksContainer">
-
-{% for book in books %}
-
-<div class="book">
-
-    <!-- LEFT -->
-
-    <div class="book-left">
-
-        {% if book.image %}
-
-        <img src="{{ url_for(
-        'static',
-        filename='uploads/' + book.image
-        ) }}">
-
-        {% else %}
-
-        <img src="{{ url_for(
-        'static',
-        filename='logo.jpeg'
-        ) }}">
-
-        {% endif %}
-
-        <div class="book-details">
-
-            <h2>
-
-                {{ book.title }}
-
-            </h2>
+            </h1>
 
             <p>
 
-                <strong>
-
-                Author:
-
-                </strong>
-
-                {{ book.author }}
-
-            </p>
-
-            <p>
-
-                <strong>
-
-                Price:
-
-                </strong>
-
-                ₹{{ book.final_price }}
-
-            </p>
-
-            <p>
-
-                <strong>
-
-                Publication:
-
-                </strong>
-
-                {{ book.publication }}
-
-            </p>
-
-            {% set total_stock =
-            (book.show_quantity or 0)
-            +
-            (book.storage_quantity or 0) %}
-
-            <p>
-
-                <strong>
-
-                Stock:
-
-                </strong>
-
-                <span class="{% if total_stock <= 5 %}stock-low{% else %}stock-good{% endif %}">
-
-                    {{ total_stock }}
-
-                </span>
+                Manage and track all bookstore inventory
 
             </p>
 
         </div>
 
-    </div>
+        <a href="/add-book">
 
-    <!-- RIGHT -->
+            <button class="add-btn">
 
-    <div class="book-actions">
+                + Add New Book
 
-        <!-- VIEW DETAILS -->
-
-        <a href="/book/{{ book.id }}">
-
-        <button>
-
-            View Details
-
-        </button>
-
-        </a>
-
-        <br>
-
-        <!-- EDIT -->
-
-        <a href="/edit-book/{{ book.id }}">
-
-        <button>
-
-            Edit Book
-
-        </button>
-
-        </a>
-
-        <br>
-
-        <!-- DELETE -->
-
-        <a href="/delete-book/{{ book.id }}">
-
-        <button class="delete-btn">
-
-            Delete
-
-        </button>
+            </button>
 
         </a>
 
     </div>
 
+    <!-- SEARCH -->
+
+    <div class="search-section">
+
+        <input type="text"
+               id="inventorySearch"
+               placeholder="Search books, author, publication..."
+               onkeyup="filterBooks()">
+
+    </div>
+
+    <!-- BOOK GRID -->
+
+    <div class="book-grid"
+         id="bookGrid">
+
+        {% for book in books %}
+
+        <div class="book-card">
+
+            <!-- IMAGE -->
+
+            <div class="image-box">
+
+                {% if book.image %}
+
+                <img src="{{ url_for(
+                    'static',
+                    filename='uploads/' + book.image
+                ) }}">
+
+                {% else %}
+
+                <img src="{{ url_for(
+                    'static',
+                    filename='images.jpg'
+                ) }}">
+
+                {% endif %}
+
+            </div>
+
+            <!-- CONTENT -->
+
+            <div class="book-content">
+
+                <h2 class="book-title">
+
+                    {{ book.title }}
+
+                </h2>
+
+                <p>
+
+                    <b>Author:</b>
+                    {{ book.author }}
+
+                </p>
+
+                <p>
+
+                    <b>Publication:</b>
+                    {{ book.publication }}
+
+                </p>
+
+                <p>
+
+                    <b>Category:</b>
+                    {{ book.category }}
+
+                </p>
+
+                <p>
+
+                    <b>Language:</b>
+                    {{ book.language }}
+
+                </p>
+
+                <!-- LOCATION -->
+
+                <div class="location-box">
+
+                    <span class="location-tag">
+
+                        Shelf:
+                        {{ book.shelf_number }}
+
+                    </span>
+
+                    <span class="location-tag">
+
+                        Rack:
+                        {{ book.rack_number }}
+
+                    </span>
+
+                </div>
+
+                <!-- STOCK -->
+
+                <div class="stock-box">
+
+                    <div class="stock-item">
+
+                        <span>
+
+                            Show Room
+
+                        </span>
+
+                        <strong>
+
+                            {{ book.show_quantity }}
+
+                        </strong>
+
+                    </div>
+
+                    <div class="stock-item">
+
+                        <span>
+
+                            Storage
+
+                        </span>
+
+                        <strong>
+
+                            {{ book.storage_quantity }}
+
+                        </strong>
+
+                    </div>
+
+                    <div class="stock-item">
+
+                        <span>
+
+                            Total
+
+                        </span>
+
+                        <strong>
+
+                            {{
+                            (book.show_quantity or 0)
+                            +
+                            (book.storage_quantity or 0)
+                            }}
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                <!-- PRICE -->
+
+                <div class="price-section">
+
+                    <div class="price-card">
+
+                        <span>
+
+                            Purchase
+
+                        </span>
+
+                        <h3>
+
+                            ₹{{ book.purchase_price }}
+
+                        </h3>
+
+                    </div>
+
+                    <div class="price-card selling">
+
+                        <span>
+
+                            Selling
+
+                        </span>
+
+                        <h3>
+
+                            ₹{{ book.final_price }}
+
+                        </h3>
+
+                    </div>
+
+                </div>
+
+                <!-- BUTTONS -->
+
+                <div class="button-group">
+
+                    <a href="/book/{{ book.id }}">
+
+                        <button class="view-btn">
+
+                            View Details
+
+                        </button>
+
+                    </a>
+
+                    <a href="/edit-book/{{ book.id }}">
+
+                        <button class="edit-btn">
+
+                            Edit
+
+                        </button>
+
+                    </a>
+
+                    <a href="/delete-book/{{ book.id }}"
+                       onclick="return confirm('Delete this book?')">
+
+                        <button class="delete-btn">
+
+                            Delete
+
+                        </button>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
 </div>
 
-{% endfor %}
-
-</div>
-
-</div>
+<!-- SEARCH SCRIPT -->
 
 <script>
 
-function searchBooks(){
+function filterBooks(){
 
-    const input = document
+    let input = document
     .getElementById(
-        "searchInput"
-    )
-    .value
-    .toLowerCase();
+        "inventorySearch"
+    ).value.toLowerCase();
 
-    const books = document
-    .querySelectorAll(".book");
+    let cards = document
+    .querySelectorAll(
+        ".book-card"
+    );
 
-    books.forEach(function(book){
+    cards.forEach(function(card){
 
-        const text =
-        book.innerText.toLowerCase();
+        let text =
+        card.innerText.toLowerCase();
 
         if(text.includes(input)){
 
-            book.style.display =
-            "flex";
+            card.style.display = "block";
 
         }
 
         else{
 
-            book.style.display =
-            "none";
+            card.style.display = "none";
 
         }
 
@@ -498,6 +318,405 @@ function searchBooks(){
 
 </script>
 
-</body>
+<!-- STYLES -->
 
-</html>
+<style>
+
+/* PAGE */
+
+.inventory-page{
+
+    padding:25px;
+
+}
+
+/* HEADER */
+
+.inventory-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:30px;
+
+    gap:20px;
+
+    flex-wrap:wrap;
+
+}
+
+.inventory-header h1{
+
+    font-size:42px;
+
+    margin-bottom:8px;
+
+    color:#111827;
+
+}
+
+.inventory-header p{
+
+    color:#6b7280;
+
+    font-size:18px;
+
+}
+
+/* BUTTON */
+
+.add-btn{
+
+    background:#2563eb;
+
+    color:white;
+
+    border:none;
+
+    padding:15px 25px;
+
+    border-radius:14px;
+
+    font-size:17px;
+
+    cursor:pointer;
+
+    transition:0.3s;
+
+}
+
+.add-btn:hover{
+
+    background:#1d4ed8;
+
+}
+
+/* SEARCH */
+
+.search-section{
+
+    margin-bottom:30px;
+
+}
+
+.search-section input{
+
+    width:100%;
+
+    padding:18px;
+
+    border-radius:16px;
+
+    border:1px solid #d1d5db;
+
+    font-size:17px;
+
+    box-sizing:border-box;
+
+}
+
+/* GRID */
+
+.book-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit, minmax(320px, 1fr));
+
+    gap:25px;
+
+}
+
+/* CARD */
+
+.book-card{
+
+    background:white;
+
+    border-radius:24px;
+
+    overflow:hidden;
+
+    box-shadow:
+    0px 0px 20px rgba(0,0,0,0.08);
+
+    transition:0.3s;
+
+}
+
+.book-card:hover{
+
+    transform:translateY(-5px);
+
+}
+
+/* IMAGE */
+
+.image-box{
+
+    height:320px;
+
+    overflow:hidden;
+
+}
+
+.image-box img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+}
+
+/* CONTENT */
+
+.book-content{
+
+    padding:25px;
+
+}
+
+.book-title{
+
+    font-size:28px;
+
+    margin-bottom:15px;
+
+    color:#111827;
+
+}
+
+/* LOCATION */
+
+.location-box{
+
+    display:flex;
+
+    gap:10px;
+
+    margin-top:15px;
+
+    flex-wrap:wrap;
+
+}
+
+.location-tag{
+
+    background:#e0f2fe;
+
+    color:#0369a1;
+
+    padding:8px 14px;
+
+    border-radius:30px;
+
+    font-size:14px;
+
+    font-weight:bold;
+
+}
+
+/* STOCK */
+
+.stock-box{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(3,1fr);
+
+    gap:12px;
+
+    margin-top:20px;
+
+}
+
+.stock-item{
+
+    background:#f8fafc;
+
+    padding:14px;
+
+    border-radius:14px;
+
+    text-align:center;
+
+}
+
+.stock-item strong{
+
+    display:block;
+
+    margin-top:8px;
+
+    font-size:20px;
+
+}
+
+/* PRICE */
+
+.price-section{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(2,1fr);
+
+    gap:15px;
+
+    margin-top:25px;
+
+}
+
+.price-card{
+
+    background:#f8fafc;
+
+    padding:18px;
+
+    border-radius:16px;
+
+    text-align:center;
+
+}
+
+.price-card h3{
+
+    margin-top:10px;
+
+    font-size:24px;
+
+    color:#111827;
+
+}
+
+.selling{
+
+    background:#dcfce7;
+
+}
+
+/* BUTTONS */
+
+.button-group{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(3,1fr);
+
+    gap:10px;
+
+    margin-top:25px;
+
+}
+
+.button-group button{
+
+    width:100%;
+
+    border:none;
+
+    padding:14px;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    color:white;
+
+    font-size:15px;
+
+}
+
+.view-btn{
+
+    background:#2563eb;
+
+}
+
+.edit-btn{
+
+    background:#10b981;
+
+}
+
+.delete-btn{
+
+    background:#ef4444;
+
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+    .inventory-page{
+
+        padding:15px;
+
+    }
+
+    .inventory-header{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+    }
+
+    .inventory-header h1{
+
+        font-size:32px;
+
+    }
+
+    .book-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .book-title{
+
+        font-size:24px;
+
+    }
+
+    .stock-box{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .price-section{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .button-group{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .button-group button{
+
+        font-size:18px;
+
+        padding:16px;
+
+    }
+
+}
+
+</style>
+
+{% endblock %}

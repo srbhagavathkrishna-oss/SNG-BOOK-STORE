@@ -1,386 +1,416 @@
-<a href="/">
+{% extends "base.html" %}
 
-    <button>
+{% block content %}
 
-        ← Back To Home
+<div class="container">
 
-    </button>
+    <div class="page-header">
 
-</a>
-<!DOCTYPE html>
-<html>
+        <h1>
 
-<head>
+            Add New Book
 
-    <title>Add Book</title>
-  
-    <style>
-    .top-logo{
+        </h1>
 
-    position:fixed;
+        <p>
 
-    top:10px;
+            Add books with complete inventory details
 
-    right:15px;
+        </p>
 
-    z-index:9999;
+    </div>
+
+    <div class="form-card">
+
+        <form method="POST"
+              enctype="multipart/form-data">
+
+            <!-- BOOK TITLE -->
+
+            <label>
+
+                Book Title
+
+            </label>
+
+            <input type="text"
+                   name="title"
+                   placeholder="Enter Book Title"
+                   required>
+
+            <!-- AUTHOR -->
+
+            <label>
+
+                Author Name
+
+            </label>
+
+            <input type="text"
+                   name="author"
+                   placeholder="Enter Author Name"
+                   required>
+
+            <!-- PUBLICATION -->
+
+            <label>
+
+                Publication
+
+            </label>
+
+            <input type="text"
+                   name="publication"
+                   placeholder="Enter Publication"
+                   required>
+
+            <!-- CATEGORY -->
+
+            <label>
+
+                Category
+
+            </label>
+
+            <input type="text"
+                   name="category"
+                   placeholder="Enter Category">
+
+            <!-- LANGUAGE -->
+
+            <label>
+
+                Language
+
+            </label>
+
+            <input type="text"
+                   name="language"
+                   placeholder="Enter Language">
+
+            <!-- PURCHASE PRICE -->
+
+            <label>
+
+                Purchase Price
+
+            </label>
+
+            <input type="number"
+                   step="0.01"
+                   name="purchase_price"
+                   placeholder="Enter Purchase Price"
+                   required>
+
+            <!-- SELLING PRICE -->
+
+            <label>
+
+                Final Selling Price
+
+            </label>
+
+            <input type="number"
+                   step="0.01"
+                   name="final_price"
+                   placeholder="Enter Selling Price"
+                   required>
+
+            <!-- SHOW QUANTITY -->
+
+            <label>
+
+                Show Room Quantity
+
+            </label>
+
+            <input type="number"
+                   name="show_quantity"
+                   placeholder="Enter Show Quantity"
+                   required>
+
+            <!-- STORAGE QUANTITY -->
+
+            <label>
+
+                Storage Quantity
+
+            </label>
+
+            <input type="number"
+                   name="storage_quantity"
+                   placeholder="Enter Storage Quantity"
+                   required>
+
+            <!-- SHELF -->
+
+            <label>
+
+                Shelf Number
+
+            </label>
+
+            <select name="shelf_number"
+                    required>
+
+                <option value="">
+
+                    Select Shelf
+
+                </option>
+
+                <option>A</option>
+                <option>B</option>
+                <option>C</option>
+                <option>D</option>
+                <option>E</option>
+                <option>F</option>
+                <option>G</option>
+                <option>H</option>
+                <option>I</option>
+                <option>J</option>
+
+            </select>
+
+            <!-- RACK -->
+
+            <label>
+
+                Rack Number
+
+            </label>
+
+            <select name="rack_number"
+                    required>
+
+                <option value="">
+
+                    Select Rack
+
+                </option>
+
+                {% for i in range(1,21) %}
+
+                <option>
+
+                    {{ i }}
+
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+            <!-- DESCRIPTION -->
+
+            <label>
+
+                Book Description
+
+            </label>
+
+            <textarea name="description"
+                      rows="5"
+                      placeholder="Enter Description"></textarea>
+
+            <!-- IMAGE -->
+
+            <label>
+
+                Upload Book Image
+
+            </label>
+
+            <input type="file"
+                   name="image"
+                   accept="image/*">
+
+            <!-- SUBMIT -->
+
+            <button type="submit"
+                    class="submit-btn">
+
+                Add Book
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<style>
+
+/* PAGE */
+
+.container{
+
+    max-width:900px;
+
+    margin:auto;
+
+    padding:20px;
 
 }
 
-.top-logo img{
+/* HEADER */
 
-    width:65px;
+.page-header{
 
-    height:65px;
+    text-align:center;
 
-    object-fit:cover;
+    margin-bottom:30px;
 
-    border-radius:12px;
+}
+
+.page-header h1{
+
+    font-size:42px;
+
+    color:#111827;
+
+    margin-bottom:10px;
+
+}
+
+.page-header p{
+
+    color:#6b7280;
+
+    font-size:18px;
+
+}
+
+/* CARD */
+
+.form-card{
 
     background:white;
 
-    padding:3px;
+    padding:35px;
 
-    box-shadow:0px 0px 8px rgba(0,0,0,0.3);
+    border-radius:25px;
+
+    box-shadow:
+    0px 0px 25px rgba(0,0,0,0.08);
+
+}
+
+/* LABEL */
+
+label{
+
+    display:block;
+
+    margin-top:20px;
+
+    margin-bottom:8px;
+
+    font-weight:bold;
+
+    color:#111827;
+
+    font-size:16px;
+
+}
+
+/* INPUTS */
+
+input,
+select,
+textarea{
+
+    width:100%;
+
+    padding:15px;
+
+    border-radius:14px;
+
+    border:1px solid #d1d5db;
+
+    font-size:16px;
+
+    box-sizing:border-box;
+
+}
+
+/* TEXTAREA */
+
+textarea{
+
+    resize:none;
+
+}
+
+/* BUTTON */
+
+.submit-btn{
+
+    width:100%;
+
+    margin-top:30px;
+
+    background:#2563eb;
+
+    color:white;
+
+    border:none;
+
+    padding:18px;
+
+    border-radius:16px;
+
+    font-size:18px;
+
+    cursor:pointer;
+
+    transition:0.3s;
+
+}
+
+.submit-btn:hover{
+
+    background:#1d4ed8;
+
+    transform:translateY(-2px);
+
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+    .page-header h1{
+
+        font-size:30px;
 
     }
-    body{
 
-        font-family:Arial;
-        background:#f4f4f4;
+    .form-card{
+
         padding:20px;
 
     }
 
-    .container{
-
-        max-width:700px;
-        margin:auto;
-        background:white;
-        padding:25px;
-        border-radius:15px;
-
-    }
-
     input,
-    select{
+    select,
+    textarea{
 
-        width:100%;
-        padding:12px;
-        margin-top:10px;
-        margin-bottom:15px;
+        font-size:18px;
 
-    }
-
-    button{
-
-        background:darkred;
-        color:white;
-        border:none;
-        padding:12px 20px;
-        cursor:pointer;
+        padding:16px;
 
     }
 
-    video,
-    img{
+    .submit-btn{
 
-        border-radius:10px;
-
-    }
-
-    .price-box{
-
-        background:#fafafa;
-        padding:15px;
-        border-radius:10px;
-        margin-bottom:15px;
+        font-size:20px;
 
     }
-
-    </style>
-
-</head>
-
-<body>
-<div class="top-logo">
-
-    <img src="{{ url_for('static', filename='logo.jpeg') }}">
-
-</div>
-<div class="container">
-
-    <h1>Add New Book</h1>
-
-    <form method="POST"
-          enctype="multipart/form-data">
-
-        <label>Book Name</label>
-
-        <input type="text"
-               name="title">
-
-        <label>Author</label>
-
-        <input type="text"
-               name="author">
-
-        <label>Publication</label>
-
-        <input type="text"
-               name="publication">
-
-        <label>Book Price</label>
-
-        <input type="number"
-               step="0.01"
-               name="mrp"
-               id="mrp"
-               required
-               onkeyup="calculateFinalPrice()">
-
-        <label>Select Currency</label>
-
-        <select name="currency"
-                id="currency"
-                onchange="calculateFinalPrice()">
-
-            <option value="INR">₹ INR</option>
-            <option value="USD">$ USD</option>
-            <option value="EUR">€ EURO</option>
-            <option value="GBP">£ POUND</option>
-            <option value="JPY">¥ YEN</option>
-
-        </select>
-
-        <div class="price-box">
-
-            <h3 id="convertedPrice">
-
-                Converted INR:
-                ₹0
-
-            </h3>
-
-        </div>
-
-        <label>Discount %</label>
-
-        <input type="number"
-               step="0.01"
-               name="discount"
-               id="discount"
-               value="0"
-               onkeyup="calculateFinalPrice()">
-
-        <div class="price-box">
-
-            <h3 id="finalPricePreview">
-
-                Final Price:
-                ₹0
-
-            </h3>
-
-        </div>
-
-        <label>Show Quantity</label>
-
-        <input type="number"
-               name="show_quantity"
-               value="0">
-
-        <label>Storage Quantity</label>
-
-        <input type="number"
-               name="storage_quantity"
-               value="0">
-
-        <label>Upload Book Cover</label>
-
-        <input type="file"
-               name="image">
-
-        <label>Capture Book Cover</label>
-
-        <br><br>
-
-        <video id="camera"
-               width="300"
-               autoplay>
-        </video>
-
-        <br><br>
-
-        <button type="button"
-                onclick="captureImage()">
-
-            Capture Image
-
-        </button>
-
-        <br><br>
-
-        <canvas id="canvas"
-                width="300"
-                height="400"
-                style="display:none;">
-        </canvas>
-
-        <input type="hidden"
-               name="captured_image"
-               id="captured_image">
-
-        <img id="preview"
-             width="200"
-             style="display:none;">
-
-        <br><br>
-
-        <button type="submit">
-
-            Save Book
-
-        </button>
-
-    </form>
-
-</div>
-
-<script>
-
-const conversionRates = {
-
-    INR: 1,
-    USD: 83,
-    EUR: 90,
-    GBP: 105,
-    JPY: 0.55
-
-};
-
-function calculateFinalPrice(){
-
-    const mrp = parseFloat(
-
-        document.getElementById(
-            "mrp"
-        ).value
-
-    ) || 0;
-
-    const discount = parseFloat(
-
-        document.getElementById(
-            "discount"
-        ).value
-
-    ) || 0;
-
-    const currency =
-
-        document.getElementById(
-            "currency"
-        ).value;
-
-    const converted =
-
-        mrp *
-        conversionRates[currency];
-
-    document.getElementById(
-        "convertedPrice"
-    ).innerHTML =
-
-    "Converted INR: ₹" +
-
-    converted.toFixed(2);
-
-    const finalPrice =
-
-        converted -
-
-        (
-            converted *
-            discount / 100
-        );
-
-    document.getElementById(
-        "finalPricePreview"
-    ).innerHTML =
-
-    "Final Price: ₹" +
-
-    finalPrice.toFixed(2);
 
 }
 
-navigator.mediaDevices.getUserMedia({
+</style>
 
-    video:{
-    facingMode:{
-        ideal:"environment"
-    }
-}
-
-})
-.then(function(stream){
-
-    document.getElementById(
-        "camera"
-    ).srcObject = stream;
-
-});
-
-function captureImage(){
-
-    const video =
-    document.getElementById(
-        "camera"
-    );
-
-    const canvas =
-    document.getElementById(
-        "canvas"
-    );
-
-    const context =
-    canvas.getContext("2d");
-
-    context.drawImage(
-
-        video,
-        0,
-        0,
-        300,
-        400
-
-    );
-
-    const imageData =
-    canvas.toDataURL("image/png");
-
-    document.getElementById(
-        "captured_image"
-    ).value = imageData;
-
-    const preview =
-    document.getElementById(
-        "preview"
-    );
-
-    preview.src = imageData;
-
-    preview.style.display =
-    "block";
-
-    video.style.display =
-    "none";
-
-}
-
-</script>
-
-</body>
-
-</html>
+{% endblock %}

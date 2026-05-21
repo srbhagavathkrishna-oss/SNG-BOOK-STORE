@@ -626,7 +626,12 @@ select{
     {{ (book.show_quantity or 0)
     +
     (book.storage_quantity or 0) }}
-}
+    "shelf_number":
+    "{{ book.shelf_number or '' }}",
+
+    "rack_number":
+    "{{ book.rack_number or '' }}",
+        }
 
 {% if not loop.last %}
 ,
@@ -1144,6 +1149,19 @@ function searchBook(cart){
 
     Stock:
     ${book.stock}
+
+</p>
+<p>
+
+    Shelf:
+    ${book.shelf_number}
+
+</p>
+
+<p>
+
+    Rack:
+    ${book.rack_number}
 
 </p>
 
