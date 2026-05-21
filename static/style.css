@@ -902,3 +902,18 @@ button:hover{
     }
 
 }
+video{
+
+    width:100%;
+
+    height:320px;
+
+    background:black;
+
+    border-radius:20px;
+
+    object-fit:cover;
+
+    display:block;
+
+}

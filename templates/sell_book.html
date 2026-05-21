@@ -625,8 +625,10 @@ select{
     "stock":
     {{ (book.show_quantity or 0)
     +
-    (book.storage_quantity or 0) }}
+    (book.storage_quantity or 0) }},
+
     "shelf_number":
+    "{{ book.shelf_number or '' }}",
     "{{ book.shelf_number or '' }}",
 
     "rack_number":
@@ -728,7 +730,7 @@ select{
         <input type="file"
                id="upload{{ cart }}">
 
-        <video id="camera"
+        <video id="camera{{ cart }}"
             autoplay
             playsinline
             muted
@@ -743,7 +745,7 @@ select{
 
         </video>
         <button type="button"
-        onclick="startCamera()"
+        onclick="startCamera('{{ cart }}')"
         class="camera-btn">
 
             Start Camera
@@ -997,7 +999,7 @@ let carts = {
 
 /* START CAMERA */
 
-<script>
+
 
 let currentStream;
 
@@ -1062,8 +1064,7 @@ async function startCamera(){
 
 }
 
-</script>
-<script>
+
 
 window.onload = function(){
 
@@ -1073,9 +1074,61 @@ window.onload = function(){
 
 </script>
 
-/* START */
+/* START CAMERA */
 
-startCameras();
+async function startCamera(cart){
+
+    const video = document.getElementById(
+
+        "camera" + cart
+
+    );
+
+    try{
+
+        let constraints = {
+
+            video:true
+
+        };
+
+        // MOBILE BACK CAMERA
+
+        if(window.innerWidth < 768){
+
+            constraints = {
+
+                video:{
+
+                    facingMode:"environment"
+
+                }
+
+            };
+
+        }
+
+        const stream = await navigator
+        .mediaDevices
+        .getUserMedia(constraints);
+
+        video.srcObject = stream;
+
+        video.play();
+
+    }
+
+    catch(error){
+
+        console.log(error);
+
+        alert(
+            "Camera access denied"
+        );
+
+    }
+
+}
 
 /* CAPTURE IMAGE */
 
@@ -1151,84 +1204,19 @@ function searchBook(cart){
 
         ){
 
-            resultDiv.innerHTML += `
+            resultDiv.innerHTML = `
 
-            <div class="book-result">
+<div class="book-result">
 
-                <img src="/static/uploads/${book.image}"
-                     width="120"
-                     class="book-image">
+    <h3>
 
-                <h3>
+        AI Searching Books...
 
-                    ${book.title}
+    </h3>
 
-                </h3>
+</div>
 
-                <p>
-
-                    Author:
-                    ${book.author}
-
-                </p>
-
-                <p>
-
-                    Publication:
-                    ${book.publication}
-
-                </p>
-
-                <p>
-
-                    Price:
-                    ₹${book.price}
-
-                </p>
-
-                <p class="${
-                book.stock > 5
-                ? 'stock-green'
-                : book.stock > 0
-                ? 'stock-orange'
-                : 'stock-red'
-                }">
-
-    Stock:
-    ${book.stock}
-
-</p>
-<p>
-
-    Shelf:
-    ${book.shelf_number}
-
-</p>
-
-<p>
-
-    Rack:
-    ${book.rack_number}
-
-</p>
-
-                <input type="number"
-                       id="qty${cart}${book.id}"
-                       value="1"
-                       min="1">
-
-                <br>
-
-                <button onclick="addToCart(${cart}, ${book.id})">
-
-                    Add To Cart
-
-                </button>
-
-            </div>
-
-            `;
-
+`;
         }
 
     });
@@ -1322,7 +1310,8 @@ function updateCart(cart){
 
             </p>
 
-            <button onclick="removeItem(${cart}, ${index})">
+            <button
+                class="remove-btn" data-cart="${cart}" data-index="${index}">
 
                 Remove
 
@@ -1617,16 +1606,47 @@ async function aiSearch(cart){
 
     /* LOADING */
 
-    resultDiv.innerHTML = `
+    resultDiv.innerHTML += `
+
+<div class="book-result">
+
+    <h3>${book.title}</h3>
 
     <p>
 
-        AI Searching Books...
+        Author: ${book.author}
 
     </p>
 
-    `;
+    <p>
 
+        Price: ₹${book.price}
+
+    </p>
+
+    <p>
+
+        Stock: ${book.stock}
+
+    </p>
+
+    <input type="number"
+           id="qty${cart}${book.id}"
+           value="1"
+           min="1">
+
+    <button
+    class="add-btn"
+    data-cart="${cart}"
+    data-book="${book.id}">
+
+    Add To Cart
+
+</button>
+
+</div>
+
+`;
     /* SEND TO BACKEND */
 
     const response = await fetch(
@@ -1711,7 +1731,7 @@ async function aiSearch(cart){
 
             <br>
 
-            <button onclick="addToCart(${cart}, ${book.id})">
+            <button class="add-btn" data-cart="${cart}" data-book="${book.id}">
 
                 Add To Cart
 
@@ -1722,6 +1742,13 @@ async function aiSearch(cart){
         `;
 
     });
+
+}
+/* AUTO START CAMERA */
+
+window.onload = function(){
+
+    startCamera(1);
 
 }
 
