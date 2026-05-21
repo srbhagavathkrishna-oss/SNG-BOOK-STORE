@@ -1473,6 +1473,54 @@ def delete_transaction(id):
 
 
 # =========================================================
+# BOOK DETAILS
+# =========================================================
+
+@app.route("/book/<int:id>")
+
+def book_details(id):
+
+    book = Book.query.get_or_404(id)
+
+    return render_template(
+
+        "book_details.html",
+
+        book=book
+
+    )
+
+
+# =========================================================
+# DELETE TRANSACTION
+# =========================================================
+
+@app.route("/delete-transaction/<int:id>")
+
+def delete_transaction(id):
+
+    transaction = Transaction.query.get(id)
+
+    items = TransactionItem.query.filter_by(
+
+        transaction_id=id
+
+    ).all()
+
+    for item in items:
+
+        db.session.delete(item)
+
+    if transaction:
+
+        db.session.delete(transaction)
+
+    db.session.commit()
+
+    return redirect("/transactions")
+
+
+# =========================================================
 # MAIN
 # =========================================================
 
@@ -1483,3 +1531,4 @@ with app.app_context():
 if __name__ == "__main__":
 
     app.run(debug=True)
+
