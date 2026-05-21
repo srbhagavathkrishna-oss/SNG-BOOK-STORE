@@ -47,41 +47,62 @@ if not os.path.exists(UPLOAD_FOLDER):
 # =========================================================
 
 class Book(db.Model):
-    
+
     id = db.Column(
         db.Integer,
         primary_key=True
     )
 
+    # BASIC DETAILS
+
     title = db.Column(
-        db.String(300)
+        db.String(300),
+        default=""
     )
 
     author = db.Column(
-        db.String(300)
+        db.String(300),
+        default=""
     )
-    shelf_number = db.Column(db.String(10))
 
-    rack_number = db.Column(db.String(10))
     publication = db.Column(
-        db.String(300)
+        db.String(300),
+        default=""
     )
 
-    mrp = db.Column(
-        db.Float
+    category = db.Column(
+        db.String(100),
+        default=""
     )
 
-    currency = db.Column(
-        db.String(20)
+    language = db.Column(
+        db.String(100),
+        default=""
     )
 
-    discount = db.Column(
-        db.Float
+    description = db.Column(
+        db.Text,
+        default=""
+    )
+
+    # PRICING
+
+    purchase_price = db.Column(
+        db.Float,
+        default=0
     )
 
     final_price = db.Column(
-        db.Float
+        db.Float,
+        default=0
     )
+
+    discount = db.Column(
+        db.Float,
+        default=0
+    )
+
+    # STOCK
 
     show_quantity = db.Column(
         db.Integer,
@@ -93,8 +114,47 @@ class Book(db.Model):
         default=0
     )
 
+    # LOCATION
+
+    shelf_number = db.Column(
+        db.String(10),
+        default=""
+    )
+
+    rack_number = db.Column(
+        db.String(10),
+        default=""
+    )
+
+    # IMAGE
+
     image = db.Column(
-        db.String(300)
+        db.String(300),
+        default=""
+    )
+
+    # MULTI CURRENCY
+
+    currency_type = db.Column(
+        db.String(20),
+        default="INR"
+    )
+
+    foreign_price = db.Column(
+        db.Float,
+        default=0
+    )
+
+    converted_inr = db.Column(
+        db.Float,
+        default=0
+    )
+
+    # DATE
+
+    created_at = db.Column(
+        db.DateTime,
+        default=datetime.utcnow
     )
 
 # =========================================================
@@ -160,10 +220,55 @@ class TransactionItem(db.Model):
 # =========================================================
 
 @app.route("/")
+
 def home():
 
+    books = Book.query.all()
+
+    total_books = len(books)
+
+    total_stock = sum(
+
+        (book.show_quantity or 0)
+
+        +
+
+        (book.storage_quantity or 0)
+
+        for book in books
+
+    )
+
+    total_value = sum(
+
+        (book.final_price or 0)
+
+        *
+
+        (
+
+            (book.show_quantity or 0)
+
+            +
+
+            (book.storage_quantity or 0)
+
+        )
+
+        for book in books
+
+    )
+
     return render_template(
-        "index.html"
+
+        "index.html",
+
+        total_books=total_books,
+
+        total_stock=total_stock,
+
+        total_value=total_value
+
     )
 
 # =========================================================
