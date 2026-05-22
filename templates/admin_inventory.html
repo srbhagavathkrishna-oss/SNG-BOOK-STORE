@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="hero">
+
+    <h1>
+
+        Inventory Management
+
+    </h1>
+
+    <p>
+
+        Edit And Delete Books
+
+    </p>
+
+</div>
+
+<table>
+
+    <tr>
+
+        <th>Image</th>
+
+        <th>Title</th>
+
+        <th>Author</th>
+
+        <th>Price</th>
+
+        <th>Stock</th>
+
+        <th>Actions</th>
+
+    </tr>
+
+    {% for book in books %}
+
+    <tr>
+
+        <td>
+
+            {% if book.image %}
+
+            <img src="/static/uploads/{{ book.image }}"
+                 width="60">
+
+            {% endif %}
+
+        </td>
+
+        <td>
+
+            {{ book.title }}
+
+        </td>
+
+        <td>
+
+            {{ book.author }}
+
+        </td>
+
+        <td>
+
+            ₹{{ book.final_price }}
+
+        </td>
+
+        <td>
+
+            {{ book.show_quantity }}
+
+        </td>
+
+        <td>
+
+            <a href="/edit-book/{{ book.id }}"
+               class="btn">
+
+                Edit
+
+            </a>
+
+            <a href="/delete-book/{{ book.id }}"
+               class="btn"
+               onclick="return confirm(
+               'Delete this book?'
+               )">
+
+                Delete
+
+            </a>
+
+        </td>
+
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+{% endblock %}

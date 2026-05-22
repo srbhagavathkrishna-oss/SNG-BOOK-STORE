@@ -303,6 +303,37 @@ def admin():
     return render_template(
         "admin_panel.html"
     )
+@app.route("/admin-books")
+
+def admin_books():
+
+    books = Book.query.all()
+
+    return render_template(
+
+        "admin_books.html",
+
+        books=books
+
+    )
+# ============================================
+# ADMIN INVENTORY
+# ============================================
+
+@app.route("/admin-inventory")
+
+def admin_inventory():
+
+    books = Book.query.all()
+
+    return render_template(
+
+        "admin_inventory.html",
+
+        books=books
+
+    )
+
 
 # =========================================================
 # ADD BOOK
