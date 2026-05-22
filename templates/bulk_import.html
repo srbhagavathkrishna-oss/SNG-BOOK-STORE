@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+    <h1>
+
+        Bulk Import Books
+
+    </h1>
+
+    <form method="POST"
+          enctype="multipart/form-data">
+
+        <input type="file"
+               name="file"
+               required>
+
+        <button type="submit">
+
+            Upload Books
+
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

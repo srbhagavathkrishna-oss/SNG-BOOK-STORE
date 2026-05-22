@@ -7,7 +7,21 @@ import os
 import base64
 from ai_engine import extract_text
 import requests
+import pandas as pd
 app = Flask(__name__)
+
+
+app.config[
+    "SQLALCHEMY_DATABASE_URI"
+] = os.environ.get(
+    "DATABASE_URL"
+)
+
+app.config[
+    "SQLALCHEMY_TRACK_MODIFICATIONS"
+] = False
+
+db = SQLAlchemy(app)
 UPLOAD_FOLDER = "static/uploads"
 
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
@@ -28,14 +42,8 @@ def usd_to_inr(amount_usd):
     except:
 
         return 0
-# =========================================================
-# DATABASE CONFIG
-# =========================================================
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///books.db"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-db = SQLAlchemy(app)
 
 # =========================================================
 # UPLOAD FOLDER
@@ -568,6 +576,111 @@ def add_book():
 
     return render_template(
         "add_book.html"
+    )
+# =========================================================
+# BULK IMPORT BOOKS
+# =========================================================
+
+@app.route("/bulk-import", methods=["GET", "POST"])
+
+def bulk_import():
+
+    if request.method == "POST":
+
+        file = request.files.get("file")
+
+        if not file:
+
+            return "No file uploaded"
+
+        # READ CSV / EXCEL
+
+        if file.filename.endswith(".csv"):
+
+            df = pd.read_csv(file)
+
+        else:
+
+            df = pd.read_excel(file)
+
+        # LOOP ROWS
+
+        for index, row in df.iterrows():
+
+            book = Book(
+
+                title=str(
+                    row.get("title", "")
+                ),
+
+                author=str(
+                    row.get("author", "")
+                ),
+
+                publication=str(
+                    row.get("publication", "")
+                ),
+
+                category=str(
+                    row.get("category", "")
+                ),
+
+                language=str(
+                    row.get("language", "")
+                ),
+
+                purchase_price=float(
+                    row.get(
+                        "purchase_price", 0
+                    )
+                ),
+
+                final_price=float(
+                    row.get(
+                        "final_price", 0
+                    )
+                ),
+
+                show_quantity=int(
+                    row.get(
+                        "show_quantity", 0
+                    )
+                ),
+
+                storage_quantity=int(
+                    row.get(
+                        "storage_quantity", 0
+                    )
+                ),
+
+                shelf_number=str(
+                    row.get(
+                        "shelf_number", ""
+                    )
+                ),
+
+                rack_number=str(
+                    row.get(
+                        "rack_number", ""
+                    )
+                ),
+
+                description=str(
+                    row.get(
+                        "description", ""
+                    )
+                )
+
+            )
+
+            db.session.add(book)
+
+        db.session.commit()
+
+        return redirect("/inventory")
+
+    return render_template(
+        "bulk_import.html"
     )
 # =========================================================
 # BOOK LIST

@@ -5,3 +5,6 @@ Pillow
 numpy
 gunicorn
 requests
+psycopg2-binary
+pandas
+openpyxl
