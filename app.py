@@ -677,7 +677,7 @@ def bulk_import():
 
         db.session.commit()
 
-        return redirect("/inventory")
+        return redirect(url_for("book_list"))
 
     return render_template(
         "bulk_import.html"
@@ -1382,7 +1382,7 @@ def edit_book(id):
 
         db.session.commit()
 
-        return redirect("/inventory")
+        return redirect(url_for("book_list"))
 
     return render_template(
 
