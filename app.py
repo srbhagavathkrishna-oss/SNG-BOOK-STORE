@@ -9,21 +9,59 @@ from ai_engine import extract_text
 import requests
 import pandas as pd
 app = Flask(__name__)
+UPLOAD_FOLDER = "static/uploads"
 
+app.config[
+    "UPLOAD_FOLDER"
+] = UPLOAD_FOLDER
+
+os.makedirs(
+    UPLOAD_FOLDER,
+    exist_ok=True
+)
+
+database_url = os.environ.get(
+    "DATABASE_URL"
+)
+
+if database_url:
+
+    app.config[
+        "SQLALCHEMY_DATABASE_URI"
+    ] = database_url
+
+else:
+
+    app.config[
+        "SQLALCHEMY_DATABASE_URI"
+    ] = "sqlite:///books.db"
+
+app.config[
+    "SQLALCHEMY_TRACK_MODIFICATIONS"
+] = False
+
+
+
+ADMIN_PASSWORD = "sng123"
+import os
+
+database_url = os.environ.get(
+    "DATABASE_URL"
+)
+
+if database_url is None:
+
+    database_url = "sqlite:///books.db"
 
 app.config[
     "SQLALCHEMY_DATABASE_URI"
-] = os.environ.get(
-    "DATABASE_URL"
-)
+] = database_url
 
 app.config[
     "SQLALCHEMY_TRACK_MODIFICATIONS"
 ] = False
 
 db = SQLAlchemy(app)
-UPLOAD_FOLDER = "static/uploads"
-
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 def usd_to_inr(amount_usd):
 
@@ -235,52 +273,35 @@ class TransactionItem(db.Model):
 
 def home():
 
-    books = Book.query.all()
-
-    total_books = len(books)
-
-    total_stock = sum(
-
-        (book.show_quantity or 0)
-
-        +
-
-        (book.storage_quantity or 0)
-
-        for book in books
-
-    )
-
-    total_value = sum(
-
-        (book.final_price or 0)
-
-        *
-
-        (
-
-            (book.show_quantity or 0)
-
-            +
-
-            (book.storage_quantity or 0)
-
-        )
-
-        for book in books
-
-    )
+    books = Book.query.limit(12).all()
 
     return render_template(
 
-        "index.html",
+        "public_home.html",
 
-        total_books=total_books,
+        books=books
 
-        total_stock=total_stock,
+    )
+@app.route("/admin")
 
-        total_value=total_value
+def admin():
 
+    password = request.args.get(
+        "password"
+    )
+
+    if password != ADMIN_PASSWORD:
+
+        return """
+
+        <h2>
+        Wrong Password
+        </h2>
+
+        """
+
+    return render_template(
+        "admin_panel.html"
     )
 
 # =========================================================
@@ -687,6 +708,7 @@ def bulk_import():
 # =========================================================
 
 @app.route("/book-list")
+
 def book_list():
 
     books = Book.query.all()
@@ -698,7 +720,45 @@ def book_list():
         books=books
 
     )
+# ============================================
+# ANALYTICS
+# ============================================
 
+@app.route("/analytics")
+
+def analytics():
+
+    total_books = Book.query.count()
+
+    total_transactions = Transaction.query.count()
+
+    total_stock = db.session.query(
+
+        db.func.sum(
+            Book.show_quantity
+        )
+
+    ).scalar()
+
+    if total_stock is None:
+
+        total_stock = 0
+
+    books = Book.query.all()
+
+    return render_template(
+
+        "analytics.html",
+
+        total_books=total_books,
+
+        total_transactions=total_transactions,
+
+        total_stock=total_stock,
+
+        books=books
+
+    )
 # =========================================================
 # SELL BOOK
 # =========================================================
@@ -1559,7 +1619,6 @@ def book_details(id):
 
     )
 
-
 # =========================================================
 # DELETE TRANSACTION
 # =========================================================
@@ -1587,6 +1646,13 @@ def delete_transaction(id):
     db.session.commit()
 
     return redirect("/transactions")
+@app.route("/admin-secret")
+
+def admin_secret():
+
+    return render_template(
+        "admin_links.html"
+    )
 
 
 # =========================================================

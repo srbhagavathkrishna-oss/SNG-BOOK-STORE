@@ -18,13 +18,14 @@
 
             <p>
 
-                Complete inventory information
+                Available At Madhava Swamy Ashram Saptaham book store
+                
 
             </p>
 
         </div>
 
-        <a href="/inventory">
+        <a href="/book-list">
 
             <button class="back-btn">
 
@@ -172,7 +173,7 @@
 
             <div class="section-title">
 
-                Inventory Stock
+                Book Availability
 
             </div>
 
@@ -182,7 +183,7 @@
 
                     <span>
 
-                        Show Room
+                        Book Store
 
                     </span>
 
@@ -198,7 +199,7 @@
 
                     <span>
 
-                        Storage
+                        Available Storage
 
                     </span>
 
@@ -356,30 +357,32 @@
 
             <!-- BUTTONS -->
 
-            <div class="button-group">
+<!--           <div class="button-group">
 
-                <a href="/edit-book/{{ book.id }}">
+    <a href="/book-list">
 
-                    <button class="edit-btn">
+        <button class="edit-btn">
 
-                        Edit Book
+            Browse More Books
 
-                    </button>
+        </button>
 
-                </a>
+    </a>
 
-                <a href="/delete-book/{{ book.id }}"
-                   onclick="return confirm('Delete this book?')">
+</div>-->
+<div class="button-group">
 
-                    <button class="delete-btn">
+    <a href="/book-list">
 
-                        Delete Book
+        <button class="edit-btn">
 
-                    </button>
+            Browse More Books
 
-                </a>
+        </button>
 
-            </div>
+    </a>
+
+</div>
 
         </div>
 
@@ -468,7 +471,9 @@
     width:100%;
 
     border-radius:25px;
+    object-fit:cover;
 
+    height:520px;
 }
 
 .details-content h2{

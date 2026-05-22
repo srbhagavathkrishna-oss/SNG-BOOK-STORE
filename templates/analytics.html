@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="hero">
+
+    <h1>
+
+        Analytics Dashboard
+
+    </h1>
+
+    <p>
+
+        Saptaham Book Store Overview
+
+    </p>
+
+</div>
+
+<div class="books-grid">
+
+    <div class="book-card">
+
+        <h2>
+
+            Total Books
+
+        </h2>
+
+        <br>
+
+        <h1>
+
+            {{ total_books }}
+
+        </h1>
+
+    </div>
+
+    <div class="book-card">
+
+        <h2>
+
+            Transactions
+
+        </h2>
+
+        <br>
+
+        <h1>
+
+            {{ total_transactions }}
+
+        </h1>
+
+    </div>
+
+    <div class="book-card">
+
+        <h2>
+
+            Total Stock
+
+        </h2>
+
+        <br>
+
+        <h1>
+
+            {{ total_stock }}
+
+        </h1>
+
+    </div>
+
+</div>
+
+<br><br>
+
+<div class="hero">
+
+    <h2>
+
+        Available Books
+
+    </h2>
+
+</div>
+
+<table>
+
+    <tr>
+
+        <th>
+
+            Title
+
+        </th>
+
+        <th>
+
+            Author
+
+        </th>
+
+        <th>
+
+            Price
+
+        </th>
+
+        <th>
+
+            Stock
+
+        </th>
+
+    </tr>
+
+    {% for book in books %}
+
+    <tr>
+
+        <td>
+
+            {{ book.title }}
+
+        </td>
+
+        <td>
+
+            {{ book.author }}
+
+        </td>
+
+        <td>
+
+            ₹{{ book.final_price }}
+
+        </td>
+
+        <td>
+
+            {{ book.show_quantity }}
+
+        </td>
+
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+{% endblock %}

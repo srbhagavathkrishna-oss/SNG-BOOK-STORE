@@ -1,177 +1,569 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
-    <meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+
     <meta charset="UTF-8">
 
-    
+    <meta name="viewport"
+          content="width=device-width,
+                   initial-scale=1.0">
 
     <title>
 
-        Smart Book Store ERP
+        Saptaham Book Store
 
     </title>
 
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='style.css') }}">
+    <!-- GOOGLE FONT -->
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <!-- OPTIONAL CSS -->
 
     <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+          href="{{ url_for('static',
+          filename='style.css') }}">
+
+    <style>
+
+        *{
+
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+
+        }
+
+        body{
+
+            font-family:'Poppins',sans-serif;
+
+            background:
+            linear-gradient(
+            135deg,
+             #ff5e00,
+             #ffffff,
+             #fe8c12
+            );
+
+    color:#222;
+
+    min-height:100vh;
+
+}
+        /* =====================================
+           NAVBAR
+        ====================================== */
+
+        .navbar{
+
+            width:100%;
+
+            background:rgb(184, 249, 255);
+
+            padding:15px 25px;
+
+            display:flex;
+
+            justify-content:space-between;
+
+            align-items:center;
+
+            flex-wrap:wrap;
+
+            box-shadow:0 2px 10px rgba(0,0,0,0.08);
+
+            position:sticky;
+
+            top:0;
+
+            z-index:999;
+
+        }
+
+        .logo{
+
+            font-size:50px;
+
+            font-weight:1000;
+
+            color:#132860;
+
+        }
+
+        .nav-links{
+
+            display:flex;
+
+            gap:20px;
+
+            align-items:center;
+
+            flex-wrap:wrap;
+
+        }
+
+        .nav-links a{
+
+            text-decoration:none;
+
+            color:#333;
+
+            font-weight:500;
+
+            transition:0.3s;
+
+        }
+
+        .nav-links a:hover{
+
+            color:#2563eb;
+
+        }
+
+        /* =====================================
+           BUTTON
+        ====================================== */
+
+        .btn{
+
+            background:#2563eb;
+
+            color:white !important;
+
+            padding:12px 20px;
+
+            border:none;
+
+            border-radius:12px;
+
+            font-weight:600;
+
+            text-decoration:none;
+
+            display:inline-block;
+
+            cursor:pointer;
+
+            transition:0.3s;
+
+        }
+
+        .btn:hover{
+
+            background:#1d4ed8;
+
+        }
+
+        /* =====================================
+           CONTAINER
+        ====================================== */
+
+        .container{
+
+            width:95%;
+
+            max-width:1200px;
+
+            margin:auto;
+
+            padding:30px 15px;
+
+        }
+
+        /* =====================================
+           HERO
+        ====================================== */
+
+        .hero{
+
+            background:
+            linear-gradient(
+            135deg,
+             #7bf7ec,
+             #ffe101
+            );
+
+            padding:30px;
+
+            border-radius:25px;
+
+            text-align:center;
+
+            margin-bottom:35px;
+
+            box-shadow:
+            0 10px 30px
+             rgba(37,99,235,0.12);
+
+        }       
+
+        .hero h1{
+
+            font-size:54px;
+
+            line-height:1.2;
+
+            color:#1e3a8a;
+
+            margin-top:20px;
+
+            margin-bottom:20px;
+
+        }
+
+        .hero p{
+
+            font-size:18px;
+
+            color:#666;
+
+            line-height:1.7;
+
+            margin-bottom:20px;
+
+        }
+
+        /* =====================================
+           BOOK GRID
+        ====================================== */
+
+        .books-grid{
+
+            display:grid;
+
+            grid-template-columns:
+            repeat(auto-fit,
+            minmax(220px,1fr));
+
+            gap:25px;
+
+        }
+
+        .book-card{
+
+            background:rgb(255, 3, 205);
+
+            padding:15px;
+
+            border-radius:20px;
+
+            box-shadow:0 4px 15px rgba(0,0,0,0.08);
+
+            transition:0.3s;
+
+        }
+
+        .book-card:hover{
+
+            transform:translateY(-5px);
+
+        }
+
+        .book-image{
+
+            width:100%;
+
+            height:300px;
+
+            object-fit:cover;
+
+            border-radius:15px;
+
+            background:#aa00ff;
+
+        }
+
+        .book-card h3{
+
+            margin-top:15px;
+
+            font-size:20px;
+
+            color:#111;
+
+        }
+
+        .book-card p{
+
+            margin-top:8px;
+
+            color:#666;
+
+            font-size:14px;
+
+        }
+
+        .price{
+
+            margin-top:12px;
+
+            color:#16a34a;
+
+            font-size:24px;
+
+            font-weight:700;
+
+        }
+
+        /* =====================================
+           FORMS
+        ====================================== */
+
+        input,
+        select,
+        textarea{
+
+            width:100%;
+
+            padding:14px;
+
+            border:none;
+
+            border-radius:14px;
+
+            margin-top:10px;
+
+            margin-bottom:20px;
+
+            font-size:15px;
+
+            background:white;
+
+            box-shadow:0 2px 10px rgba(0,0,0,0.06);
+
+        }
+
+        textarea{
+
+            resize:vertical;
+
+        }
+
+        /* =====================================
+           TABLES
+        ====================================== */
+
+        table{
+
+            width:100%;
+
+            border-collapse:collapse;
+
+            background:white;
+
+            border-radius:20px;
+
+            overflow:hidden;
+
+            box-shadow:0 2px 12px rgba(0,0,0,0.08);
+
+        }
+
+        table th{
+
+            background:#2563eb;
+
+            color:white;
+
+            padding:15px;
+
+        }
+
+        table td{
+
+            padding:14px;
+
+            border-bottom:1px solid #eee;
+
+            text-align:center;
+
+        }
+
+        /* =====================================
+           FOOTER
+        ====================================== */
+
+        
+
+        /* =====================================
+           MOBILE
+        ====================================== */
+
+        @media(max-width:768px){
+
+            .navbar{
+
+                flex-direction:column;
+
+                gap:15px;
+
+                text-align:center;
+
+            }
+
+            .nav-links{
+
+                justify-content:center;
+
+            }
+
+            .hero{
+
+                padding:20px;
+
+            }
+
+            .hero h1{
+
+                font-size:36px;
+
+            }
+
+            .hero p{
+
+                font-size:16px;
+
+            }
+
+            .book-image{
+
+                height:220px;
+
+            }
+
+            table{
+
+                display:block;
+
+                overflow-x:auto;
+
+            }
+
+        }
+
+    </style>
 
 </head>
+<script>
 
+function openAdmin(){
+
+    const password = prompt(
+        "Enter Admin Password"
+    );
+
+    if(password === "saptaham123"){
+
+        window.location = "/admin";
+
+    }
+
+    else{
+
+        alert("Wrong Password");
+
+    }
+
+}
+
+</script>
 <body>
 
-<!-- SIDEBAR -->
+    <!-- =====================================
+         NAVBAR
+    ====================================== -->
 
-<div class="sidebar">
+    <div class="navbar">
 
-    <!-- LOGO -->
+        <div class="logo">
 
-    <div class="sidebar-logo">
-
-        <img src="{{ url_for(
-        'static',
-        filename='logo.jpeg'
-        ) }}">
-
-        <h2>
-
-            Smart BMS
-
-        </h2>
-
-        <p>
-
-            SNGSAS
-
-        </p>
-
-    </div>
-
-    <!-- MENU -->
-
-    <div class="menu">
-
-        <a href="/">
-
-            <i class="fa-solid fa-house"></i>
-
-            HOME
-
-        </a>
-
-        <a href="/add-book">
-
-            <i class="fa-solid fa-square-plus"></i>
-
-            Add Book
-
-        </a>
-
-        <a href="/book-list">
-
-            <i class="fa-solid fa-book"></i>
-
-            Inventory
-
-        </a>
-
-        <a href="/sell-book">
-
-            <i class="fa-solid fa-cart-shopping"></i>
-
-            SELL
-
-        </a>
-
-        <a href="/transactions">
-
-            <i class="fa-solid fa-receipt"></i>
-
-            Transactions
-
-        </a>
-
-        <a href="/dashboard">
-
-            <i class="fa-solid fa-chart-line"></i>
-
-            Analytics
-
-        </a>
-
-    </div>
-
-</div>
-
-<!-- MAIN -->
-
-<div class="main-content">
-
-    <!-- HEADER -->
-
-    <div class="header">
-
-        <div class="header-left">
-
-            <h1>
-
-                BOOKSTORE MANAGEMENT SYSTEM(BMS)
-
-            </h1>
-
-            <p>
-
-               MADHAVASWAMI ASHRAMAM
-            </p>
+            MADHAVASWAMI ASHRAMAM BOOK STORE
 
         </div>
 
-        <div class="header-right">
+        <div class="nav-links">
 
-            <img src="{{ url_for(
-            'static',
-            filename='logo.jpeg'
-            ) }}">
+            <a href="/">
+
+                Home
+
+            </a>
+
+            <a href="/book-list">
+
+                Browse Books
+
+            
+
+            <a href="#"
+               class="btn"
+               onclick="openAdmin()">
+
+                Admin
+
+            </a>
 
         </div>
 
     </div>
 
-    <!-- PAGE CONTENT -->
+    <!-- =====================================
+         MAIN CONTENT
+    ====================================== -->
 
-    {% block content %}
+    <div class="container">
 
-    {% endblock %}
+        {% block content %}
 
-    <!-- FOOTER -->
-
-    <div class="footer">
-
-        <img src="{{ url_for(
-        'static',
-        filename='BK LOGO.jpeg'
-        ) }}">
-
-        <h2>
-
-            Developed by
-            BHAGAVATHKRISHNA.S.R
-
-        </h2>
-
-        <p>
-
-            Powered by Innovation
-
-        </p>
+        {% endblock %}
 
     </div>
 
-</div>
+    <!-- =====================================
+         FOOTER
+    ====================================== -->
+
+    <footer>
+
+        Bhagavata Saptaham
+        Book Store Portal
+
+    </footer>
+
+    <!-- =====================================
+         ADMIN PASSWORD POPUP
+    ====================================== -->
+
+    <script>
+
+        function openAdmin(){
+
+            const password = prompt(
+                "Enter Admin Password"
+            );
+
+            if(password){
+
+                window.location =
+                "/admin?password=" +
+                password;
+
+            }
+
+        }
+
+    </script>
 
 </body>
 
