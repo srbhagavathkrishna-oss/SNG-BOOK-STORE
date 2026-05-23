@@ -671,6 +671,26 @@ def bulk_import():
                 return "Unsupported file format"
 
             # LOOP ROWS
+            purchase_price = float(
+            pd.to_numeric(
+            row.get("purchase_price",0),
+            errors="coerce"
+            ) or 0
+            )
+
+            discount = float(
+            pd.to_numeric(
+            row.get("discount",0),
+            errors="coerce"
+            ) or 0
+            )
+
+            final_price = float(
+            pd.to_numeric(
+            row.get("final_price",0),
+            errors="coerce"
+            ) or 0
+            )
 
             for _, row in df.iterrows():
 
@@ -702,11 +722,7 @@ def bulk_import():
                         )
                     ),
 
-                    final_price=float(
-                        row.get(
-                        "final_price",0
-                        )
-                    ),
+                    
 
                     show_quantity=int(
                         row.get(
@@ -731,7 +747,11 @@ def bulk_import():
                         "rack_number",""
                         )
                     )
+                    purchase_price=purchase_price,
 
+                    discount=discount,
+
+                    final_price=final_price,
                 )
 
                 db.session.add(book)
