@@ -637,8 +637,7 @@ def add_book():
 # BULK IMPORT
 # ============================================
 
-@app.route("/bulk-import",
-methods=["GET","POST"])
+@app.route("/bulk-import", methods=["GET", "POST"])
 
 def bulk_import():
 
@@ -654,13 +653,11 @@ def bulk_import():
 
         try:
 
-            # CSV
+            # READ FILE
 
             if filename.endswith(".csv"):
 
                 df = pd.read_csv(file)
-
-            # EXCEL
 
             elif filename.endswith(".xlsx"):
 
@@ -671,76 +668,82 @@ def bulk_import():
                 return "Unsupported file format"
 
             # LOOP ROWS
-            purchase_price = float(
-            pd.to_numeric(
-            row.get("purchase_price",0),
-            errors="coerce"
-            ) or 0
-            )
-
-            discount = float(
-            pd.to_numeric(
-            row.get("discount",0),
-            errors="coerce"
-            ) or 0
-            )
-
-            final_price = float(
-            pd.to_numeric(
-            row.get("final_price",0),
-            errors="coerce"
-            ) or 0
-            )
 
             for _, row in df.iterrows():
 
                 purchase_price = float(
-                pd.to_numeric(
-                row.get(
-                    "purchase_price",0
-                ),
-                errors="coerce"
-                ) or 0
+                    pd.to_numeric(
+                        row.get(
+                            "purchase_price",
+                            0
+                        ),
+                        errors="coerce"
+                    ) or 0
                 )
 
                 discount = float(
-                pd.to_numeric(
-                row.get(
-                "discount",0
-                ),
-                errors="coerce"
-                ) or 0
+                    pd.to_numeric(
+                        row.get(
+                            "discount",
+                            0
+                        ),
+                        errors="coerce"
+                    ) or 0
                 )
 
-                final_price = purchase_price - (
-                    purchase_price *
-                    discount / 100
+                final_price = (
+                    purchase_price
+                    -
+                    (
+                        purchase_price
+                        *
+                        discount
+                        / 100
                     )
+                )
 
                 book = Book(
 
-                    title=row.get(
-                    "title",""
+                    title=str(
+                        row.get(
+                            "title",
+                            ""
+                        )
                     ),
 
-                    author=row.get(
-                    "author",""
+                    author=str(
+                        row.get(
+                            "author",
+                            ""
+                        )
                     ),
 
-                    publication=row.get(
-                        "publication",""
+                    publication=str(
+                        row.get(
+                            "publication",
+                            ""
+                        )
                     ),
 
-                    category=row.get(
-                        "category",""
+                    category=str(
+                        row.get(
+                            "category",
+                            ""
+                        )
                     ),
 
-                    language=row.get(
-                        "language",""
+                    language=str(
+                        row.get(
+                            "language",
+                            ""
+                        )
                     ),
 
-                    description=row.get(
-                        "description",""
+                    description=str(
+                        row.get(
+                            "description",
+                            ""
+                        )
                     ),
 
                     purchase_price=purchase_price,
@@ -752,7 +755,8 @@ def bulk_import():
                     show_quantity=int(
                         pd.to_numeric(
                             row.get(
-                                "show_quantity",0
+                                "show_quantity",
+                                0
                             ),
                             errors="coerce"
                         ) or 0
@@ -761,7 +765,8 @@ def bulk_import():
                     storage_quantity=int(
                         pd.to_numeric(
                             row.get(
-                                "storage_quantity",0
+                                "storage_quantity",
+                                0
                             ),
                             errors="coerce"
                         ) or 0
@@ -769,13 +774,15 @@ def bulk_import():
 
                     shelf_number=str(
                         row.get(
-                            "shelf_number",""
+                            "shelf_number",
+                            ""
                         )
                     ),
 
                     rack_number=str(
                         row.get(
-                            "rack_number",""
+                            "rack_number",
+                            ""
                         )
                     )
 
