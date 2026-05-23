@@ -6,7 +6,7 @@ from datetime import datetime
 import os
 import base64
 from ai_engine import extract_text
-import requests
+from flask import request
 import pandas as pd
 app = Flask(__name__)
 UPLOAD_FOLDER = "static/uploads"
@@ -633,7 +633,12 @@ def add_book():
 # BULK IMPORT BOOKS
 # =========================================================
 
-@app.route("/bulk-import", methods=["GET", "POST"])
+# ============================================
+# BULK IMPORT
+# ============================================
+
+@app.route("/bulk-import",
+methods=["GET","POST"])
 
 def bulk_import():
 
@@ -645,91 +650,101 @@ def bulk_import():
 
             return "No file uploaded"
 
-        # READ CSV / EXCEL
+        filename = file.filename.lower()
 
-        if file.filename.endswith(".csv"):
+        try:
 
-            df = pd.read_csv(file)
+            # CSV
 
-        else:
+            if filename.endswith(".csv"):
 
-            df = pd.read_excel(file)
+                df = pd.read_csv(file)
 
-        # LOOP ROWS
+            # EXCEL
 
-        for index, row in df.iterrows():
+            elif filename.endswith(".xlsx"):
 
-            book = Book(
+                df = pd.read_excel(file)
 
-                title=str(
-                    row.get("title", "")
-                ),
+            else:
 
-                author=str(
-                    row.get("author", "")
-                ),
+                return "Unsupported file format"
 
-                publication=str(
-                    row.get("publication", "")
-                ),
+            # LOOP ROWS
 
-                category=str(
-                    row.get("category", "")
-                ),
+            for _, row in df.iterrows():
 
-                language=str(
-                    row.get("language", "")
-                ),
+                book = Book(
 
-                purchase_price=float(
-                    row.get(
-                        "purchase_price", 0
+                    title=row.get("title",""),
+
+                    author=row.get("author",""),
+
+                    publication=row.get(
+                        "publication",""
+                    ),
+
+                    category=row.get(
+                        "category",""
+                    ),
+
+                    language=row.get(
+                        "language",""
+                    ),
+
+                    description=row.get(
+                        "description",""
+                    ),
+
+                    purchase_price=float(
+                        row.get(
+                        "purchase_price",0
+                        )
+                    ),
+
+                    final_price=float(
+                        row.get(
+                        "final_price",0
+                        )
+                    ),
+
+                    show_quantity=int(
+                        row.get(
+                        "show_quantity",0
+                        )
+                    ),
+
+                    storage_quantity=int(
+                        row.get(
+                        "storage_quantity",0
+                        )
+                    ),
+
+                    shelf_number=str(
+                        row.get(
+                        "shelf_number",""
+                        )
+                    ),
+
+                    rack_number=str(
+                        row.get(
+                        "rack_number",""
+                        )
                     )
-                ),
 
-                final_price=float(
-                    row.get(
-                        "final_price", 0
-                    )
-                ),
-
-                show_quantity=int(
-                    row.get(
-                        "show_quantity", 0
-                    )
-                ),
-
-                storage_quantity=int(
-                    row.get(
-                        "storage_quantity", 0
-                    )
-                ),
-
-                shelf_number=str(
-                    row.get(
-                        "shelf_number", ""
-                    )
-                ),
-
-                rack_number=str(
-                    row.get(
-                        "rack_number", ""
-                    )
-                ),
-
-                description=str(
-                    row.get(
-                        "description", ""
-                    )
                 )
 
+                db.session.add(book)
+
+            db.session.commit()
+
+            return redirect(
+                "/admin-inventory"
             )
 
-            db.session.add(book)
+        except Exception as e:
 
-        db.session.commit()
-
-        return redirect(url_for("book_list"))
+            return str(e)
 
     return render_template(
         "bulk_import.html"
