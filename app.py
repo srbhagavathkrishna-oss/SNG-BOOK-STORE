@@ -746,7 +746,7 @@ def bulk_import():
                         row.get(
                         "rack_number",""
                         )
-                    )
+                    ),
                     purchase_price=purchase_price,
 
                     discount=discount,
