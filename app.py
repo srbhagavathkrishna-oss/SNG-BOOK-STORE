@@ -716,11 +716,7 @@ def bulk_import():
                         "description",""
                     ),
 
-                    purchase_price=float(
-                        row.get(
-                        "purchase_price",0
-                        )
-                    ),
+                    
 
                     
 
