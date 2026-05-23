@@ -694,11 +694,38 @@ def bulk_import():
 
             for _, row in df.iterrows():
 
+                purchase_price = float(
+                pd.to_numeric(
+                row.get(
+                    "purchase_price",0
+                ),
+                errors="coerce"
+                ) or 0
+                )
+
+                discount = float(
+                pd.to_numeric(
+                row.get(
+                "discount",0
+                ),
+                errors="coerce"
+                ) or 0
+                )
+
+                final_price = purchase_price - (
+                    purchase_price *
+                    discount / 100
+                    )
+
                 book = Book(
 
-                    title=row.get("title",""),
+                    title=row.get(
+                    "title",""
+                    ),
 
-                    author=row.get("author",""),
+                    author=row.get(
+                    "author",""
+                    ),
 
                     publication=row.get(
                         "publication",""
@@ -716,38 +743,42 @@ def bulk_import():
                         "description",""
                     ),
 
-                    
-
-                    
-
-                    show_quantity=int(
-                        row.get(
-                        "show_quantity",0
-                        )
-                    ),
-
-                    storage_quantity=int(
-                        row.get(
-                        "storage_quantity",0
-                        )
-                    ),
-
-                    shelf_number=str(
-                        row.get(
-                        "shelf_number",""
-                        )
-                    ),
-
-                    rack_number=str(
-                        row.get(
-                        "rack_number",""
-                        )
-                    ),
                     purchase_price=purchase_price,
 
                     discount=discount,
 
                     final_price=final_price,
+
+                    show_quantity=int(
+                        pd.to_numeric(
+                            row.get(
+                                "show_quantity",0
+                            ),
+                            errors="coerce"
+                        ) or 0
+                    ),
+
+                    storage_quantity=int(
+                        pd.to_numeric(
+                            row.get(
+                                "storage_quantity",0
+                            ),
+                            errors="coerce"
+                        ) or 0
+                    ),
+
+                    shelf_number=str(
+                        row.get(
+                            "shelf_number",""
+                        )
+                    ),
+
+                    rack_number=str(
+                        row.get(
+                            "rack_number",""
+                        )
+                    )
+
                 )
 
                 db.session.add(book)
