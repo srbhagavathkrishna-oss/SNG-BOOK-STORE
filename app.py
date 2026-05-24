@@ -1345,7 +1345,7 @@ def dashboard():
 
 @app.route(
     "/edit-book/<int:id>",
-    methods=["GET", "POST"]
+    methods=["GET","POST"]
 )
 
 def edit_book(id):
@@ -1354,195 +1354,84 @@ def edit_book(id):
 
     if request.method == "POST":
 
-        # =========================================
-        # STOCK MANAGEMENT
-        # =========================================
-
-        old_show = book.show_quantity or 0
-
-        new_show = int(
-
-            request.form.get(
-                "show_quantity"
-            ) or 0
-
-        )
-
-        difference = new_show - old_show
-
-        if difference > 0:
-
-            book.storage_quantity = max(
-
-                0,
-
-                (book.storage_quantity or 0)
-
-                - difference
-
-            )
-
-        book.show_quantity = new_show
-
-        # =========================================
-        # BASIC DETAILS
-        # =========================================
-
         book.title = request.form.get(
-            "title", ""
+            "title",""
         )
 
         book.author = request.form.get(
-            "author", ""
+            "author",""
         )
 
         book.publication = request.form.get(
-            "publication", ""
+            "publication",""
         )
 
         book.category = request.form.get(
-            "category", ""
+            "category",""
         )
 
         book.language = request.form.get(
-            "language", ""
+            "language",""
         )
 
         book.description = request.form.get(
-            "description", ""
+            "description",""
         )
 
-        # =========================================
-        # PRICING
-        # =========================================
-
         purchase_price = float(
-
             request.form.get(
-                "purchase_price", 0
+                "purchase_price",0
             ) or 0
-
         )
 
         discount = float(
-
             request.form.get(
-                "discount", 0
+                "discount",0
             ) or 0
-
         )
 
-        currency = request.form.get(
-            "currency",
-            "INR"
-        )
-
-        foreign_amount = float(
-
-            request.form.get(
-                "foreign_amount", 0
-            ) or 0
-
-        )
-
-        conversion_rates = {
-
-            "INR": 1,
-            "USD": 83,
-            "EUR": 90,
-            "GBP": 105,
-            "AED": 22.6,
-            "SAR": 22.1,
-            "QAR": 22.8,
-            "JPY": 0.55
-
-        }
-
-        converted_inr = (
-
-            foreign_amount *
-
-            conversion_rates.get(
-                currency,
-                1
+        final_price = (
+            purchase_price
+            -
+            (
+                purchase_price
+                *
+                discount
+                / 100
             )
-
-        )
-
-        final_price = purchase_price - (
-
-            purchase_price *
-            discount / 100
-
         )
 
         book.purchase_price = purchase_price
 
-        book.final_price = final_price
-
         book.discount = discount
 
-        book.currency_type = currency
+        book.final_price = final_price
 
-        book.foreign_price = foreign_amount
-
-        book.converted_inr = converted_inr
-
-        # =========================================
-        # STORAGE
-        # =========================================
-
-        book.storage_quantity = int(
-
+        book.show_quantity = int(
             request.form.get(
-                "storage_quantity", 0
+                "show_quantity",0
             ) or 0
-
         )
 
-        # =========================================
-        # LOCATION
-        # =========================================
+        book.storage_quantity = int(
+            request.form.get(
+                "storage_quantity",0
+            ) or 0
+        )
 
         book.shelf_number = request.form.get(
-            "shelf_number", ""
+            "shelf_number",""
         )
 
         book.rack_number = request.form.get(
-            "rack_number", ""
+            "rack_number",""
         )
-
-        # =========================================
-        # IMAGE UPDATE
-        # =========================================
-
-        image = request.files.get("image")
-
-        if image and image.filename != "":
-
-            filename = image.filename
-
-            filepath = os.path.join(
-
-                app.config[
-                    "UPLOAD_FOLDER"
-                ],
-
-                filename
-
-            )
-
-            image.save(filepath)
-
-            book.image = filename
-
-        # =========================================
-        # SAVE
-        # =========================================
 
         db.session.commit()
 
-        return redirect(url_for("book_list"))
+        return redirect(
+            "/admin-inventory"
+        )
 
     return render_template(
 
@@ -1551,7 +1440,6 @@ def edit_book(id):
         book=book
 
     )
-
 # =========================================================
 # BILL PAGE
 # =========================================================
