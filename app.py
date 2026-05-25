@@ -1669,7 +1669,7 @@ def clear_all_books():
         "password"
     )
 
-    if password != "admin123":
+    if password != "sng123":
 
         return "Wrong Password"
 
