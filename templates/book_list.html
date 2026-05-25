@@ -12,19 +12,17 @@
 
             <h1>
 
-                Inventory Management
+                Bhagavata Saptaham Book Collection
 
             </h1>
 
             <p>
 
-                Manage, track and organize bookstore inventory professionally
+                Browse Spiritual And Devotional Books
 
             </p>
 
         </div>
-
-        
 
     </div>
 
@@ -34,307 +32,108 @@
 
         <input type="text"
                id="inventorySearch"
-               placeholder="Search by title, author, publication, category..."
+               placeholder="Search books by title, author or publication..."
                onkeyup="filterBooks()">
 
     </div>
 
-    <!-- BOOK GRID -->
+    <!-- BOOK LIST -->
 
-    <div class="book-grid"
-         id="bookGrid">
+    <div class="list-container">
 
-        {% for book in books %}
+        <table class="book-table">
 
-        <div class="book-card">
+            <tr>
 
-            <!-- IMAGE -->
+                <th>
 
-            <div class="image-box">
+                    Title
 
-                {% if book.image %}
+                </th>
 
-                <img src="{{ url_for(
-                    'static',
-                    filename='uploads/' + book.image
-                ) }}">
+                <th>
 
-                {% else %}
+                    Author
 
-                <img src="{{ url_for(
-                    'static',
-                    filename='images.jpg'
-                ) }}">
+                </th>
 
-                {% endif %}
+                <th>
 
-            </div>
+                    Publication
 
-            <!-- CONTENT -->
+                </th>
 
-            <div class="book-content">
+                <th>
 
-                <!-- TITLE -->
+                    Price
 
-                <h2 class="book-title">
+                </th>
+
+                <th>
+
+                    Status
+
+                </th>
+
+                <th>
+
+                    Details
+
+                </th>
+
+            </tr>
+
+            {% for book in books %}
+
+            <tr class="book-row">
+
+                <td>
 
                     {{ book.title }}
 
-                </h2>
+                </td>
 
-                <!-- DETAILS -->
+                <td>
 
-                <div class="details-section">
+                    {{ book.author }}
 
-                    <p>
+                </td>
 
-                        <b>Author:</b>
-                        {{ book.author }}
+                <td>
 
-                    </p>
+                    {{ book.publication }}
 
-                    <p>
+                </td>
 
-                        <b>Publication:</b>
-                        {{ book.publication }}
+                <td class="price">
 
-                    </p>
+                    ₹{{ book.final_price }}
 
-                    <p>
+                </td>
 
-                        <b>Category:</b>
-                        {{ book.category }}
+                <td>
 
-                    </p>
+                    {% if book.show_quantity > 0 %}
 
-                    <p>
+                    <span class="available">
 
-                        <b>Language:</b>
-                        {{ book.language }}
-
-                    </p>
-
-                </div>
-
-                <!-- LOCATION -->
-
-                <div class="location-box">
-
-                    <span class="location-tag">
-
-                        Shelf:
-                        {{ book.shelf_number }}
+                        Available
 
                     </span>
 
-                    <span class="location-tag">
+                    {% else %}
 
-                        Rack:
-                        {{ book.rack_number }}
+                    <span class="out-stock">
+
+                        Out Of Stock
 
                     </span>
 
-                </div>
+                    {% endif %}
 
-                <!-- STOCK -->
+                </td>
 
-                <div class="section-title">
-
-                     Stock
-
-                </div>
-
-                <div class="stock-box">
-
-                    <div class="stock-item">
-
-                        <span>
-
-                            Show Room
-
-                        </span>
-
-                        <strong>
-
-                            {{ book.show_quantity }}
-
-                        </strong>
-
-                    </div>
-
-                    <div class="stock-item">
-
-                        <span>
-
-                            Storage
-
-                        </span>
-
-                        <strong>
-
-                            {{ book.storage_quantity }}
-
-                        </strong>
-
-                    </div>
-
-                    <div class="stock-item total-stock">
-
-                        <span>
-
-                            Total
-
-                        </span>
-
-                        <strong>
-
-                            {{
-
-                            (book.show_quantity or 0)
-
-                            +
-
-                            (book.storage_quantity or 0)
-
-                            }}
-
-                        </strong>
-
-                    </div>
-
-                </div>
-
-                <!-- PRICE -->
-
-                <div class="section-title">
-
-                    Pricing
-
-                </div>
-
-                <div class="price-section">
-
-                    <div class="price-card">
-
-                        <span>
-
-                            Purchase Price
-
-                        </span>
-
-                        <h3>
-
-                            ₹{{ book.purchase_price }}
-
-                        </h3>
-
-                    </div>
-
-                    <div class="price-card selling">
-
-                        <span>
-
-                            Selling Price
-
-                        </span>
-
-                        <h3>
-
-                            ₹{{ book.final_price }}
-
-                        </h3>
-
-                    </div>
-                    <p style="
-                        background:#dcfce7;
-                        color:#166534;
-                        padding:8px 12px;
-                        border-radius:20px;
-                        display:inline-block;
-                        font-weight:bold;
-                        margin-top:10px;
-                            ">
-
-                            Available
-
-                        </p>
-                </div>
-
-                <!-- CURRENCY -->
-
-                <div class="section-title">
-
-                    Currency
-
-                </div>
-
-                <div class="currency-box">
-
-                    <div class="currency-card">
-
-                        <span>
-
-                            Currency
-
-                        </span>
-
-                        <h4>
-
-                            {{ book.currency_type }}
-
-                        </h4>
-
-                    </div>
-
-                    <div class="currency-card">
-
-                        <span>
-
-                            Foreign Price
-
-                        </span>
-
-                        <h4>
-
-                            {{ book.foreign_price }}
-
-                        </h4>
-
-                    </div>
-
-                    <div class="currency-card">
-
-                        <span>
-
-                            INR Value
-
-                        </span>
-
-                        <h4>
-
-                            ₹{{ book.converted_inr }}
-
-                        </h4>
-
-                    </div>
-
-                </div>
-
-                <!-- DESCRIPTION -->
-
-                {% if book.description %}
-
-                <div class="description-box">
-
-                    {{ book.description[:120] }}...
-
-                </div>
-
-                {% endif %}
-
-                <!-- BUTTONS -->
-
-                <div class="button-group">
+                <td>
 
                     <a href="/book/{{ book.id }}">
 
@@ -346,34 +145,13 @@
 
                     </a>
 
-                    <a href="/edit-book/{{ book.id }}">
+                </td>
 
-                        <button class="edit-btn">
+            </tr>
 
-                            Edit
+            {% endfor %}
 
-                        </button>
-
-                    </a>
-
-                    <a href="/delete-book/{{ book.id }}"
-                       onclick="return confirm('Delete this book?')">
-
-                        <button class="delete-btn">
-
-                            Delete
-
-                        </button>
-
-                    </a>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        {% endfor %}
+        </table>
 
     </div>
 
@@ -390,25 +168,27 @@ function filterBooks(){
         "inventorySearch"
     ).value.toLowerCase();
 
-    let cards = document
+    let rows = document
     .querySelectorAll(
-        ".book-card"
+        ".book-row"
     );
 
-    cards.forEach(function(card){
+    rows.forEach(function(row){
 
         let text =
-        card.innerText.toLowerCase();
+        row.innerText.toLowerCase();
 
         if(text.includes(input)){
 
-            card.style.display = "block";
+            row.style.display =
+            "";
 
         }
 
         else{
 
-            card.style.display = "none";
+            row.style.display =
+            "none";
 
         }
 
@@ -422,8 +202,6 @@ function filterBooks(){
 
 <style>
 
-/* PAGE */
-
 .inventory-page{
 
     padding:25px;
@@ -434,17 +212,7 @@ function filterBooks(){
 
 .inventory-header{
 
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
     margin-bottom:30px;
-
-    gap:20px;
-
-    flex-wrap:wrap;
 
 }
 
@@ -452,9 +220,9 @@ function filterBooks(){
 
     font-size:42px;
 
-    margin-bottom:10px;
-
     color:#111827;
+
+    margin-bottom:10px;
 
 }
 
@@ -466,39 +234,11 @@ function filterBooks(){
 
 }
 
-/* BUTTON */
-
-.add-btn{
-
-    background:#2563eb;
-
-    color:white;
-
-    border:none;
-
-    padding:15px 24px;
-
-    border-radius:14px;
-
-    cursor:pointer;
-
-    font-size:16px;
-
-    transition:0.3s;
-
-}
-
-.add-btn:hover{
-
-    background:#1d4ed8;
-
-}
-
 /* SEARCH */
 
 .search-section{
 
-    margin-bottom:30px;
+    margin-bottom:25px;
 
 }
 
@@ -508,347 +248,138 @@ function filterBooks(){
 
     padding:18px;
 
+    border:none;
+
     border-radius:18px;
 
-    border:1px solid #d1d5db;
+    font-size:16px;
 
-    font-size:17px;
+    box-shadow:
+    0px 0px 15px rgba(0,0,0,0.08);
 
     box-sizing:border-box;
 
 }
 
-/* GRID */
+/* TABLE */
 
-.book-grid{
-
-    display:grid;
-
-    grid-template-columns:
-    repeat(auto-fit, minmax(350px,1fr));
-
-    gap:30px;
-
-}
-
-/* CARD */
-
-.book-card{
+.list-container{
 
     background:white;
 
-    border-radius:28px;
+    border-radius:25px;
 
-    overflow:hidden;
+    overflow-x:auto;
 
     box-shadow:
     0px 0px 25px rgba(0,0,0,0.08);
 
-    transition:0.3s;
-
 }
 
-.book-card:hover{
-
-    transform:translateY(-5px);
-
-}
-
-/* IMAGE */
-
-.image-box{
-
-    height:350px;
-
-    overflow:hidden;
-
-}
-
-.image-box img{
+.book-table{
 
     width:100%;
 
-    height:100%;
-
-    object-fit:cover;
+    border-collapse:collapse;
 
 }
 
-/* CONTENT */
+.book-table th{
 
-.book-content{
+    background:#2563eb;
 
-    padding:25px;
+    color:white;
 
-}
+    padding:18px;
 
-/* TITLE */
-
-.book-title{
-
-    font-size:30px;
-
-    margin-bottom:20px;
-
-    color:#111827;
-
-}
-
-/* DETAILS */
-
-.details-section p{
-
-    margin-bottom:10px;
+    text-align:left;
 
     font-size:16px;
 
 }
 
-/* SECTION TITLE */
-
-.section-title{
-
-    margin-top:22px;
-
-    margin-bottom:14px;
-
-    font-size:20px;
-
-    font-weight:bold;
-
-    color:#111827;
-
-}
-
-/* LOCATION */
-
-.location-box{
-
-    display:flex;
-
-    gap:10px;
-
-    flex-wrap:wrap;
-
-    margin-top:18px;
-
-}
-
-.location-tag{
-
-    background:#dbeafe;
-
-    color:#1d4ed8;
-
-    padding:10px 16px;
-
-    border-radius:30px;
-
-    font-weight:bold;
-
-    font-size:14px;
-
-}
-
-/* STOCK */
-
-.stock-box{
-
-    display:grid;
-
-    grid-template-columns:
-    repeat(3,1fr);
-
-    gap:12px;
-
-}
-
-.stock-item{
-
-    background:#f8fafc;
-
-    padding:16px;
-
-    border-radius:16px;
-
-    text-align:center;
-
-}
-
-.stock-item span{
-
-    color:#6b7280;
-
-    display:block;
-
-    margin-bottom:8px;
-
-}
-
-.stock-item strong{
-
-    font-size:24px;
-
-}
-
-.total-stock{
-
-    background:#dbeafe;
-
-}
-
-/* PRICE */
-
-.price-section{
-
-    display:grid;
-
-    grid-template-columns:
-    repeat(2,1fr);
-
-    gap:15px;
-
-}
-
-.price-card{
-
-    background:#f8fafc;
+.book-table td{
 
     padding:18px;
 
-    border-radius:18px;
-
-    text-align:center;
-
-}
-
-.price-card span{
-
-    color:#6b7280;
-
-}
-
-.price-card h3{
-
-    margin-top:10px;
-
-    font-size:26px;
-
-}
-
-.selling{
-
-    background:#dcfce7;
-
-}
-
-/* CURRENCY */
-
-.currency-box{
-
-    display:grid;
-
-    grid-template-columns:
-    repeat(3,1fr);
-
-    gap:12px;
-
-}
-
-.currency-card{
-
-    background:#f8fafc;
-
-    padding:15px;
-
-    border-radius:16px;
-
-    text-align:center;
-
-}
-
-.currency-card span{
-
-    color:#6b7280;
-
-    display:block;
-
-    margin-bottom:8px;
-
-}
-
-/* DESCRIPTION */
-
-.description-box{
-
-    margin-top:20px;
-
-    background:#f8fafc;
-
-    padding:18px;
-
-    border-radius:18px;
-
-    line-height:1.7;
-
-}
-
-/* BUTTONS */
-
-.button-group{
-
-    display:grid;
-
-    grid-template-columns:
-    repeat(3,1fr);
-
-    gap:12px;
-
-    margin-top:25px;
-
-}
-
-.button-group button{
-
-    width:100%;
-
-    border:none;
-
-    padding:15px;
-
-    border-radius:14px;
-
-    cursor:pointer;
-
-    color:white;
+    border-bottom:
+    1px solid #e5e7eb;
 
     font-size:15px;
 
-    transition:0.3s;
+}
+
+.book-row:hover{
+
+    background:#f8fafc;
 
 }
+
+.price{
+
+    font-weight:bold;
+
+    color:#2563eb;
+
+}
+
+/* STATUS */
+
+.available{
+
+    background:#dcfce7;
+
+    color:#166534;
+
+    padding:8px 14px;
+
+    border-radius:30px;
+
+    font-size:14px;
+
+    font-weight:bold;
+
+}
+
+.out-stock{
+
+    background:#fee2e2;
+
+    color:#991b1b;
+
+    padding:8px 14px;
+
+    border-radius:30px;
+
+    font-size:14px;
+
+    font-weight:bold;
+
+}
+
+/* BUTTON */
 
 .view-btn{
 
     background:#2563eb;
 
+    color:white;
+
+    border:none;
+
+    padding:12px 18px;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    transition:0.3s;
+
 }
 
-.edit-btn{
+.view-btn:hover{
 
-    background:#10b981;
-
-}
-
-.delete-btn{
-
-    background:#ef4444;
-
-}
-
-.button-group button:hover{
-
-    transform:scale(1.03);
+    background:#1d4ed8;
 
 }
 
@@ -862,61 +393,24 @@ function filterBooks(){
 
     }
 
-    .inventory-header{
-
-        flex-direction:column;
-
-        align-items:flex-start;
-
-    }
-
     .inventory-header h1{
 
-        font-size:32px;
+        font-size:30px;
 
     }
 
-    .book-grid{
+    .book-table th,
+    .book-table td{
 
-        grid-template-columns:1fr;
+        padding:12px;
 
-    }
-
-    .book-title{
-
-        font-size:26px;
+        font-size:14px;
 
     }
 
-    .stock-box{
+    .view-btn{
 
-        grid-template-columns:1fr;
-
-    }
-
-    .price-section{
-
-        grid-template-columns:1fr;
-
-    }
-
-    .currency-box{
-
-        grid-template-columns:1fr;
-
-    }
-
-    .button-group{
-
-        grid-template-columns:1fr;
-
-    }
-
-    .button-group button{
-
-        font-size:18px;
-
-        padding:18px;
+        width:100%;
 
     }
 

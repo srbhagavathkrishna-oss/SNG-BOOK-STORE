@@ -2,104 +2,926 @@
 
 {% block content %}
 
-<div class="hero">
+<div class="inventory-page">
 
-    <h1>
+    <!-- HEADER -->
 
-        Inventory Management
+    <div class="inventory-header">
 
-    </h1>
+        <div>
 
-    <p>
+            <h1>
 
-        Edit And Delete Books
+                Inventory Management
 
-    </p>
+            </h1>
+
+            <p>
+
+                Manage, track and organize bookstore inventory professionally
+
+            </p>
+
+        </div>
+
+        
+
+    </div>
+
+    <!-- SEARCH -->
+
+    <div class="search-section">
+
+        <input type="text"
+               id="inventorySearch"
+               placeholder="Search by title, author, publication, category..."
+               onkeyup="filterBooks()">
+
+    </div>
+
+    <!-- BOOK GRID -->
+
+    <div class="book-grid"
+         id="bookGrid">
+
+        {% for book in books %}
+
+        <div class="book-card">
+
+            <!-- IMAGE -->
+
+            <div class="image-box">
+
+                {% if book.image %}
+
+                <img src="{{ url_for(
+                    'static',
+                    filename='uploads/' + book.image
+                ) }}">
+
+                {% else %}
+
+                <img src="{{ url_for(
+                    'static',
+                    filename='images.jpg'
+                ) }}">
+
+                {% endif %}
+
+            </div>
+
+            <!-- CONTENT -->
+
+            <div class="book-content">
+
+                <!-- TITLE -->
+
+                <h2 class="book-title">
+
+                    {{ book.title }}
+
+                </h2>
+
+                <!-- DETAILS -->
+
+                <div class="details-section">
+
+                    <p>
+
+                        <b>Author:</b>
+                        {{ book.author }}
+
+                    </p>
+
+                    <p>
+
+                        <b>Publication:</b>
+                        {{ book.publication }}
+
+                    </p>
+
+                    <p>
+
+                        <b>Category:</b>
+                        {{ book.category }}
+
+                    </p>
+
+                    <p>
+
+                        <b>Language:</b>
+                        {{ book.language }}
+
+                    </p>
+
+                </div>
+
+                <!-- LOCATION -->
+
+                <div class="location-box">
+
+                    <span class="location-tag">
+
+                        Shelf:
+                        {{ book.shelf_number }}
+
+                    </span>
+
+                    <span class="location-tag">
+
+                        Rack:
+                        {{ book.rack_number }}
+
+                    </span>
+
+                </div>
+
+                <!-- STOCK -->
+
+                <div class="section-title">
+
+                     Stock
+
+                </div>
+
+                <div class="stock-box">
+
+                    <div class="stock-item">
+
+                        <span>
+
+                            Show Room
+
+                        </span>
+
+                        <strong>
+
+                            {{ book.show_quantity }}
+
+                        </strong>
+
+                    </div>
+
+                    <div class="stock-item">
+
+                        <span>
+
+                            Storage
+
+                        </span>
+
+                        <strong>
+
+                            {{ book.storage_quantity }}
+
+                        </strong>
+
+                    </div>
+
+                    <div class="stock-item total-stock">
+
+                        <span>
+
+                            Total
+
+                        </span>
+
+                        <strong>
+
+                            {{
+
+                            (book.show_quantity or 0)
+
+                            +
+
+                            (book.storage_quantity or 0)
+
+                            }}
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                <!-- PRICE -->
+
+                <div class="section-title">
+
+                    Pricing
+
+                </div>
+
+                <div class="price-section">
+
+                    <div class="price-card">
+
+                        <span>
+
+                            Purchase Price
+
+                        </span>
+
+                        <h3>
+
+                            ₹{{ book.purchase_price }}
+
+                        </h3>
+
+                    </div>
+
+                    <div class="price-card selling">
+
+                        <span>
+
+                            Selling Price
+
+                        </span>
+
+                        <h3>
+
+                            ₹{{ book.final_price }}
+
+                        </h3>
+
+                    </div>
+                    <p style="
+                        background:#dcfce7;
+                        color:#166534;
+                        padding:8px 12px;
+                        border-radius:20px;
+                        display:inline-block;
+                        font-weight:bold;
+                        margin-top:10px;
+                            ">
+
+                            Available
+
+                        </p>
+                </div>
+
+                <!-- CURRENCY -->
+
+                <div class="section-title">
+
+                    Currency
+
+                </div>
+
+                <div class="currency-box">
+
+                    <div class="currency-card">
+
+                        <span>
+
+                            Currency
+
+                        </span>
+
+                        <h4>
+
+                            {{ book.currency_type }}
+
+                        </h4>
+
+                    </div>
+
+                    <div class="currency-card">
+
+                        <span>
+
+                            Foreign Price
+
+                        </span>
+
+                        <h4>
+
+                            {{ book.foreign_price }}
+
+                        </h4>
+
+                    </div>
+
+                    <div class="currency-card">
+
+                        <span>
+
+                            INR Value
+
+                        </span>
+
+                        <h4>
+
+                            ₹{{ book.converted_inr }}
+
+                        </h4>
+
+                    </div>
+
+                </div>
+
+                <!-- DESCRIPTION -->
+
+                {% if book.description %}
+
+                <div class="description-box">
+
+                    {{ book.description[:120] }}...
+
+                </div>
+
+                {% endif %}
+
+                <!-- BUTTONS -->
+
+                <div class="button-group">
+
+                    <a href="/book/{{ book.id }}">
+
+                        <button class="view-btn">
+
+                            View Details
+
+                        </button>
+
+                    </a>
+
+                    <a href="/edit-book/{{ book.id }}">
+
+                        <button class="edit-btn">
+
+                            Edit
+
+                        </button>
+
+                    </a>
+
+                    <a href="/delete-book/{{ book.id }}"
+                       onclick="return confirm('Delete this book?')">
+
+                        <button class="delete-btn">
+
+                            Delete
+
+                        </button>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
 
 </div>
 
-<table>
+<!-- SEARCH -->
 
-    <tr>
+<script>
 
-        <th>Image</th>
+function filterBooks(){
 
-        <th>Title</th>
+    let input = document
+    .getElementById(
+        "inventorySearch"
+    ).value.toLowerCase();
 
-        <th>Author</th>
+    let cards = document
+    .querySelectorAll(
+        ".book-card"
+    );
 
-        <th>Price</th>
+    cards.forEach(function(card){
 
-        <th>Stock</th>
+        let text =
+        card.innerText.toLowerCase();
 
-        <th>Actions</th>
+        if(text.includes(input)){
 
-    </tr>
+            card.style.display = "block";
 
-    {% for book in books %}
+        }
 
-    <tr>
+        else{
 
-        <td>
+            card.style.display = "none";
 
-            {% if book.image %}
+        }
 
-            <img src="/static/uploads/{{ book.image }}"
-                 width="60">
+    });
 
-            {% endif %}
+}
 
-        </td>
+</script>
 
-        <td>
+<!-- STYLES -->
 
-            {{ book.title }}
+<style>
 
-        </td>
+/* PAGE */
 
-        <td>
+.inventory-page{
 
-            {{ book.author }}
+    padding:25px;
 
-        </td>
+}
 
-        <td>
+/* HEADER */
 
-            ₹{{ book.final_price }}
+.inventory-header{
 
-        </td>
+    display:flex;
 
-        <td>
+    justify-content:space-between;
 
-            {{ book.show_quantity }}
+    align-items:center;
 
-        </td>
+    margin-bottom:30px;
 
-        <td>
+    gap:20px;
 
-            <a href="/edit-book/{{ book.id }}"
-               class="btn">
+    flex-wrap:wrap;
 
-                Edit
+}
 
-            </a>
+.inventory-header h1{
 
-            <a href="/delete-book/{{ book.id }}"
-               class="btn"
-               onclick="return confirm(
-               'Delete this book?'
-               )">
+    font-size:42px;
 
-                Delete
+    margin-bottom:10px;
 
-            </a>
+    color:#111827;
 
-        </td>
+}
 
-    </tr>
+.inventory-header p{
 
-    {% endfor %}
+    color:#6b7280;
 
-</table>
+    font-size:18px;
+
+}
+
+/* BUTTON */
+
+.add-btn{
+
+    background:#2563eb;
+
+    color:white;
+
+    border:none;
+
+    padding:15px 24px;
+
+    border-radius:14px;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+    transition:0.3s;
+
+}
+
+.add-btn:hover{
+
+    background:#1d4ed8;
+
+}
+
+/* SEARCH */
+
+.search-section{
+
+    margin-bottom:30px;
+
+}
+
+.search-section input{
+
+    width:100%;
+
+    padding:18px;
+
+    border-radius:18px;
+
+    border:1px solid #d1d5db;
+
+    font-size:17px;
+
+    box-sizing:border-box;
+
+}
+
+/* GRID */
+
+.book-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit, minmax(350px,1fr));
+
+    gap:30px;
+
+}
+
+/* CARD */
+
+.book-card{
+
+    background:white;
+
+    border-radius:28px;
+
+    overflow:hidden;
+
+    box-shadow:
+    0px 0px 25px rgba(0,0,0,0.08);
+
+    transition:0.3s;
+
+}
+
+.book-card:hover{
+
+    transform:translateY(-5px);
+
+}
+
+/* IMAGE */
+
+.image-box{
+
+    height:350px;
+
+    overflow:hidden;
+
+}
+
+.image-box img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+}
+
+/* CONTENT */
+
+.book-content{
+
+    padding:25px;
+
+}
+
+/* TITLE */
+
+.book-title{
+
+    font-size:30px;
+
+    margin-bottom:20px;
+
+    color:#111827;
+
+}
+
+/* DETAILS */
+
+.details-section p{
+
+    margin-bottom:10px;
+
+    font-size:16px;
+
+}
+
+/* SECTION TITLE */
+
+.section-title{
+
+    margin-top:22px;
+
+    margin-bottom:14px;
+
+    font-size:20px;
+
+    font-weight:bold;
+
+    color:#111827;
+
+}
+
+/* LOCATION */
+
+.location-box{
+
+    display:flex;
+
+    gap:10px;
+
+    flex-wrap:wrap;
+
+    margin-top:18px;
+
+}
+
+.location-tag{
+
+    background:#dbeafe;
+
+    color:#1d4ed8;
+
+    padding:10px 16px;
+
+    border-radius:30px;
+
+    font-weight:bold;
+
+    font-size:14px;
+
+}
+
+/* STOCK */
+
+.stock-box{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(3,1fr);
+
+    gap:12px;
+
+}
+
+.stock-item{
+
+    background:#f8fafc;
+
+    padding:16px;
+
+    border-radius:16px;
+
+    text-align:center;
+
+}
+
+.stock-item span{
+
+    color:#6b7280;
+
+    display:block;
+
+    margin-bottom:8px;
+
+}
+
+.stock-item strong{
+
+    font-size:24px;
+
+}
+
+.total-stock{
+
+    background:#dbeafe;
+
+}
+
+/* PRICE */
+
+.price-section{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(2,1fr);
+
+    gap:15px;
+
+}
+
+.price-card{
+
+    background:#f8fafc;
+
+    padding:18px;
+
+    border-radius:18px;
+
+    text-align:center;
+
+}
+
+.price-card span{
+
+    color:#6b7280;
+
+}
+
+.price-card h3{
+
+    margin-top:10px;
+
+    font-size:26px;
+
+}
+
+.selling{
+
+    background:#dcfce7;
+
+}
+
+/* CURRENCY */
+
+.currency-box{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(3,1fr);
+
+    gap:12px;
+
+}
+
+.currency-card{
+
+    background:#f8fafc;
+
+    padding:15px;
+
+    border-radius:16px;
+
+    text-align:center;
+
+}
+
+.currency-card span{
+
+    color:#6b7280;
+
+    display:block;
+
+    margin-bottom:8px;
+
+}
+
+/* DESCRIPTION */
+
+.description-box{
+
+    margin-top:20px;
+
+    background:#f8fafc;
+
+    padding:18px;
+
+    border-radius:18px;
+
+    line-height:1.7;
+
+}
+
+/* BUTTONS */
+
+.button-group{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(3,1fr);
+
+    gap:12px;
+
+    margin-top:25px;
+
+}
+
+.button-group button{
+
+    width:100%;
+
+    border:none;
+
+    padding:15px;
+
+    border-radius:14px;
+
+    cursor:pointer;
+
+    color:white;
+
+    font-size:15px;
+
+    transition:0.3s;
+
+}
+
+.view-btn{
+
+    background:#2563eb;
+
+}
+
+.edit-btn{
+
+    background:#10b981;
+
+}
+
+.delete-btn{
+
+    background:#ef4444;
+
+}
+
+.button-group button:hover{
+
+    transform:scale(1.03);
+
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+    .inventory-page{
+
+        padding:15px;
+
+    }
+
+    .inventory-header{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+    }
+
+    .inventory-header h1{
+
+        font-size:32px;
+
+    }
+
+    .book-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .book-title{
+
+        font-size:26px;
+
+    }
+
+    .stock-box{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .price-section{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .currency-box{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .button-group{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .button-group button{
+
+        font-size:18px;
+
+        padding:18px;
+
+    }
+
+}
+
+</style>
 
 {% endblock %}

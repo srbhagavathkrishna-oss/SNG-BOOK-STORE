@@ -324,17 +324,33 @@ def admin_books():
 
 def admin_inventory():
 
-    books = Book.query.all()
+    search = request.args.get(
+        "search",""
+    )
+
+    if search:
+
+        books = Book.query.filter(
+
+            Book.title.ilike(
+                f"%{search}%"
+            )
+
+        ).all()
+
+    else:
+
+        books = Book.query.all()
 
     return render_template(
 
         "admin_inventory.html",
 
-        books=books
+        books=books,
+
+        search=search
 
     )
-
-
 # =========================================================
 # ADD BOOK
 # =========================================================
@@ -1642,7 +1658,28 @@ def admin_secret():
         "admin_links.html"
     )
 
+@app.route(
+    "/clear-all-books",
+    methods=["POST"]
+)
 
+def clear_all_books():
+
+    password = request.form.get(
+        "password"
+    )
+
+    if password != "admin123":
+
+        return "Wrong Password"
+
+    Book.query.delete()
+
+    db.session.commit()
+
+    return redirect(
+        "/admin-inventory"
+    )
 # =========================================================
 # MAIN
 # =========================================================
