@@ -38,6 +38,52 @@
                onkeyup="filterBooks()">
 
     </div>
+    <!-- CLEAR ALL BOOKS -->
+
+<div style="
+margin-bottom:25px;
+background:#fee2e2;
+padding:20px;
+border-radius:20px;
+">
+
+    <h3 style="
+    color:#991b1b;
+    margin-bottom:15px;
+    ">
+
+        Danger Zone
+
+    </h3>
+
+    <form method="POST"
+          action="/clear-all-books">
+
+        <input type="password"
+               name="password"
+               placeholder="Enter Admin Password"
+               required
+               style="
+               padding:14px;
+               border:none;
+               border-radius:12px;
+               width:250px;
+               margin-right:10px;
+               ">
+
+        <button type="submit"
+                class="delete-btn"
+                onclick="return confirm(
+                'Delete ALL books permanently?'
+                )">
+
+            Clear All Books
+
+        </button>
+
+    </form>
+
+</div>
 
     <!-- BOOK GRID -->
 
