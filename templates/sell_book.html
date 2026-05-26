@@ -469,8 +469,7 @@ Search Books
        placeholder="Enter Book Title">
 
 <button class="search-btn"
-        onclick="searchBooks({{ cart }})">
-
+        data-cart="{{ cart }}">
 Search
 
 </button>
@@ -490,13 +489,17 @@ Search
 
 <div class="camera-buttons">
 
-<button onclick="startCamera({{ cart }})">
+<button
+class="camera-start-btn"
+data-cart="{{ cart }}">
 
 Start Camera
 
 </button>
 
-<button onclick="captureImage({{ cart }})">
+<button
+class="camera-capture-btn"
+data-cart="{{ cart }}">
 
 Capture Image
 
@@ -545,9 +548,9 @@ Cart Items
 
 </h2>
 
-<button class="complete-btn"
-        onclick="completeSale({{ cart }})">
-
+<button
+class="complete-btn"
+data-cart="{{ cart }}">
 Complete Sale
 
 </button>
@@ -907,15 +910,9 @@ function removeItem(cart,index){
 
 function completeSale(cart){
 
-    if(
+    if(carts[cart].length === 0){
 
-        carts[cart].length == 0
-
-    ){
-
-        alert(
-            "Cart Empty"
-        );
+        alert("Cart Empty");
 
         return;
 
@@ -928,73 +925,73 @@ function completeSale(cart){
     carts[cart].forEach(function(item){
 
         const subtotal =
-
-        item.price *
-        item.quantity;
+            item.price * item.quantity;
 
         total += subtotal;
 
         summary +=
-
-        item.title +
-        " x " +
-        item.quantity +
-        " = ₹" +
-        subtotal +
-        "\n";
+            item.title +
+            " x " +
+            item.quantity +
+            " = ₹" +
+            subtotal +
+            "\n";
 
     });
 
-    summary +=
+    fetch(
 
-    "\nTOTAL = ₹" + total;
+        "/complete-sale",
 
-    alert(
+        {
 
-        "SALE COMPLETED\n\n" +
-        summary
+            method:"POST",
 
-    );
+            headers:{
+                "Content-Type":
+                "application/json"
+            },
 
-    carts[cart] = [];
+            body: JSON.stringify({
 
-    updateCart(cart);
+                cart: carts[cart],
 
-}
+                total: total
 
-/* CAMERA */
+            })
 
-async function startCamera(cart){
+        }
 
-    const video =
+    )
 
-    document.getElementById(
-        "camera"+cart
-    );
+    .then(response => response.json())
 
-    try{
-
-        const stream =
-
-        await navigator
-        .mediaDevices
-        .getUserMedia({
-
-            video:true
-
-        });
-
-        video.srcObject = stream;
-
-    }
-
-    catch(error){
+    .then(data => {
 
         alert(
-            "Camera Access Denied"
+
+            "SALE COMPLETED\n\n" +
+            summary +
+            "\nTOTAL = ₹" +
+            total
+
         );
 
-    }
+        carts[cart] = [];
+
+        updateCart(cart);
+
+    })
+
+    .catch(error => {
+
+        console.log(error);
+
+        alert(
+            "Sale Failed"
+        );
+
+    });
 
 }
 
