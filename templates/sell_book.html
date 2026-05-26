@@ -1606,45 +1606,7 @@ async function aiSearch(cart){
 
     /* LOADING */
 
-    resultDiv.innerHTML += `
-
-<div class="book-result">
-
-    <h3>${book.title}</h3>
-
-    <p>
-
-        Author: ${book.author}
-
-    </p>
-
-    <p>
-
-        Price: ₹${book.price}
-
-    </p>
-
-    <p>
-
-        Stock: ${book.stock}
-
-    </p>
-
-    <input type="number"
-           id="qty${cart}${book.id}"
-           value="1"
-           min="1">
-
-    <button
-    class="add-btn"
-    data-cart="${cart}"
-    data-book="${book.id}">
-
-    Add To Cart
-
-</button>
-
-</div>
+    resultDiv.innerHTML += 
 
 `;
     /* SEND TO BACKEND */
@@ -1749,6 +1711,210 @@ async function aiSearch(cart){
 window.onload = function(){
 
     startCamera(1);
+
+}
+
+</script>
+
+</body>
+
+</html>
+
+       function addToCart(cart, bookId){
+
+    const qty = parseInt(
+
+        document.getElementById(
+            "qty"+cart+bookId
+        ).value
+
+    );
+
+    const book = books.find(
+
+        function(b){
+
+            return b.id == bookId;
+
+        }
+
+    );
+
+    if(!book){
+
+        return;
+
+    }
+
+    carts[cart].push({
+
+        id: book.id,
+
+        title: book.title,
+
+        price: book.price,
+
+        quantity: qty
+
+    });
+
+    updateCart(cart);
+
+}
+
+function updateCart(cart){
+
+    const cartDiv =
+
+    document.getElementById(
+        "cart"+cart
+    );
+
+    const totalDiv =
+
+    document.getElementById(
+        "total"+cart
+    );
+
+    cartDiv.innerHTML = "";
+
+    let total = 0;
+
+    carts[cart].forEach(function(item,index){
+
+        const subtotal =
+
+        item.price *
+        item.quantity;
+
+        total += subtotal;
+
+        cartDiv.innerHTML += `
+
+<div class="book-result">
+
+<h3>
+
+${item.title}
+
+</h3>
+
+<p>
+
+₹${item.price}
+×
+${item.quantity}
+
+</p>
+
+<p>
+
+Subtotal:
+₹${subtotal}
+
+</p>
+<button
+class="remove-btn remove-item-btn"
+data-cart="${cart}"
+data-index="${index}">
+
+Remove
+
+</button>
+
+</div>
+
+`;
+
+    });
+
+    totalDiv.innerHTML =
+
+    "Total: ₹" + total;
+
+}
+
+function removeItem(cart,index){
+
+    carts[cart].splice(index,1);
+
+    updateCart(cart);
+
+}
+
+function clearCart(cart){
+
+    if(
+
+        confirm(
+            "Clear cart?"
+        )
+
+    ){
+
+        carts[cart] = [];
+
+        updateCart(cart);
+
+    }
+
+}
+
+/* COMPLETE SALE */
+
+function completeSale(cart){
+
+    if(
+
+        carts[cart].length == 0
+
+    ){
+
+        alert(
+            "Cart empty"
+        );
+
+        return;
+
+    }
+
+    let summary = "";
+
+    let total = 0;
+
+    carts[cart].forEach(function(item){
+
+        const subtotal =
+
+        item.price *
+        item.quantity;
+
+        total += subtotal;
+
+        summary +=
+
+        item.title +
+        " x " +
+        item.quantity +
+        " = ₹" +
+        subtotal +
+        "\n";
+
+    });
+
+    summary +=
+    "\nTOTAL = ₹" + total;
+
+    alert(
+
+        "SALE COMPLETED\n\n" +
+        summary
+
+    );
+
+    carts[cart] = [];
+
+    updateCart(cart);
 
 }
 
