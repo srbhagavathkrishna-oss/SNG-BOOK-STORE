@@ -480,7 +480,17 @@ Search
 
 <video id="camera{{ cart }}"
        autoplay>
-
+<video
+id="camera{{ cart }}"
+autoplay
+playsinline
+muted
+style="
+width:100%;
+border-radius:20px;
+background:black;
+">
+</video>
 </video>
 
 <canvas id="canvas{{ cart }}">
@@ -1143,6 +1153,97 @@ document.addEventListener(
     }
 
 );
+/* START CAMERA */
+
+async function startCamera(cart){
+
+    const video = document.getElementById(
+
+        "camera" + cart
+
+    );
+
+    try{
+
+        const stream = await navigator
+        .mediaDevices
+        .getUserMedia({
+
+            video:{
+                facingMode:"environment"
+            },
+
+            audio:false
+
+        });
+
+        video.srcObject = stream;
+
+        await video.play();
+
+    }
+
+    catch(error){
+
+        console.log(error);
+
+        alert(
+
+            "Camera access failed.\n\n" +
+
+            "Please allow camera permission."
+
+        );
+
+    }
+
+}
+
+/* CAPTURE IMAGE */
+
+function captureImage(cart){
+
+    const video = document.getElementById(
+
+        "camera" + cart
+
+    );
+
+    const canvas = document.getElementById(
+
+        "canvas" + cart
+
+    );
+
+    const preview = document.getElementById(
+
+        "preview" + cart
+
+    );
+
+    const context = canvas.getContext("2d");
+
+    canvas.width = video.videoWidth;
+
+    canvas.height = video.videoHeight;
+
+    context.drawImage(
+
+        video,
+        0,
+        0
+
+    );
+
+    const imageData = canvas.toDataURL(
+        "image/png"
+    );
+
+    preview.src = imageData;
+
+    preview.style.display = "block";
+
+}
 </script>
 
 </body>
