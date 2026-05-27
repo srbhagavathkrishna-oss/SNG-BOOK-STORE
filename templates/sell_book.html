@@ -415,7 +415,7 @@ button{
 <div class="tabs">
 
 <button class="tab-btn active-tab"
-        onclick="switchCart(1)"
+        data-cart="1"
         id="tab1">
 
 Cart 1
@@ -423,7 +423,7 @@ Cart 1
 </button>
 
 <button class="tab-btn"
-        onclick="switchCart(2)"
+        data-cart="2"
         id="tab2">
 
 Cart 2
@@ -431,7 +431,7 @@ Cart 2
 </button>
 
 <button class="tab-btn"
-        onclick="switchCart(3)"
+        data-cart="3"
         id="tab3">
 
 Cart 3
@@ -486,6 +486,13 @@ Search
 <canvas id="canvas{{ cart }}">
 
 </canvas>
+<img id="preview{{ cart }}"
+     style="
+     width:100%;
+     margin-top:15px;
+     border-radius:20px;
+     display:none;
+     ">
 
 <div class="camera-buttons">
 
@@ -1009,30 +1016,199 @@ function captureImage(cart){
         "canvas"+cart
     );
 
+    const preview =
+
+    document.getElementById(
+        "preview"+cart
+    );
+
     const context =
 
     canvas.getContext("2d");
 
-    canvas.width = 300;
+    canvas.width = video.videoWidth;
 
-    canvas.height = 400;
+    canvas.height = video.videoHeight;
 
     context.drawImage(
 
         video,
         0,
-        0,
-        300,
-        400
+        0
 
     );
 
-    alert(
-        "Image Captured"
+    const imageData =
+
+    canvas.toDataURL(
+        "image/png"
     );
+
+    preview.src = imageData;
+
+    preview.style.display =
+    "block";
 
 }
+document.addEventListener(
 
+    "click",
+
+    function(e){
+        /* SWITCH CART */
+
+    if(
+
+        e.target.classList.contains(
+            "tab-btn"
+        )
+
+    ){
+
+        const cart = parseInt(
+
+            e.target.dataset.cart
+
+        );
+
+    switchCart(cart);
+
+    }
+        /* SEARCH */
+
+        if(
+
+            e.target.classList.contains(
+                "search-btn"
+            )
+
+        ){
+
+            const cart = parseInt(
+
+                e.target.dataset.cart
+
+            );
+
+            searchBooks(cart);
+
+        }
+
+        /* CAMERA START */
+
+        if(
+
+            e.target.classList.contains(
+                "camera-start-btn"
+            )
+
+        ){
+
+            const cart = parseInt(
+
+                e.target.dataset.cart
+
+            );
+
+            startCamera(cart);
+
+        }
+
+        /* CAPTURE */
+
+        if(
+
+            e.target.classList.contains(
+                "capture-btn"
+            )
+
+        ){
+
+            const cart = parseInt(
+
+                e.target.dataset.cart
+
+            );
+
+            captureImage(cart);
+
+        }
+
+        /* ADD TO CART */
+
+        if(
+
+            e.target.classList.contains(
+                "add-btn"
+            )
+
+        ){
+
+            const cart = parseInt(
+
+                e.target.dataset.cart
+
+            );
+
+            const bookId = parseInt(
+
+                e.target.dataset.book
+
+            );
+
+            addToCart(cart,bookId);
+
+        }
+
+        /* REMOVE */
+
+        if(
+
+            e.target.classList.contains(
+                "remove-btn"
+            )
+
+        ){
+
+            const cart = parseInt(
+
+                e.target.dataset.cart
+
+            );
+
+            const index = parseInt(
+
+                e.target.dataset.index
+
+            );
+
+            removeItem(cart,index);
+
+        }
+
+        /* COMPLETE */
+
+        if(
+
+            e.target.classList.contains(
+                "complete-btn"
+            )
+
+        ){
+
+            const cart = parseInt(
+
+                e.target.dataset.cart
+
+            );
+
+            completeSale(cart);
+
+        }
+
+    }
+
+);
 </script>
 
 </body>
