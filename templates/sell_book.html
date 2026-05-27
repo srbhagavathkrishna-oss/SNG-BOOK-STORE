@@ -718,39 +718,6 @@ Add To Cart
 
 /* ADD TO CART */
 
-document.addEventListener(
-
-    "click",
-
-    function(e){
-
-        if(
-
-            e.target.classList.contains(
-                "add-btn"
-            )
-
-        ){
-
-            const cart = parseInt(
-
-                e.target.dataset.cart
-
-            );
-
-            const bookId = parseInt(
-
-                e.target.dataset.book
-
-            );
-
-            addToCart(cart,bookId);
-
-        }
-
-    }
-
-);
 
 function addToCart(cart,bookId){
 
@@ -871,39 +838,6 @@ Remove
 
 /* REMOVE */
 
-document.addEventListener(
-
-    "click",
-
-    function(e){
-
-        if(
-
-            e.target.classList.contains(
-                "remove-btn"
-            )
-
-        ){
-
-            const cart = parseInt(
-
-                e.target.dataset.cart
-
-            );
-
-            const index = parseInt(
-
-                e.target.dataset.index
-
-            );
-
-            removeItem(cart,index);
-
-        }
-
-    }
-
-);
 
 function removeItem(cart,index){
 
